@@ -16,12 +16,12 @@ class LayoutController extends GetxController {
   final _isShowingOverdueSheet = false.obs;
   final _hasShownOverdueSheetOnce = false.obs;
 
-  Rxn<Lawyer> lawyer = Rxn<Lawyer>(); // nullable observable shop object
+  Rxn<Lawyer> lawyer = Rxn<Lawyer>(); // nullable observable  object
 
   @override
   void onInit() {
     scrollController.addListener(_onScroll);
-    fetchShopInfo(); // fetch shop data on init
+    fetchLawyerInfo(); // fetch shop data on init
     super.onInit();
   }
 
@@ -42,9 +42,9 @@ class LayoutController extends GetxController {
     }
   }
 
-  void fetchShopInfo() {
-    layoutService.getShopInfo().listen((shopData) {
-      lawyer.value = shopData;
+  void fetchLawyerInfo() {
+    layoutService.getLawyerInfo().listen((data) {
+      lawyer.value =data;
     });
   }
 

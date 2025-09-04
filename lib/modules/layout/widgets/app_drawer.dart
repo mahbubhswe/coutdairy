@@ -19,13 +19,12 @@ class AppDrawer extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     final theme = Theme.of(context);
-    final cs = theme.colorScheme;
     final bg = theme.scaffoldBackgroundColor; // Match app background
     final navColor = bg; // Keep system nav consistent with drawer bg
     final navIconsBrightness =
         ThemeData.estimateBrightnessForColor(navColor) == Brightness.dark
-            ? Brightness.light
-            : Brightness.dark;
+        ? Brightness.light
+        : Brightness.dark;
     return Drawer(
       width: width,
       backgroundColor: bg,
@@ -36,20 +35,74 @@ class AppDrawer extends StatelessWidget {
           systemNavigationBarDividerColor: Colors.transparent,
         ),
         child: Obx(() {
-          final shop = layoutController.lawyer.value;
+          final lawyer = layoutController.lawyer.value;
           final user = authController.user.value;
 
-          if (shop == null || user == null) {
+          if (user == null) {
             return const Center(child: CupertinoActivityIndicator(radius: 15));
           }
 
+          // If lawyer document is missing or not yet loaded, show a minimal drawer
+          if (lawyer == null) {
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(CupertinoIcons.chevron_back),
+                        onPressed: () => Navigator.of(context).maybePop(),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    CircleAvatar(
+                      radius: 36,
+                      backgroundImage: user.photoURL != null
+                          ? CachedNetworkImageProvider(user.photoURL!)
+                          : null,
+                      child: user.photoURL == null
+                          ? Text(
+                              (user.displayName ?? '?')
+                                  .trim()
+                                  .characters
+                                  .take(1)
+                                  .toString()
+                                  .toUpperCase(),
+                            )
+                          : null,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      user.displayName ?? 'User',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      user.email ?? '',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 24),
+                    const CupertinoActivityIndicator(radius: 12),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          // Compute subscription info only when lawyer doc is available
           final now = DateTime.now();
-          final subscriptionEnd = shop.subscriptionEndsAt;
-          final daysLeft = subscriptionEnd.difference(now).inDays;
+          final subscriptionEnd = lawyer?.subscriptionEndsAt;
+          final daysLeft = subscriptionEnd?.difference(now).inDays;
 
           final lastSignIn = user.metadata.lastSignInTime;
-          final formattedSignIn =
-              lastSignIn != null ? lastSignIn.formattedDateTime : 'অজানা';
+          final formattedSignIn = lastSignIn != null
+              ? lastSignIn.formattedDateTime
+              : 'অজানা';
 
           return SafeArea(
             child: SingleChildScrollView(
@@ -83,8 +136,9 @@ class AppDrawer extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 48,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.surface,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.surface,
                           backgroundImage: user.photoURL != null
                               ? CachedNetworkImageProvider(user.photoURL!)
                               : null,
@@ -94,24 +148,22 @@ class AppDrawer extends StatelessWidget {
                                           user.displayName!.isNotEmpty
                                       ? user.displayName![0].toUpperCase()
                                       : '?',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.headlineMedium,
                                 )
                               : null,
                         ),
                         const SizedBox(height: 18),
                         Text(
                           user.displayName ?? "Not Found",
-                          style:
-                              Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          user.email ?? shop.phone,
+                          user.email ?? lawyer?.phone ?? '',
                           style: Theme.of(context).textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
@@ -122,9 +174,9 @@ class AppDrawer extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceVariant,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.surfaceVariant,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: const Icon(CupertinoIcons.clock, size: 16),
@@ -158,25 +210,27 @@ class AppDrawer extends StatelessWidget {
                     context,
                     icon: CupertinoIcons.calendar,
                     title: 'মেয়াদ',
-                    subtitle: '${shop.subFor} দিন',
+                    subtitle: '${lawyer.subFor} দিন',
                   ),
                   _infoTile(
                     context,
                     icon: CupertinoIcons.clock_fill,
                     title: 'শুরু তারিখ',
-                    subtitle: shop.subStartsAt.formattedDate,
+                    subtitle: lawyer.subStartsAt.formattedDate,
                   ),
                   _infoTile(
                     context,
                     icon: CupertinoIcons.timer,
                     title: 'শেষ তারিখ',
-                    subtitle: subscriptionEnd.formattedDate,
+                    subtitle: subscriptionEnd!.formattedDate,
                   ),
                   _infoTile(
                     context,
                     icon: CupertinoIcons.hourglass,
                     title: 'বাকি দিন',
-                    subtitle: daysLeft > 0 ? '$daysLeft দিন বাকি' : 'মেয়াদ শেষ',
+                    subtitle: daysLeft! > 0
+                        ? '$daysLeft দিন বাকি'
+                        : 'মেয়াদ শেষ',
                     subtitleColor: daysLeft > 0
                         ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).colorScheme.error,
@@ -229,8 +283,9 @@ class AppDrawer extends StatelessWidget {
                           context: context,
                           builder: (ctx) => CupertinoAlertDialog(
                             title: const Text('লগ আউট নিশ্চিত করুন'),
-                            content:
-                                const Text('আপনি কি সত্যিই লগ আউট করতে চান?'),
+                            content: const Text(
+                              'আপনি কি সত্যিই লগ আউট করতে চান?',
+                            ),
                             actions: [
                               CupertinoDialogAction(
                                 child: const Text('বাতিল'),
@@ -264,9 +319,9 @@ class AppDrawer extends StatelessWidget {
     return Text(
       title,
       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.2,
-          ),
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1.2,
+      ),
     );
   }
 
@@ -293,29 +348,28 @@ class AppDrawer extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(12), // Rounded rectangle bg
                 border: Border.all(
-                    color: Theme.of(context).colorScheme.outlineVariant),
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
               ),
-              child: Icon(icon,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant),
+              child: Icon(
+                icon,
+                size: 20,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
+                  Text(title, style: Theme.of(context).textTheme.labelSmall),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: subtitleColor,
-                          fontWeight:
-                              isBold ? FontWeight.bold : FontWeight.normal,
-                        ),
+                      color: subtitleColor,
+                      fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+                    ),
                   ),
                 ],
               ),

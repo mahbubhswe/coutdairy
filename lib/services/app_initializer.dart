@@ -5,6 +5,7 @@ import 'package:court_dairy/services/local_notification.dart';
 import 'package:court_dairy/services/local_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:court_dairy/firebase_options.dart';
 import '../modules/case/screens/overdue_cases_screen.dart';
 import '../modules/case/screens/tomorrow_cases_screen.dart';
 import '../utils/app_config.dart';
@@ -12,7 +13,10 @@ import '../utils/app_config.dart';
 class AppInitializer {
   static Future<void> initialize() async {
     // 1) Firebase core
-    await Firebase.initializeApp();
+    // Use FlutterFire options to avoid relying on Android resource values.xml
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
     // 2) Firestore offline persistence
     FirebaseFirestore.instance.settings = const Settings(
