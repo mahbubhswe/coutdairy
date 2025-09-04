@@ -38,16 +38,13 @@ class LocalNotificationService {
       // Request POST_NOTIFICATIONS (Android 13+)
       await androidPlugin?.requestNotificationsPermission();
 
-      // Proactively request exact alarm permission on Android 12+
-      // If the method isn't supported by the current plugin version, it is a no-op.
+      // Do NOT proactively request exact alarm permission; many devices show a
+      // disabled toggle causing a confusing loop. We'll fallback to inexact.
+      // We'll still query capability to help decide behavior at schedule time.
       try {
-        final canScheduleExact =
-            await androidPlugin?.canScheduleExactNotifications() ?? true;
-        if (!canScheduleExact) {
-          await androidPlugin?.requestExactAlarmsPermission();
-        }
+        await androidPlugin?.canScheduleExactNotifications();
       } catch (_) {
-        // Silently ignore if API isn't available; we'll handle at schedule time.
+        // Ignore if not supported
       }
     }
     isInit = true;
@@ -116,31 +113,18 @@ class LocalNotificationService {
         matchDateTimeComponents: DateTimeComponents.time,
         payload: payload,
       );
-    } on PlatformException catch (e) {
-      // Handle Android 12+ exact alarm restriction gracefully
-      if (e.code == 'exact_alarms_not_permitted' && Platform.isAndroid) {
-        final androidPlugin = notificationsPlugin
-            .resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>();
-        try {
-          await androidPlugin?.requestExactAlarmsPermission();
-        } catch (_) {
-          // Ignore if not supported
-        }
-        // Fallback to inexact schedule at roughly the same time
-        await notificationsPlugin.zonedSchedule(
-          id,
-          title,
-          body,
-          scheduledDate,
-          notificationDetails(),
-          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-          matchDateTimeComponents: DateTimeComponents.time,
-          payload: payload,
-        );
-      } else {
-        rethrow;
-      }
+    } on PlatformException catch (_) {
+      // Fallback to inexact schedule at roughly the same time
+      await notificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        scheduledDate,
+        notificationDetails(),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: payload,
+      );
     }
   }
 }
