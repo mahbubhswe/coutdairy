@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:court_dairy/models/lawyer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -15,6 +17,8 @@ class LayoutController extends GetxController {
 
   final _isShowingOverdueSheet = false.obs;
   final _hasShownOverdueSheetOnce = false.obs;
+  bool _overdueDelayElapsed = false; // show only after delay
+  Timer? _overdueDelayTimer;
 
   Rxn<Lawyer> lawyer = Rxn<Lawyer>(); // nullable observable  object
 
@@ -22,6 +26,18 @@ class LayoutController extends GetxController {
   void onInit() {
     scrollController.addListener(_onScroll);
     fetchLawyerInfo(); // fetch shop data on init
+    // React to cases stream updates; avoid race where first emission
+    // happens before onReady registers `once`.
+    ever(caseController.cases, (_) => _maybeShowOverdueSheet());
+    ever<bool>(caseController.isLoading, (loading) {
+      if (loading == false) _maybeShowOverdueSheet();
+    });
+    // Start a 5s delay window before we are allowed to show the sheet
+    _overdueDelayTimer?.cancel();
+    _overdueDelayTimer = Timer(const Duration(seconds: 5), () {
+      _overdueDelayElapsed = true;
+      _maybeShowOverdueSheet();
+    });
     super.onInit();
   }
 
@@ -29,7 +45,6 @@ class LayoutController extends GetxController {
   void onReady() {
     super.onReady();
     _maybeShowOverdueSheet();
-    once(caseController.cases, (_) => _maybeShowOverdueSheet());
   }
 
   void _onScroll() {
@@ -49,6 +64,7 @@ class LayoutController extends GetxController {
   }
 
   Future<void> _maybeShowOverdueSheet() async {
+    if (!_overdueDelayElapsed) return; // wait until 5s after app open
     if (_isShowingOverdueSheet.value || _hasShownOverdueSheetOnce.value) return;
 
     if (caseController.isLoading.value) return;
@@ -79,6 +95,7 @@ class LayoutController extends GetxController {
   void onClose() {
     scrollController.removeListener(_onScroll);
     scrollController.dispose();
+    _overdueDelayTimer?.cancel();
     super.onClose();
   }
 }
