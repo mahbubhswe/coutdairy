@@ -231,10 +231,6 @@ class AppDrawer extends StatelessWidget {
                     subtitle: daysLeft! > 0
                         ? '$daysLeft দিন বাকি'
                         : 'মেয়াদ শেষ',
-                    subtitleColor: daysLeft > 0
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.error,
-                    isBold: true,
                   ),
 
                   const SizedBox(height: 36),
@@ -247,7 +243,7 @@ class AppDrawer extends StatelessWidget {
                     context,
                     icon: Icons.account_balance_wallet,
                     title: 'অ্যাকাউন্ট রিসেট',
-                    subtitle: 'আপনার সম্পূর্ণ অ্যাকাউন্ট ডেটা রিসেট করুন',
+                    subtitle: 'অ্যাকাউন্ট রিসেট করুন',
                     onTap: () => Get.to((AccountResetScreen())),
                   ),
 

@@ -59,7 +59,7 @@ class LayoutController extends GetxController {
 
   void fetchLawyerInfo() {
     layoutService.getLawyerInfo().listen((data) {
-      lawyer.value =data;
+      lawyer.value = data;
     });
   }
 
@@ -149,10 +149,12 @@ class _OverdueSheetContent extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('বকেয়া হিয়ারিং আপডেট',
-                          style: textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          )),
+                      Text(
+                        'বকেয়া হিয়ারিং আপডেট',
+                        style: textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                       const SizedBox(height: 2),
                       Text(
                         count == 1
@@ -177,11 +179,7 @@ class _OverdueSheetContent extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Icon(
-                    HugeIcons.strokeRoundedClock01,
-                    size: 18,
-                    color: colorScheme.primary,
-                  ),
+                  Icon(HugeIcons.strokeRoundedClock01, size: 18),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
@@ -198,10 +196,10 @@ class _OverdueSheetContent extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () => Get.back(),
-                    child: const Text('পরে'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.teal,
                     ),
+                    child: const Text('পরে'),
                   ),
                 ),
                 const SizedBox(width: 12),
