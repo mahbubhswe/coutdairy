@@ -1,4 +1,4 @@
-package com.example.court_dairy
+package com.appseba.courtdiary
 
 import io.flutter.embedding.android.FlutterActivity
 

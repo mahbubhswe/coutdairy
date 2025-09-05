@@ -30,7 +30,7 @@ class AppInitializer {
     // 4) App config
     const docId = String.fromEnvironment(
       'APP_CONFIG_ID',
-      defaultValue: 'XCUdkvlttJT2Mw2OEsl3',
+      defaultValue: '7Wv3FSb5VOsWLtjzmpbl',
     );
     await AppConfigService.load(docId: docId);
 
@@ -39,13 +39,15 @@ class AppInitializer {
 
     // 6) Daily reminder to update hearing dates
     final localNoti = LocalNotificationService();
-    await localNoti.initialize(onTap: (payload) {
-      if (payload == 'overdue_cases') {
-        Get.to(() => const OverdueCasesScreen());
-      } else if (payload == 'tomorrow_cases') {
-        Get.to(() => const TomorrowCasesScreen());
-      }
-    });
+    await localNoti.initialize(
+      onTap: (payload) {
+        if (payload == 'overdue_cases') {
+          Get.to(() => const OverdueCasesScreen());
+        } else if (payload == 'tomorrow_cases') {
+          Get.to(() => const TomorrowCasesScreen());
+        }
+      },
+    );
     // Use inexact daily notifications to avoid exact-alarm permission prompts
     await localNoti.scheduleDailyNotification(
       id: 1,
@@ -53,6 +55,8 @@ class AppInitializer {
       body: 'Tap to update past hearing dates',
       payload: 'overdue_cases',
     );
+
+    // Exact-alarm prompt moved to MyApp builder (after UI mounts)
 
     // 7) Check for app updates in background
     await AppUpdateService.checkForAppUpdate();

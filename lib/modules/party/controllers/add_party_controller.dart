@@ -18,7 +18,7 @@ class AddPartyController extends GetxController {
 
   final RxBool isLoading = false.obs;
   final RxBool enableBtn = false.obs;
-  final RxBool isSendSms = true.obs;
+  final RxBool isSendSms = false.obs; // default off; UI toggle removed
 
   @override
   void onInit() {
@@ -29,9 +29,9 @@ class AddPartyController extends GetxController {
   }
 
   void _validate() {
+    // Address is optional; only name and phone required
     enableBtn.value = name.text.trim().isNotEmpty &&
-        phone.text.trim().isNotEmpty &&
-        address.text.trim().isNotEmpty;
+        phone.text.trim().isNotEmpty;
   }
 
   void showImagePicker() {
@@ -146,7 +146,8 @@ class AddPartyController extends GetxController {
         address: address.text.trim(),
         lawyerId: user.uid,
         photoUrl: photoUrl,
-        isSendSms: isSendSms.value,
+        // SMS notification not needed for add party
+        isSendSms: false,
       );
 
       await PartyService.addParty(party);

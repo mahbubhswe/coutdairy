@@ -8,6 +8,7 @@ import 'services/app_initializer.dart';
 import 'services/initial_bindings.dart';
 import 'themes/theme_controller.dart';
 import 'themes/themes.dart';
+import 'utils/exact_alarm.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  static bool _askedExactAlarmOnce = false;
 
   // Build a SystemUiOverlayStyle from the active ThemeData
   SystemUiOverlayStyle _overlayFor(ThemeData theme) {
@@ -74,6 +77,12 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         final theme = Theme.of(context);
         SystemChrome.setSystemUIOverlayStyle(_overlayFor(theme));
+        if (!_askedExactAlarmOnce) {
+          _askedExactAlarmOnce = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            askForExactAlarmPermissionIfNeeded();
+          });
+        }
         return child!;
       },
     );

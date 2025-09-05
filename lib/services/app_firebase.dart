@@ -28,16 +28,14 @@ class AppFirebase {
   FirebaseFunctions get functions => _functions;
 
   // 🔑 Google Sign-In
-  // TODO: Implement Google Sign-In with the new API
-  // final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // 👤 Current user shortcut
   User? get currentUser => _auth.currentUser;
 
   // 🧹 Sign out helper
   Future<void> signOut() async {
-    // TODO: Implement Google Sign-Out with the new API
-    // await _googleSignIn.signOut();
+    await _googleSignIn.signOut();
     await _auth.signOut();
   }
 
@@ -49,9 +47,21 @@ class AppFirebase {
   /// ✅ Sign in with Google — returns (UserCredential?, isNewUser)
   Future<(UserCredential?, bool)> signInWithGoogle() async {
     try {
-      // TODO: Implement Google Sign-In with the new API
-      // This is a placeholder implementation
-      return (null, false);
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return (null, false);
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await _auth.signInWithCredential(credential);
+      final isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
+
+      return (userCredential, isNewUser);
     } catch (e) {
       if (kDebugMode) {
         print("Google Sign-In error: $e");

@@ -1,11 +1,10 @@
 import 'package:court_dairy/modules/accounts/screens/accounts_screen.dart';
 import 'package:court_dairy/modules/case/screens/add_case_screen.dart';
-import 'package:court_dairy/modules/case/screens/case_screen.dart';
 import 'package:court_dairy/modules/case/screens/case_search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-// import '../../../screens/calculator_screen.dart';
+import '../../case/screens/case_screen.dart';
 import '../../court_dairy/screens/customer_service_screen.dart';
 import '../../../constants/app_texts.dart';
 import '../../accounts/screens/add_transaction_screen.dart';
@@ -41,8 +40,10 @@ class LayoutScreen extends GetView<LayoutController> {
                 ),
                 IconButton(
                   onPressed: () {
-                    Get.to(() => const CaseFullscreenScreen(),
-                        fullscreenDialog: true);
+                    Get.to(
+                      () => const CaseFullscreenScreen(),
+                      fullscreenDialog: true,
+                    );
                   },
                   icon: const Icon(HugeIcons.strokeRoundedArrowAllDirection),
                   tooltip: 'ফুলস্ক্রিন কেস',
@@ -76,17 +77,23 @@ class LayoutScreen extends GetView<LayoutController> {
                   curve: Curves.easeInOut,
                   child: FloatingActionButton(
                     onPressed: () {
-                      if (ActivationGuard.check()) return;
+                      if (!ActivationGuard.check()) return;
                       final index = DefaultTabController.of(context).index;
                       if (index == 0) {
-                        Get.to(() => const AddCaseScreen(),
-                            fullscreenDialog: true);
+                        Get.to(
+                          () => const AddCaseScreen(),
+                          fullscreenDialog: true,
+                        );
                       } else if (index == 1) {
-                        Get.to(() => const AddPartyScreen(),
-                            fullscreenDialog: true);
+                        Get.to(
+                          () => const AddPartyScreen(),
+                          fullscreenDialog: true,
+                        );
                       } else {
-                        Get.to(() => const AddTransactionScreen(),
-                            fullscreenDialog: true);
+                        Get.to(
+                          () => const AddTransactionScreen(),
+                          fullscreenDialog: true,
+                        );
                       }
                     },
                     child: const Icon(Icons.add_circle),

@@ -41,49 +41,51 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBXGzTgrSNmGG93biOi8iyap33j-QfaFV0',
-    appId: '1:932683268574:web:8e517cdc43b3495b451d4f',
-    messagingSenderId: '932683268574',
-    projectId: 'court-dairy',
-    authDomain: 'court-dairy.firebaseapp.com',
-    storageBucket: 'court-dairy.firebasestorage.app',
-    measurementId: 'G-ECR8Y7344L',
+    apiKey: 'AIzaSyBz1dvWUgIYUlvlYd9opPkfvct9t9Jfuf0',
+    appId: '1:119871249139:web:72bb3e72b66c6e6ee4b586',
+    messagingSenderId: '119871249139',
+    projectId: 'court-diary-72689',
+    authDomain: 'court-diary-72689.firebaseapp.com',
+    storageBucket: 'court-diary-72689.firebasestorage.app',
+    measurementId: 'G-DEXDWFNKQF',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCPLFnlR9KTvOOumeAkl3aV0CgU2RTwNlc',
-    appId: '1:932683268574:android:5945cf5e0626789e451d4f',
-    messagingSenderId: '932683268574',
-    projectId: 'court-dairy',
-    storageBucket: 'court-dairy.firebasestorage.app',
+    apiKey: 'AIzaSyDvvdyh-CIZRZIycTt0h96pt_yVx1ES9t8',
+    appId: '1:119871249139:android:60cb34844b6949d7e4b586',
+    messagingSenderId: '119871249139',
+    projectId: 'court-diary-72689',
+    storageBucket: 'court-diary-72689.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC6TmGo56XIVzQRedxp-VQ3eqqbq4W5374',
-    appId: '1:932683268574:ios:7dd6fd4038176ffe451d4f',
-    messagingSenderId: '932683268574',
-    projectId: 'court-dairy',
-    storageBucket: 'court-dairy.firebasestorage.app',
+    apiKey: 'AIzaSyCSiR4GHRjlwNPrVFA1sE-PV3Xmj37ZApg',
+    appId: '1:119871249139:ios:90a3e440464b711ee4b586',
+    messagingSenderId: '119871249139',
+    projectId: 'court-diary-72689',
+    storageBucket: 'court-diary-72689.firebasestorage.app',
+    iosClientId: '119871249139-u5u60616aia4kubngug4md2j1ilhilpa.apps.googleusercontent.com',
     iosBundleId: 'com.appseba.courtdiary',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC6TmGo56XIVzQRedxp-VQ3eqqbq4W5374',
-    appId: '1:932683268574:ios:e627a75dd9ac38b9451d4f',
-    messagingSenderId: '932683268574',
-    projectId: 'court-dairy',
-    storageBucket: 'court-dairy.firebasestorage.app',
-    iosBundleId: 'com.example.courtdiary',
+    apiKey: 'AIzaSyCSiR4GHRjlwNPrVFA1sE-PV3Xmj37ZApg',
+    appId: '1:119871249139:ios:f81b851cba7fb5a8e4b586',
+    messagingSenderId: '119871249139',
+    projectId: 'court-diary-72689',
+    storageBucket: 'court-diary-72689.firebasestorage.app',
+    iosClientId: '119871249139-dqugf4mscsine3lmg9snpgq40uttokqb.apps.googleusercontent.com',
+    iosBundleId: 'com.example.courtDairy',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBXGzTgrSNmGG93biOi8iyap33j-QfaFV0',
-    appId: '1:932683268574:web:e3c5565d9d6bd3a5451d4f',
-    messagingSenderId: '932683268574',
-    projectId: 'court-dairy',
-    authDomain: 'court-dairy.firebaseapp.com',
-    storageBucket: 'court-dairy.firebasestorage.app',
-    measurementId: 'G-J6V7GXT256',
+    apiKey: 'AIzaSyBz1dvWUgIYUlvlYd9opPkfvct9t9Jfuf0',
+    appId: '1:119871249139:web:d488a64b8585ba8be4b586',
+    messagingSenderId: '119871249139',
+    projectId: 'court-diary-72689',
+    authDomain: 'court-diary-72689.firebaseapp.com',
+    storageBucket: 'court-diary-72689.firebasestorage.app',
+    measurementId: 'G-RN2WW8L9XH',
   );
 
 }

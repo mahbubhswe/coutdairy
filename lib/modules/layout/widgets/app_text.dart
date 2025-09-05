@@ -8,8 +8,11 @@ class AppText extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     return [cs.primary, cs.secondary, cs.tertiary];
   }
-  TextStyle colorizeTextStyle =
-      const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
+
+  TextStyle colorizeTextStyle = const TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.bold,
+  );
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,16 +24,7 @@ class AppText extends StatelessWidget {
             textStyle: colorizeTextStyle,
             colors: _colors(context),
           ),
-          ColorizeAnimatedText(
-            'আপনার সকল হিসাব-নিকাশ সবসময় নিরাপদ',
-            textStyle: colorizeTextStyle,
-            colors: _colors(context),
-          ),
-          ColorizeAnimatedText(
-            'সহজ এবং নির্ভুল হিসাব রাখতে ব্যবহার করুন',
-            textStyle: colorizeTextStyle,
-            colors: _colors(context),
-          ),
+
           ColorizeAnimatedText(
             'অটমেটিক ডাটা বেকাপ থাকে Google সার্ভারে',
             textStyle: colorizeTextStyle,

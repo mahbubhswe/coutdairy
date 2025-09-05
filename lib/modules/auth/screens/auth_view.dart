@@ -27,10 +27,7 @@ class AuthScreen extends StatelessWidget {
                   spacing: 10,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      AppImages.logo,
-                      height: 150,
-                    ),
+                    Image.asset(AppImages.logo, height: 150),
                     const Text(
                       'Welcome to Court Dairy',
                       style: TextStyle(
@@ -40,10 +37,7 @@ class AuthScreen extends StatelessWidget {
                     ),
                     Text(
                       'আপনার একাউন্টে প্রবেশ করুন',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[700],
-                      ),
+                      style: TextStyle(fontSize: 16),
                     ),
                     AppTextFromField(
                       controller: controller.email,
@@ -52,11 +46,12 @@ class AuthScreen extends StatelessWidget {
                       prefixIcon: HugeIcons.strokeRoundedMail02,
                     ),
                     AppTextFromField(
-                        controller: controller.password,
-                        label: "Password",
-                        hintText: "Enter your password",
-                        prefixIcon: HugeIcons.strokeRoundedLockPassword,
-                        isPassword: true),
+                      controller: controller.password,
+                      label: "Password",
+                      hintText: "Enter your password",
+                      prefixIcon: HugeIcons.strokeRoundedLockPassword,
+                      isPassword: true,
+                    ),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
@@ -82,14 +77,19 @@ class AuthScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.red.withOpacity(0.08),
                             border: Border.all(
-                                color: Colors.red.shade300, width: 2),
+                              color: Colors.red.shade300,
+                              width: 2,
+                            ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Icon(Icons.error_outline,
-                                  color: Colors.red, size: 20),
+                              const Icon(
+                                Icons.error_outline,
+                                color: Colors.red,
+                                size: 20,
+                              ),
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
@@ -129,7 +129,7 @@ class AuthScreen extends StatelessWidget {
                       );
                     }),
                     const SizedBox(height: 10),
-                    AppFooter()
+                    AppFooter(),
                   ],
                 ),
               ),

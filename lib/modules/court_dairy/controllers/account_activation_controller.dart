@@ -51,7 +51,9 @@ class AccountActivationController extends GetxController {
       total = monthlyCharge * months.toDouble();
     }
 
-    final success = await PaymentService.payNow(amount: total);
+    // bKash typically operates in whole BDT; ensure integer amount
+    final amountForPayment = double.parse(total.toStringAsFixed(0));
+    final success = await PaymentService.payNow(amount: amountForPayment);
 
     if (success) {
       try {
