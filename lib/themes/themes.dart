@@ -51,14 +51,14 @@ class Themes {
       titleTextStyle: TextStyle(
         color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
     ),
-    tabBarTheme: const TabBarTheme(
+    tabBarTheme: const TabBarThemeData(
       labelColor: Colors.white,
       unselectedLabelColor: Colors.white70,
       indicatorColor: Colors.white,
       indicatorSize: TabBarIndicatorSize.tab,
       dividerColor: Colors.transparent,
     ),
-    cardTheme: const CardTheme(
+    cardTheme:const  CardThemeData(
       color: _waLightSurface,
       elevation: 0,
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -94,7 +94,7 @@ class Themes {
     listTileTheme: const ListTileThemeData(iconColor: Colors.black87),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: _waLightSurface, selectedItemColor: _waLightSecondary),
-    dialogTheme: const DialogTheme(backgroundColor: _waLightSurface),
+    dialogTheme: const DialogThemeData(backgroundColor: _waLightSurface),
     pageTransitionsTheme: const PageTransitionsTheme(builders: {
       TargetPlatform.android: FadeThroughPageTransitionsBuilder(),
       TargetPlatform.iOS:     FadeThroughPageTransitionsBuilder(),
@@ -137,14 +137,14 @@ class Themes {
       titleTextStyle: TextStyle(
         color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
     ),
-    tabBarTheme: const TabBarTheme(
+    tabBarTheme: const TabBarThemeData(
       labelColor: Colors.white,
       unselectedLabelColor: Colors.white70,
       indicatorColor: Colors.white,
       indicatorSize: TabBarIndicatorSize.tab,
       dividerColor: Colors.transparent,
     ),
-    cardTheme: const CardTheme(
+    cardTheme: const CardThemeData(
       color: _waDarkSurface,
       elevation: 0,
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -176,7 +176,7 @@ class Themes {
       selectedItemColor: _waDarkSecondary,
       unselectedItemColor: Colors.white70,
       type: BottomNavigationBarType.fixed),
-    dialogTheme: const DialogTheme(backgroundColor: _waDarkSurface),
+    dialogTheme: const DialogThemeData(backgroundColor: _waDarkSurface),
     inputDecorationTheme: const InputDecorationTheme(
       filled: true,
       fillColor: _waDarkSurface,
