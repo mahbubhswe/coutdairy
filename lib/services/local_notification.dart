@@ -17,6 +17,12 @@ class LocalNotificationService {
   Future<void> initialize({Function(String?)? onTap}) async {
     if (isInit) return;
     tz.initializeTimeZones();
+    // Force Asia/Dhaka time for scheduled notifications irrespective of device TZ
+    try {
+      tz.setLocalLocation(tz.getLocation('Asia/Dhaka'));
+    } catch (_) {
+      // If timezone DB missing Dhaka for some reason, fallback to device local
+    }
     const androidInitializationSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosInitializationSettings = DarwinInitializationSettings();
@@ -47,6 +53,17 @@ class LocalNotificationService {
         // Ignore if not supported
       }
     }
+    // iOS permissions
+    if (Platform.isIOS) {
+      final iosPlugin = notificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              DarwinFlutterLocalNotificationsPlugin>();
+      await iosPlugin?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
     isInit = true;
   }
 
@@ -66,6 +83,10 @@ class LocalNotificationService {
     int timestamp = DateTime.now().millisecondsSinceEpoch;
     int id = timestamp % 2147483647;
     notificationsPlugin.show(id, title, body, notificationDetails());
+  }
+
+  Future<void> cancel(int id) async {
+    await notificationsPlugin.cancel(id);
   }
 
   Future<void> scheduleDailyNotification({

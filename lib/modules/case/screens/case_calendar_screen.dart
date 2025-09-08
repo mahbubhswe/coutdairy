@@ -40,7 +40,15 @@ class CaseCalendarScreen extends StatelessWidget {
         final counts = _caseController.monthCaseCounts;
         final totalCells = daysInMonth + firstWeekday - 1;
         final monthLabel = DateFormat('MMMM yyyy').format(now);
-        final weekdays = const ['সোম', 'মঙ্গল', 'বুধ', 'বৃহ', 'শুক্র', 'শনি', 'রবি'];
+        final weekdays = const [
+          'সোম',
+          'মঙ্গল',
+          'বুধ',
+          'বৃহ',
+          'শুক্র',
+          'শনি',
+          'রবি',
+        ];
 
         return Column(
           children: [
@@ -48,10 +56,23 @@ class CaseCalendarScreen extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(outerHPad, 12, outerHPad, 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    monthLabel,
-                    style: Theme.of(context).textTheme.titleLarge,
+                  // Month title with total cases subtitle
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        monthLabel,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'মোট ${_caseController.monthCount} টি কেস',
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(color: Theme.of(context).hintColor),
+                      ),
+                    ],
                   ),
                   // Simple legend
                   Row(
@@ -66,7 +87,10 @@ class CaseCalendarScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 6),
-                      Text('কেস আছে', style: Theme.of(context).textTheme.bodySmall),
+                      Text(
+                        'কেস আছে',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ],
                   ),
                 ],
@@ -84,9 +108,7 @@ class CaseCalendarScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: weekdayVPad),
                         child: Text(
                           weekdays[i],
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium
+                          style: Theme.of(context).textTheme.labelMedium
                               ?.copyWith(color: Theme.of(context).hintColor),
                         ),
                       ),
@@ -116,16 +138,17 @@ class CaseCalendarScreen extends StatelessWidget {
                   final hasCase = count > 0;
                   final isToday = now.day == day;
 
-                  final baseBorder =
-                      Theme.of(context).colorScheme.outlineVariant;
+                  final baseBorder = Theme.of(
+                    context,
+                  ).colorScheme.outlineVariant;
                   final bgColor = hasCase
                       ? Colors.green.withOpacity(0.18)
                       : Theme.of(context).colorScheme.surface;
                   final borderColor = hasCase
                       ? Colors.green.shade600
                       : (isToday
-                          ? Theme.of(context).colorScheme.primary
-                          : baseBorder);
+                            ? Theme.of(context).colorScheme.primary
+                            : baseBorder);
 
                   return InkWell(
                     onTap: hasCase
@@ -136,71 +159,70 @@ class CaseCalendarScreen extends StatelessWidget {
                         : null,
                     child: Container(
                       decoration: BoxDecoration(
-                      color: bgColor,
-                      border: Border.all(
-                          color: borderColor, width: isToday ? 1.5 : 1),
-                      borderRadius: BorderRadius.circular(isCompact ? 6 : 8),
+                        color: bgColor,
+                        border: Border.all(
+                          color: borderColor,
+                          width: isToday ? 1.5 : 1,
+                        ),
+                        borderRadius: BorderRadius.circular(isCompact ? 6 : 8),
                       ),
                       child: Padding(
-                      padding: EdgeInsets.all(cellPad),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                day.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: hasCase
-                                      ? Colors.green.shade800
-                                      : Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.color,
-                                  fontSize: isCompact ? 11 : null,
-                                ),
-                              ),
-                              if (hasCase)
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: isCompact ? 5 : 6,
-                                    vertical: isCompact ? 1 : 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.shade600,
-                                    borderRadius: BorderRadius.circular(999),
-                                  ),
-                                  child: Text(
-                                    '$count',
-                                    style: TextStyle(
-                                      fontSize: isCompact ? 9.5 : 11,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          if (!isCompact) ...[
-                            const Spacer(),
-                            Text(
-                              hasCase ? '$count টি কেস' : '',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(
+                        padding: EdgeInsets.all(cellPad),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  day.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
                                     color: hasCase
                                         ? Colors.green.shade800
-                                        : Theme.of(context).hintColor,
+                                        : Theme.of(
+                                            context,
+                                          ).textTheme.bodyMedium?.color,
+                                    fontSize: isCompact ? 11 : null,
                                   ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                                ),
+                                if (hasCase)
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: isCompact ? 5 : 6,
+                                      vertical: isCompact ? 1 : 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.shade600,
+                                      borderRadius: BorderRadius.circular(999),
+                                    ),
+                                    child: Text(
+                                      '$count',
+                                      style: TextStyle(
+                                        fontSize: isCompact ? 9.5 : 11,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
+                            if (!isCompact) ...[
+                              const Spacer(),
+                              Text(
+                                hasCase ? '$count টি কেস' : '',
+                                style: Theme.of(context).textTheme.labelSmall
+                                    ?.copyWith(
+                                      color: hasCase
+                                          ? Colors.green.shade800
+                                          : Theme.of(context).hintColor,
+                                    ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ],
-                        ],
-                      ),
+                        ),
                       ),
                     ),
                   );

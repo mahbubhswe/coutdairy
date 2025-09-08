@@ -33,6 +33,7 @@ class PartyTile extends StatelessWidget {
     final theme = Theme.of(context);
     return Card(
       elevation: 0.5,
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 12, right: 8),

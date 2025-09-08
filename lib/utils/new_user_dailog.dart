@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../modules/layout/screens/layout_screen.dart';
 import '../modules/party/screens/add_party_screen.dart';
 
 void showNewUserDialog() {
@@ -9,8 +7,9 @@ void showNewUserDialog() {
     if (Get.context != null) {
       Get.dialog(
         Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Column(
@@ -33,14 +32,16 @@ void showNewUserDialog() {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () async {
-                      await Get.offAll(() => const LayoutScreen());
-                      Get.to(() => const AddPartyScreen(),
-                          fullscreenDialog: true);
+                    onPressed: () {
+                      Get.to(
+                        () => const AddPartyScreen(),
+                        fullscreenDialog: true,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                     child: const Text('ব্যবহার শুরু করুন'),
                   ),

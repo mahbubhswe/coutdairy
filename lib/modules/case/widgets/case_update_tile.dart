@@ -17,12 +17,14 @@ class CaseUpdateTile extends StatelessWidget {
     final controller = Get.find<CaseController>();
     final lastDate = caseItem.nextHearingDate?.toDate();
     return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       child: ListTile(
+        visualDensity: const VisualDensity(vertical: -2),
+        minVerticalPadding: 0,
         title: Text(caseItem.caseTitle),
         subtitle: Text(
           'Case No: ${caseItem.caseNumber}\nNext date: ${lastDate != null ? _format(lastDate) : 'N/A'}',
         ),
-        isThreeLine: true,
         trailing: IconButton(
           icon: const Icon(Icons.edit_calendar_outlined),
           onPressed: () async {

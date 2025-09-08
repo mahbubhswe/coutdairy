@@ -106,6 +106,7 @@ class CaseController extends GetxController {
         cases.value = event;
         isLoading.value = false;
         _scheduleTomorrowNotification();
+        _scheduleOverdueNotificationsEvery3Hours();
       });
     } else {
       isLoading.value = false;
@@ -135,11 +136,12 @@ class CaseController extends GetxController {
   }
 
   Future<void> _scheduleTomorrowNotification() async {
-    final tomorrow = tomorrowCases;
-    final title = "Tomorrow's Cases";
-    final body = tomorrow.isEmpty
-        ? 'No cases scheduled for tomorrow'
-        : tomorrow.map((c) => c.caseTitle).join(', ');
+    // Always schedule daily at 4 PM BD time with up-to-date count
+    final count = tomorrowCases.length;
+    final title = 'আগামীকালের কেস';
+    final body = count > 0
+        ? 'আগামীকাল $count টি কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।'
+        : 'আগামীকালের কোনো কেস নেই। বিস্তারিত দেখতে ট্যাপ করুন।';
     await _localNoti.scheduleDailyAtTime(
       id: 2,
       title: title,
@@ -147,6 +149,30 @@ class CaseController extends GetxController {
       hour: 16,
       minute: 0,
       payload: 'tomorrow_cases',
+    );
+  }
+
+  Future<void> _scheduleOverdueNotificationsEvery3Hours() async {
+    // Clean up any previously scheduled every-3-hours notifications
+    const oldHours = [0, 3, 6, 9, 12, 15, 18, 21];
+    for (final h in oldHours) {
+      await _localNoti.cancel(300 + h);
+    }
+
+    final count = overdueCases.length;
+    final title = 'ওভারডিউ কেসের আপডেট';
+    final body = count > 0
+        ? 'আপনার $count টি ওভারডিউ কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।'
+        : 'কোনো ওভারডিউ কেস নেই। বিস্তারিত দেখতে ট্যাপ করুন।';
+
+    // Schedule a single daily notification at 11 PM BD time
+    await _localNoti.scheduleDailyAtTime(
+      id: 310,
+      title: title,
+      body: body,
+      hour: 23,
+      minute: 0,
+      payload: 'overdue_cases',
     );
   }
 }
