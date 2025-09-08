@@ -50,16 +50,20 @@ class CaseTile extends StatelessWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Icon(Icons.confirmation_number_outlined,
-                      size: 14, color: Colors.grey.shade600),
+                  Icon(
+                    Icons.confirmation_number_outlined,
+                    size: 14,
+                    color: Colors.grey.shade600,
+                  ),
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
                       'Case No: ${caseItem.caseNumber}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(color: Colors.grey.shade700),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: Colors.grey.shade700,
+                      ),
                     ),
                   ),
                 ],
@@ -67,16 +71,20 @@ class CaseTile extends StatelessWidget {
               const SizedBox(height: 2),
               Row(
                 children: [
-                  Icon(Icons.account_balance_outlined,
-                      size: 14, color: Colors.grey.shade600),
+                  Icon(
+                    Icons.account_balance_outlined,
+                    size: 14,
+                    color: Colors.grey.shade600,
+                  ),
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
                       caseItem.courtName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(color: Colors.grey.shade700),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: Colors.grey.shade700,
+                      ),
                     ),
                   ),
                 ],

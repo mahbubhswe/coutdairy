@@ -47,10 +47,7 @@ class PartyTile extends StatelessWidget {
               ? Text(_initials(party.name))
               : null,
         ),
-        title: Text(
-          party.name,
-          style: theme.textTheme.titleMedium,
-        ),
+        title: Text(party.name, style: theme.textTheme.titleMedium),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -73,11 +70,7 @@ class PartyTile extends StatelessWidget {
           children: [
             IconButton(
               tooltip: 'পেমেন্ট',
-              icon: const Icon(
-                HugeIcons.strokeRoundedPayment02,
-                color: Colors.green,
-              ),
-              color: Theme.of(context).colorScheme.primary,
+              icon: const Icon(HugeIcons.strokeRoundedPayment02),
               onPressed: () async {
                 Get.to(
                   () => AddTransactionScreen(partyId: party.docId),
@@ -88,7 +81,6 @@ class PartyTile extends StatelessWidget {
             IconButton(
               tooltip: 'কল করুন',
               icon: const Icon(HugeIcons.strokeRoundedCall02),
-              color: Colors.green,
               onPressed: () async {
                 final uri = Uri(scheme: 'tel', path: party.phone);
                 try {
@@ -109,16 +101,17 @@ class PartyTile extends StatelessWidget {
                 itemBuilder: (context) {
                   final items = <PopupMenuEntry<String>>[];
                   if (onEdit != null) {
-                    items.add(const PopupMenuItem(
-                      value: 'edit',
-                      child: Text('Edit'),
-                    ));
+                    items.add(
+                      const PopupMenuItem(value: 'edit', child: Text('Edit')),
+                    );
                   }
                   if (onDelete != null) {
-                    items.add(const PopupMenuItem(
-                      value: 'delete',
-                      child: Text('Delete'),
-                    ));
+                    items.add(
+                      const PopupMenuItem(
+                        value: 'delete',
+                        child: Text('Delete'),
+                      ),
+                    );
                   }
                   return items;
                 },
