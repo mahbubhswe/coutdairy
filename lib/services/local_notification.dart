@@ -23,23 +23,29 @@ class LocalNotificationService {
     } catch (_) {
       // If timezone DB missing Dhaka for some reason, fallback to device local
     }
-    const androidInitializationSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidInitializationSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
     const iosInitializationSettings = DarwinInitializationSettings();
 
     const initSetting = InitializationSettings(
-        android: androidInitializationSettings, iOS: iosInitializationSettings);
-    await notificationsPlugin.initialize(initSetting,
-        onDidReceiveNotificationResponse: (details) {
-      onTap?.call(details.payload);
-    });
+      android: androidInitializationSettings,
+      iOS: iosInitializationSettings,
+    );
+    await notificationsPlugin.initialize(
+      initSetting,
+      onDidReceiveNotificationResponse: (details) {
+        onTap?.call(details.payload);
+      },
+    );
 
     // Android 13+ needs runtime notification permission
     // Android 12+ may require special exact alarm permission
     if (Platform.isAndroid) {
       final androidPlugin = notificationsPlugin
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
+            AndroidFlutterLocalNotificationsPlugin
+          >();
 
       // Request POST_NOTIFICATIONS (Android 13+)
       await androidPlugin?.requestNotificationsPermission();
@@ -57,7 +63,8 @@ class LocalNotificationService {
     if (Platform.isIOS) {
       final iosPlugin = notificationsPlugin
           .resolvePlatformSpecificImplementation<
-              DarwinFlutterLocalNotificationsPlugin>();
+            IOSFlutterLocalNotificationsPlugin
+          >();
       await iosPlugin?.requestPermissions(
         alert: true,
         badge: true,
@@ -69,17 +76,20 @@ class LocalNotificationService {
 
   NotificationDetails notificationDetails() {
     return const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'seba_pos_local_notification_channel',
-          'Local Notification',
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-        iOS: DarwinNotificationDetails());
+      android: AndroidNotificationDetails(
+        'seba_pos_local_notification_channel',
+        'Local Notification',
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
   }
 
-  Future<void> showNotification(
-      {required String title, required String body}) async {
+  Future<void> showNotification({
+    required String title,
+    required String body,
+  }) async {
     int timestamp = DateTime.now().millisecondsSinceEpoch;
     int id = timestamp % 2147483647;
     notificationsPlugin.show(id, title, body, notificationDetails());
@@ -119,7 +129,13 @@ class LocalNotificationService {
     await notificationsPlugin.cancel(id);
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate = tz.TZDateTime(
-        tz.local, now.year, now.month, now.day, hour, minute);
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minute,
+    );
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
