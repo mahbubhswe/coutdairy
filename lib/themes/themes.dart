@@ -13,8 +13,8 @@ class Themes {
   static const Color _waLightOutline = Color(0xFFDBDBDB);
 
   // Dark
-  static const Color _waDarkBackground = Color(0xFF121B22);
-  static const Color _waDarkSurface = Color(0xFF1F2C34);
+  static const Color _waDarkBackground = Color.fromARGB(255, 10, 14, 18);
+  static const Color _waDarkSurface = Color.fromARGB(255, 18, 23, 27);
   static const Color _waDarkPrimary = Color(0xFF1F2C34); // App bar bg
   static const Color _waDarkSecondary = Color(0xFF00A884); // Action green
   static const Color _waDarkTertiary = Color(0xFF53BDEB); // Link blue
@@ -45,9 +45,13 @@ class Themes {
         ),
     scaffoldBackgroundColor: _waLightBackground,
     appBarTheme: const AppBarTheme(
+      // Match scaffold background
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
-      elevation: 0.0,
+      elevation: 1.0,
+      scrolledUnderElevation: 1.0,
+      surfaceTintColor: Colors.transparent,
+      shadowColor: Colors.black26,
       iconTheme: IconThemeData(color: Colors.black),
       titleTextStyle: TextStyle(
         color: Colors.black,
@@ -130,9 +134,13 @@ class Themes {
         ),
     scaffoldBackgroundColor: _waDarkBackground,
     appBarTheme: const AppBarTheme(
-      backgroundColor: _waDarkPrimary,
+      // Match scaffold background
+      backgroundColor: _waDarkBackground,
       foregroundColor: Colors.white,
-      elevation: 0.0,
+      elevation: 1.0,
+      scrolledUnderElevation: 1.0,
+      surfaceTintColor: Colors.transparent,
+      shadowColor: Colors.black54,
       iconTheme: IconThemeData(color: Colors.white),
       titleTextStyle: TextStyle(
         color: Colors.white,

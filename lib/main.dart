@@ -2,7 +2,9 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'modules/court_dairy/screens/splash_screen.dart';
+import 'modules/auth/controllers/auth_controller.dart';
+import 'modules/auth/screens/auth_view.dart';
+import 'modules/layout/screens/layout_screen.dart';
 import 'navigation/app_transitions.dart';
 import 'services/app_initializer.dart';
 import 'services/initial_bindings.dart';
@@ -66,7 +68,7 @@ class MyApp extends StatelessWidget {
       darkTheme: Themes.darkTheme,
       themeMode: themeController.themeMode,
       initialBinding: InitialBindings(),
-      home: const SplashScreen(),
+      home: const _AuthGate(),
       // Apply shared-axis transitions to all Get routes
       customTransition:  SharedAxisCustomTransition(
         transitionType: SharedAxisTransitionType.horizontal,
@@ -86,5 +88,21 @@ class MyApp extends StatelessWidget {
         return child!;
       },
     );
+  }
+}
+
+class _AuthGate extends StatelessWidget {
+  const _AuthGate();
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = Get.find<AuthController>();
+    return Obx(() {
+      if (auth.user.value != null) {
+        return LayoutScreen();
+      } else {
+        return const AuthScreen();
+      }
+    });
   }
 }

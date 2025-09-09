@@ -105,15 +105,14 @@ class LocalNotificationService {
     required String body,
     String? payload,
   }) async {
-    await notificationsPlugin.cancel(id);
-    // Prefer inexact periodic to avoid requiring exact alarm permission
-    notificationsPlugin.periodicallyShow(
-      id,
-      title,
-      body,
-      RepeatInterval.daily,
-      notificationDetails(),
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    // Use time-based daily schedule for better reliability across platforms.
+    // Default: 20:00 local time.
+    await scheduleDailyAtTime(
+      id: id,
+      title: title,
+      body: body,
+      hour: 20,
+      minute: 0,
       payload: payload,
     );
   }

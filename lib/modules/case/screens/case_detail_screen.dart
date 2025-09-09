@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:panara_dialogs/panara_dialogs.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../models/court_case.dart';
 import '../../../widgets/app_info_row.dart';
@@ -22,8 +24,6 @@ class CaseDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<CaseController>();
     final theme = Theme.of(context);
-    final appBarColor =
-        theme.appBarTheme.backgroundColor ?? theme.colorScheme.primary;
     final statuses = const ['Ongoing', 'Disposed', 'Completed'];
 
     Widget chip(String text, {Color? color, IconData? icon}) {
@@ -46,9 +46,12 @@ class CaseDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w600)),
+                Text(
+                  title,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 const SizedBox(height: 12),
                 child,
               ],
@@ -118,14 +121,8 @@ class CaseDetailScreen extends StatelessWidget {
           PopupMenuButton<String>(
             onSelected: handleMenu,
             itemBuilder: (context) => const [
-              PopupMenuItem(
-                value: 'edit',
-                child: Text('Edit'),
-              ),
-              PopupMenuItem(
-                value: 'delete',
-                child: Text('Delete'),
-              ),
+              PopupMenuItem(value: 'edit', child: Text('Edit')),
+              PopupMenuItem(value: 'delete', child: Text('Delete')),
             ],
           ),
         ],
@@ -178,6 +175,242 @@ class CaseDetailScreen extends StatelessWidget {
                     ),
                   ),
 
+                  // Dates (moved up)
+                  section(
+                    'Hearings Dates',
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(() {
+                          final current = controller.cases.firstWhere(
+                            (c) => c.docId == caseItem.docId,
+                            orElse: () => caseItem,
+                          );
+                          final last = current.lastHearingDate;
+                          final next = current.nextHearingDate;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Last: '
+                                '${last != null ? last.toDate().formattedDate : '-'}',
+                              ),
+                              const SizedBox(height: 6),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Next: '
+                                      '${next != null ? next.toDate().formattedDate : '-'}',
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () async {
+                                      final picked = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2100),
+                                      );
+                                      if (picked != null) {
+                                        PanaraConfirmDialog.show(
+                                          context,
+                                          title: 'নিশ্চিত করুন',
+                                          message:
+                                              'নেক্সট হিয়ারিং ডেট আপডেট করবেন?',
+                                          confirmButtonText: 'হ্যাঁ',
+                                          cancelButtonText: 'না',
+                                          onTapCancel: () =>
+                                              Navigator.of(context).pop(),
+                                          onTapConfirm: () async {
+                                            Navigator.of(context).pop();
+                                            bool ok = false;
+                                            try {
+                                              final user =
+                                                  AppFirebase().currentUser;
+                                              final id = caseItem.docId;
+                                              if (user != null && id != null) {
+                                                await CaseService.updateNextHearingDate(
+                                                  id,
+                                                  user.uid,
+                                                  Timestamp.fromDate(picked),
+                                                );
+                                                ok = true;
+                                              }
+                                            } catch (_) {}
+                                            PanaraInfoDialog.show(
+                                              context,
+                                              title: ok
+                                                  ? 'সফল হয়েছে'
+                                                  : 'ত্রুটি',
+                                              message: ok
+                                                  ? 'নেক্সট হিয়ারিং ডেট আপডেট হয়েছে'
+                                                  : 'আপডেট করতে ব্যর্থ',
+                                              buttonText: 'Okey',
+                                              panaraDialogType: ok
+                                                  ? PanaraDialogType.success
+                                                  : PanaraDialogType.error,
+                                              barrierDismissible: false,
+                                              onTapDismiss: () =>
+                                                  Navigator.of(context).pop(),
+                                            );
+                                          },
+                                          panaraDialogType:
+                                              PanaraDialogType.normal,
+                                        );
+                                      }
+                                    },
+                                    icon: const Icon(
+                                      HugeIcons.strokeRoundedCalendar01,
+                                    ),
+                                    tooltip: 'Update Next Hearing',
+                                    iconSize: 20,
+                                    splashRadius: 20,
+                                    constraints: const BoxConstraints.tightFor(
+                                      width: 36,
+                                      height: 36,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        }),
+                        const SizedBox(height: 4),
+                      ],
+                    ),
+                  ),
+
+                  // Court Orders (moved up)
+                  section(
+                    'Court Orders',
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(() {
+                          final current = controller.cases.firstWhere(
+                            (c) => c.docId == caseItem.docId,
+                            orElse: () => caseItem,
+                          );
+                          final last = current.courtLastOrder;
+                          final next = current.courtNextOrder;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Last: ${last ?? '-'}'),
+                              const SizedBox(height: 6),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Next: ${next ?? '-'}',
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () async {
+                                      final controllerText =
+                                          TextEditingController();
+                                      final result = await showDialog<String>(
+                                        context: context,
+                                        builder: (ctx) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                              'Update Next Order',
+                                            ),
+                                            content: TextField(
+                                              controller: controllerText,
+                                              decoration: const InputDecoration(
+                                                hintText: 'Enter next order',
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.pop(ctx),
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                  ctx,
+                                                  controllerText.text.trim(),
+                                                ),
+                                                child: const Text('Update'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                      final text = result?.trim();
+                                      if (text == null || text.isEmpty) return;
+                                      PanaraConfirmDialog.show(
+                                        context,
+                                        title: 'নিশ্চিত করুন',
+                                        message: 'নেক্সট অর্ডার আপডেট করবেন?',
+                                        confirmButtonText: 'হ্যাঁ',
+                                        cancelButtonText: 'না',
+                                        onTapCancel: () =>
+                                            Navigator.of(context).pop(),
+                                        onTapConfirm: () async {
+                                          Navigator.of(context).pop();
+                                          bool ok = false;
+                                          try {
+                                            final user =
+                                                AppFirebase().currentUser;
+                                            final id = caseItem.docId;
+                                            if (user != null && id != null) {
+                                              await CaseService.setCourtNextOrder(
+                                                id,
+                                                user.uid,
+                                                text,
+                                              );
+                                              ok = true;
+                                            }
+                                          } catch (_) {}
+                                          PanaraInfoDialog.show(
+                                            context,
+                                            title: ok ? 'সফল হয়েছে' : 'ত্রুটি',
+                                            message: ok
+                                                ? 'নেক্সট অর্ডার আপডেট হয়েছে'
+                                                : 'আপডেট করতে ব্যর্থ',
+                                            buttonText: 'Okey',
+                                            panaraDialogType: ok
+                                                ? PanaraDialogType.success
+                                                : PanaraDialogType.error,
+                                            barrierDismissible: false,
+                                            onTapDismiss: () =>
+                                                Navigator.of(context).pop(),
+                                          );
+                                        },
+                                        panaraDialogType:
+                                            PanaraDialogType.normal,
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      HugeIcons.strokeRoundedEdit03,
+                                    ),
+                                    tooltip: 'Update Next Order',
+                                    iconSize: 20,
+                                    splashRadius: 20,
+                                    constraints: const BoxConstraints.tightFor(
+                                      width: 36,
+                                      height: 36,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+
                   // Case Information
                   section(
                     'Case Information',
@@ -191,15 +424,19 @@ class CaseDetailScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Case Status',
-                                style: TextStyle(fontSize: 14)),
+                            const Text(
+                              'Case Status',
+                              style: TextStyle(fontSize: 14),
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                 color: _statusBgColor(caseItem.caseStatus),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
                               child: Text(
                                 caseItem.caseStatus,
                                 style: TextStyle(
@@ -215,235 +452,113 @@ class CaseDetailScreen extends StatelessWidget {
                     ),
                   ),
 
-                  // Court info
+                  // Court Information
                   section(
-                      'Court Information',
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          appInfoRow('Court Name', caseItem.courtName),
-                          const SizedBox(height: 8),
-                          appInfoRow(
-                              'Judge',
-                              caseItem.judgeName.isEmpty
-                                  ? '-'
-                                  : caseItem.judgeName),
-                        ],
-                      )),
+                    'Court Information',
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        appInfoRow('Court Name', caseItem.courtName),
+                        const SizedBox(height: 8),
+                        appInfoRow(
+                          'Judge',
+                          caseItem.judgeName.isEmpty ? '-' : caseItem.judgeName,
+                        ),
+                      ],
+                    ),
+                  ),
 
-                  // Dates
-                  section(
-                      'Dates',
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          appInfoRow(
-                              'Filed Date',
-                              caseItem.filedDate.toDate().formattedDate),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              ElevatedButton.icon(
-                                onPressed: () async {
-                                  final picked = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime(2100),
-                                  );
-                                  if (picked != null) {
-                                    PanaraConfirmDialog.show(
-                                      context,
-                                      title: 'নিশ্চিত করুন',
-                                      message:
-                                          'নেক্সট হিয়ারিং ডেট আপডেট করবেন?',
-                                      confirmButtonText: 'হ্যাঁ',
-                                      cancelButtonText: 'না',
-                                      onTapCancel: () =>
-                                          Navigator.of(context).pop(),
-                                      onTapConfirm: () async {
-                                        Navigator.of(context).pop();
-                                        bool ok = false;
-                                        try {
-                                          final user =
-                                              AppFirebase().currentUser;
-                                          final id = caseItem.docId;
-                                          if (user != null && id != null) {
-                                            await CaseService
-                                                .updateNextHearingDate(
-                                              id,
-                                              user.uid,
-                                              Timestamp.fromDate(picked),
-                                            );
-                                            ok = true;
-                                          }
-                                        } catch (_) {}
-                                        PanaraInfoDialog.show(
-                                          context,
-                                          title: ok ? 'সফল হয়েছে' : 'ত্রুটি',
-                                          message: ok
-                                              ? 'নেক্সট হিয়ারিং ডেট আপডেট হয়েছে'
-                                              : 'আপডেট করতে ব্যর্থ',
-                                          buttonText: 'Okey',
-                                          panaraDialogType: ok
-                                              ? PanaraDialogType.success
-                                              : PanaraDialogType.error,
-                                          barrierDismissible: false,
-                                          onTapDismiss: () =>
-                                              Navigator.of(context).pop(),
-                                        );
-                                      },
-                                      panaraDialogType: PanaraDialogType.normal,
-                                    );
-                                  }
-                                },
-                                icon: const Icon(Icons.edit_calendar_outlined),
-                                label: const Text('Update Next Hearing'),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text('Hearings', style: theme.textTheme.labelLarge),
-                          const SizedBox(height: 8),
-                          Obx(() {
-                            final current = controller.cases.firstWhere(
-                              (c) => c.docId == caseItem.docId,
-                              orElse: () => caseItem,
-                            );
-                            final last = current.lastHearingDate;
-                            final next = current.nextHearingDate;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Last: '
-                                    '${last != null ? last.toDate().formattedDate : '-'}'),
-                                const SizedBox(height: 6),
-                                Text('Next: '
-                                    '${next != null ? next.toDate().formattedDate : '-'}'),
-                              ],
-                            );
-                          }),
-                        ],
-                      )),
-                  // Court Orders
-                  section(
-                      'Court Orders',
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ElevatedButton.icon(
-                            onPressed: () async {
-                              final controllerText = TextEditingController();
-                              final result = await showDialog<String>(
-                                context: context,
-                                builder: (ctx) {
-                                  return AlertDialog(
-                                    title: const Text('Update Next Order'),
-                                    content: TextField(
-                                      controller: controllerText,
-                                      decoration: const InputDecoration(
-                                          hintText: 'Enter next order'),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () => Navigator.pop(ctx),
-                                          child: const Text('Cancel')),
-                                      TextButton(
-                                          onPressed: () => Navigator.pop(
-                                              ctx, controllerText.text.trim()),
-                                          child: const Text('Update')),
-                                    ],
-                                  );
-                                },
-                              );
-                              final text = result?.trim();
-                              if (text == null || text.isEmpty) return;
-                              PanaraConfirmDialog.show(
-                                context,
-                                title: 'নিশ্চিত করুন',
-                                message: 'নেক্সট অর্ডার আপডেট করবেন?',
-                                confirmButtonText: 'হ্যাঁ',
-                                cancelButtonText: 'না',
-                                onTapCancel: () => Navigator.of(context).pop(),
-                                onTapConfirm: () async {
-                                  Navigator.of(context).pop();
-                                  bool ok = false;
-                                  try {
-                                    final user = AppFirebase().currentUser;
-                                    final id = caseItem.docId;
-                                    if (user != null && id != null) {
-                                      await CaseService.setCourtNextOrder(
-                                          id, user.uid, text);
-                                      ok = true;
-                                    }
-                                  } catch (_) {}
-                                  PanaraInfoDialog.show(
-                                    context,
-                                    title: ok ? 'সফল হয়েছে' : 'ত্রুটি',
-                                    message: ok
-                                        ? 'নেক্সট অর্ডার আপডেট হয়েছে'
-                                        : 'আপডেট করতে ব্যর্থ',
-                                    buttonText: 'Okey',
-                                    panaraDialogType: ok
-                                        ? PanaraDialogType.success
-                                        : PanaraDialogType.error,
-                                    barrierDismissible: false,
-                                    onTapDismiss: () =>
-                                        Navigator.of(context).pop(),
-                                  );
-                                },
-                                panaraDialogType: PanaraDialogType.normal,
-                              );
-                            },
-                            icon: const Icon(Icons.edit_note_outlined),
-                            label: const Text('Update Next Order'),
-                          ),
-                          const SizedBox(height: 12),
-                          Obx(() {
-                            final current = controller.cases.firstWhere(
-                              (c) => c.docId == caseItem.docId,
-                              orElse: () => caseItem,
-                            );
-                            final last = current.courtLastOrder;
-                            final next = current.courtNextOrder;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Last Order: ${last ?? '-'}'),
-                                const SizedBox(height: 6),
-                                Text('Next Order: ${next ?? '-'}'),
-                              ],
-                            );
-                          }),
-                        ],
-                      )),
-
-                  // Summary
-                  section(
-                      'Summary',
-                      Text(caseItem.caseSummary.isEmpty
-                          ? '-'
-                          : caseItem.caseSummary)),
                   // Parties
                   section(
-                      'Parties',
-                      Column(
-                        children: [
-                          ListTile(
-                            title: Text(caseItem.plaintiff.name),
-                            subtitle: Text(
-                                'Plaintiff\n${caseItem.plaintiff.phone}\n${caseItem.plaintiff.address}'),
-                            isThreeLine: true,
+                    'Parties',
+                    Column(
+                      children: [
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: Text(caseItem.plaintiff.name),
+                          subtitle: Text(
+                            'Plaintiff\n${caseItem.plaintiff.address}',
                           ),
-                          const Divider(height: 0),
-                          ListTile(
-                            title: Text(caseItem.defendant.name),
-                            subtitle: Text(
-                                'Defendant\n${caseItem.defendant.phone}\n${caseItem.defendant.address}'),
-                            isThreeLine: true,
+                          isThreeLine: true,
+                          trailing: IconButton(
+                            icon: const Icon(HugeIcons.strokeRoundedCall02),
+                            tooltip: 'Call plaintiff',
+                            onPressed: (caseItem.plaintiff.phone.isEmpty)
+                                ? null
+                                : () async {
+                                    final uri = Uri(
+                                      scheme: 'tel',
+                                      path: caseItem.plaintiff.phone,
+                                    );
+                                    if (await canLaunchUrl(uri)) {
+                                      await launchUrl(
+                                        uri,
+                                        mode: LaunchMode.externalApplication,
+                                      );
+                                    }
+                                  },
                           ),
-                        ],
-                      )),
+                        ),
+                        const Divider(height: 0),
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: Text(caseItem.defendant.name),
+                          subtitle: Text(
+                            'Defendant\n${caseItem.defendant.address}',
+                          ),
+                          isThreeLine: true,
+                          trailing: IconButton(
+                            icon: const Icon(HugeIcons.strokeRoundedCall02),
+                            tooltip: 'Call defendant',
+                            onPressed: (caseItem.defendant.phone.isEmpty)
+                                ? null
+                                : () async {
+                                    final uri = Uri(
+                                      scheme: 'tel',
+                                      path: caseItem.defendant.phone,
+                                    );
+                                    if (await canLaunchUrl(uri)) {
+                                      await launchUrl(
+                                        uri,
+                                        mode: LaunchMode.externalApplication,
+                                      );
+                                    }
+                                  },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Summary
+                  section(
+                    'Summary',
+                    Text(
+                      caseItem.caseSummary.isEmpty ? '-' : caseItem.caseSummary,
+                    ),
+                  ), // Documents
+                  section(
+                    'Documents',
+                    caseItem.documentsAttached.isEmpty
+                        ? const Text('-')
+                        : GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: caseItem.documentsAttached.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  mainAxisSpacing: 8,
+                                  crossAxisSpacing: 8,
+                                ),
+                            itemBuilder: (context, index) {
+                              final url = caseItem.documentsAttached[index];
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(url, fit: BoxFit.cover),
+                              );
+                            },
+                          ),
+                  ),
 
                   // Case Status (inline update)
                   section(
@@ -468,7 +583,9 @@ class CaseDetailScreen extends StatelessWidget {
                           filled: true,
                           fillColor: theme.colorScheme.surface.withOpacity(0.7),
                           contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 12),
+                            horizontal: 12,
+                            vertical: 12,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -487,8 +604,9 @@ class CaseDetailScreen extends StatelessWidget {
                           ),
                         ),
                         items: statuses
-                            .map((e) =>
-                                DropdownMenuItem(value: e, child: Text(e)))
+                            .map(
+                              (e) => DropdownMenuItem(value: e, child: Text(e)),
+                            )
                             .toList(),
                         onChanged: (v) async {
                           if (v == null) return;
@@ -512,7 +630,10 @@ class CaseDetailScreen extends StatelessWidget {
                                 final id = caseItem.docId;
                                 if (user != null && id != null) {
                                   await CaseService.updateCaseStatus(
-                                      id, user.uid, v);
+                                    id,
+                                    user.uid,
+                                    v,
+                                  );
                                   ok = true;
                                 }
                               } catch (_) {}
@@ -540,39 +661,26 @@ class CaseDetailScreen extends StatelessWidget {
                     }),
                   ),
 
-                  // Documents
+                  // Filed Date (separate section at bottom)
                   section(
-                      'Documents',
-                      caseItem.documentsAttached.isEmpty
-                          ? const Text('-')
-                          : GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: caseItem.documentsAttached.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                mainAxisSpacing: 8,
-                                crossAxisSpacing: 8,
-                              ),
-                              itemBuilder: (context, index) {
-                                final url = caseItem.documentsAttached[index];
-                                return ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(url, fit: BoxFit.cover),
-                                );
-                              },
-                            )),
+                    'Filed Date',
+                    appInfoRow(
+                      'Filed Date',
+                      caseItem.filedDate.toDate().formattedDate,
+                    ),
+                  ),
                 ],
               ),
             ),
             // overlay loader
-            Obx(() => isDeleting.value
-                ? Container(
-                    color: Colors.black26,
-                    child: const Center(child: CircularProgressIndicator()),
-                  )
-                : const SizedBox.shrink()),
+            Obx(
+              () => isDeleting.value
+                  ? Container(
+                      color: Colors.black26,
+                      child: const Center(child: CircularProgressIndicator()),
+                    )
+                  : const SizedBox.shrink(),
+            ),
           ],
         ),
       ),

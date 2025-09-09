@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:court_dairy/services/app_update_service.dart';
 import 'package:court_dairy/services/fcm_service.dart';
@@ -27,38 +29,51 @@ class AppInitializer {
     // 3) Local storage
     await LocalStorageService.init();
 
-    // 4) App config
+    // 4) App config (non-critical: do not block UI)
     const docId = String.fromEnvironment(
       'APP_CONFIG_ID',
       defaultValue: '7Wv3FSb5VOsWLtjzmpbl',
     );
-    await AppConfigService.load(docId: docId);
-
-    // 5) FCM token initialization and refresh listener
-    await FcmService().initialize();
-
-    // 6) Daily reminder to update hearing dates
-    final localNoti = LocalNotificationService();
-    await localNoti.initialize(
-      onTap: (payload) {
-        if (payload == 'overdue_cases') {
-          Get.to(() => const OverdueCasesScreen());
-        } else if (payload == 'tomorrow_cases') {
-          Get.to(() => const TomorrowCasesScreen());
-        }
-      },
+    unawaited(
+      AppConfigService
+          .load(docId: docId)
+          .timeout(const Duration(seconds: 3))
+          .catchError((_) {}),
     );
-    // Use inexact daily notifications to avoid exact-alarm permission prompts
-    await localNoti.scheduleDailyNotification(
-      id: 1,
-      title: 'Update hearing dates',
-      body: 'Tap to update past hearing dates',
-      payload: 'overdue_cases',
+
+    // 5) FCM token initialization and refresh listener (can hang offline)
+    unawaited(
+      FcmService()
+          .initialize()
+          .timeout(const Duration(seconds: 5))
+          .catchError((_) {}),
+    );
+
+    // 6) Daily reminder to update hearing dates (non-blocking)
+    final localNoti = LocalNotificationService();
+    unawaited(
+      localNoti
+          .initialize(
+            onTap: (payload) {
+              if (payload == 'overdue_cases') {
+                Get.to(() => const OverdueCasesScreen());
+              } else if (payload == 'tomorrow_cases') {
+                Get.to(() => const TomorrowCasesScreen());
+              }
+            },
+          )
+          .then((_) => localNoti.scheduleDailyNotification(
+                id: 1,
+                title: 'Update hearing dates',
+                body: 'Tap to update past hearing dates',
+                payload: 'overdue_cases',
+              ))
+          .catchError((_) {}),
     );
 
     // Exact-alarm prompt moved to MyApp builder (after UI mounts)
 
-    // 7) Check for app updates in background
-    await AppUpdateService.checkForAppUpdate();
+    // 7) Check for app updates in background (non-blocking)
+    unawaited(AppUpdateService.checkForAppUpdate().catchError((_) {}));
   }
 }
