@@ -29,7 +29,7 @@ class AuthScreen extends StatelessWidget {
                   children: [
                     Image.asset(AppImages.logo, height: 150),
                     const Text(
-                      'Welcome to Court Dairy',
+                      'Welcome to Back',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

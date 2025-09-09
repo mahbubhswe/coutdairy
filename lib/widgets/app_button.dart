@@ -27,18 +27,24 @@ class AppButton extends StatelessWidget {
         child: Container(
           height: 60,
           decoration: BoxDecoration(
-            color: isEnabled ? cs.primary : cs.outlineVariant.withOpacity(0.6),
+            // When enabled, use brand (logo) background color -> secondary
+            color: isEnabled
+                ? cs.secondary
+                : cs.outlineVariant.withOpacity(0.6),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Center(
             child: isLoading
-                ? CupertinoActivityIndicator(color: cs.onPrimary)
+                ? CupertinoActivityIndicator(
+                    color: isEnabled ? cs.onSecondary : cs.onSurfaceVariant,
+                  )
                 : Text(
                     label,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: isEnabled ? cs.onPrimary : cs.onSurfaceVariant,
+                      // Match content color to chosen background color
+                      color: isEnabled ? cs.onSecondary : cs.onSurfaceVariant,
                     ),
                   ),
           ),
