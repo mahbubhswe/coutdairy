@@ -57,11 +57,13 @@ class PartyProfileScreen extends StatelessWidget {
               SingleChildScrollView(
                 padding: const EdgeInsets.all(3),
                 child: Column(
+                  spacing: 12,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 5),
                     // Header card with avatar and name
                     Container(
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         gradient: LinearGradient(
@@ -74,20 +76,22 @@ class PartyProfileScreen extends StatelessWidget {
                         ),
                       ),
                       child: Column(
+                        spacing: 5,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CircleAvatar(
                             radius: 48,
-                            backgroundImage: (party.photoUrl != null &&
+                            backgroundImage:
+                                (party.photoUrl != null &&
                                     party.photoUrl!.isNotEmpty)
                                 ? NetworkImage(party.photoUrl!)
                                 : null,
-                            child: (party.photoUrl == null ||
+                            child:
+                                (party.photoUrl == null ||
                                     party.photoUrl!.isEmpty)
                                 ? const Icon(Icons.person, size: 48)
                                 : null,
                           ),
-                          const SizedBox(height: 12),
                           Text(
                             party.name,
                             style: theme.textTheme.titleLarge?.copyWith(
@@ -95,7 +99,6 @@ class PartyProfileScreen extends StatelessWidget {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 6),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -110,7 +113,6 @@ class PartyProfileScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
                     // Details card
                     Card(
                       shape: RoundedRectangleBorder(
@@ -134,18 +136,22 @@ class PartyProfileScreen extends StatelessWidget {
                                 const Icon(Icons.call_outlined, size: 20),
                                 const SizedBox(width: 8),
                                 Expanded(
-                                    child: appInfoRow('মোবাইল', party.phone)),
+                                  child: appInfoRow('মোবাইল', party.phone),
+                                ),
                               ],
                             ),
                             const Divider(height: 20),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(Icons.location_on_outlined,
-                                    size: 20),
+                                const Icon(
+                                  Icons.location_on_outlined,
+                                  size: 20,
+                                ),
                                 const SizedBox(width: 8),
                                 Expanded(
-                                    child: appInfoRow('ঠিকানা', party.address)),
+                                  child: appInfoRow('ঠিকানা', party.address),
+                                ),
                               ],
                             ),
                           ],
@@ -162,9 +168,11 @@ class PartyProfileScreen extends StatelessWidget {
                           a.name == b.name && a.phone == b.phone;
                       if (!caseController.isLoading.value) {
                         caseCount = caseController.cases
-                            .where((c) =>
-                                matchesParty(c.plaintiff, party) ||
-                                matchesParty(c.defendant, party))
+                            .where(
+                              (c) =>
+                                  matchesParty(c.plaintiff, party) ||
+                                  matchesParty(c.defendant, party),
+                            )
                             .length;
                       }
                       if (!txController.isLoading.value) {
@@ -190,9 +198,12 @@ class PartyProfileScreen extends StatelessWidget {
                                 children: const [
                                   Icon(Icons.insights_outlined, size: 20),
                                   SizedBox(width: 8),
-                                  Text('ওভারভিউ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600)),
+                                  Text(
+                                    'ওভারভিউ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ],
                               ),
                               const Divider(height: 20),
@@ -215,25 +226,31 @@ class PartyProfileScreen extends StatelessWidget {
                         children: [
                           ListTile(
                             contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 4),
+                              horizontal: 16,
+                              vertical: 4,
+                            ),
                             leading: const Icon(Icons.receipt_long_rounded),
                             title: const Text('লেনদেন দেখুন'),
                             trailing: const Icon(Icons.chevron_right_rounded),
                             onTap: () {
                               Get.to(
-                                  () => PartyTransactionsScreen(party: party));
+                                () => PartyTransactionsScreen(party: party),
+                              );
                             },
                           ),
+
                           ListTile(
                             contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 4),
+                              horizontal: 16,
+                              vertical: 4,
+                            ),
                             leading: const Icon(Icons.gavel_rounded),
                             title: const Text('কেস দেখুন'),
                             trailing: const Icon(Icons.chevron_right_rounded),
                             onTap: () {
                               Get.to(() => PartyCasesScreen(party: party));
                             },
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -243,11 +260,13 @@ class PartyProfileScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       elevation: 0.5,
-                      child: Obx(() => SwitchListTile(
-                            title: const Text('এসএমএস নোটিফায়ার'),
-                            value: controller.isSendSms.value,
-                            onChanged: controller.updateSms,
-                          )),
+                      child: Obx(
+                        () => SwitchListTile(
+                          title: const Text('এসএমএস নোটিফায়ার'),
+                          value: controller.isSendSms.value,
+                          onChanged: controller.updateSms,
+                        ),
+                      ),
                     ),
                   ],
                 ),
