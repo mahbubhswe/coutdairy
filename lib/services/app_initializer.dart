@@ -49,25 +49,29 @@ class AppInitializer {
           .catchError((_) {}),
     );
 
-    // 6) Daily reminder to update hearing dates (non-blocking)
+    // 6) Local notifications: ensure plugin is initialized BEFORE app runs
+    // so any early scheduling by controllers succeeds.
     final localNoti = LocalNotificationService();
+    try {
+      await localNoti.initialize(
+        onTap: (payload) {
+          if (payload == 'overdue_cases') {
+            Get.to(() => const OverdueCasesScreen());
+          } else if (payload == 'tomorrow_cases') {
+            Get.to(() => const TomorrowCasesScreen());
+          }
+        },
+      );
+    } catch (_) {}
+    // Fire-and-forget a gentle daily nudge (non-blocking)
     unawaited(
       localNoti
-          .initialize(
-            onTap: (payload) {
-              if (payload == 'overdue_cases') {
-                Get.to(() => const OverdueCasesScreen());
-              } else if (payload == 'tomorrow_cases') {
-                Get.to(() => const TomorrowCasesScreen());
-              }
-            },
+          .scheduleDailyNotification(
+            id: 1,
+            title: 'Update hearing dates',
+            body: 'Tap to update past hearing dates',
+            payload: 'overdue_cases',
           )
-          .then((_) => localNoti.scheduleDailyNotification(
-                id: 1,
-                title: 'Update hearing dates',
-                body: 'Tap to update past hearing dates',
-                payload: 'overdue_cases',
-              ))
           .catchError((_) {}),
     );
 

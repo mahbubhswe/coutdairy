@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 import '../../../models/court_case.dart';
@@ -11,6 +13,9 @@ class CaseController extends GetxController {
   final isLoading = true.obs;
   final selectedFilter = 'today'.obs;
   final _localNoti = LocalNotificationService();
+  // Debug/testing: enable 3-minute notifications loop
+  static const bool _enable3MinTestNoti = false; // disabled for real use
+  Timer? _testNotiTimer;
 
   DateTime? _nextDate(CourtCase c) {
     return c.nextHearingDate?.toDate();
@@ -107,6 +112,7 @@ class CaseController extends GetxController {
         isLoading.value = false;
         _scheduleTomorrowNotification();
         _scheduleOverdueNotificationsEvery3Hours();
+        if (_enable3MinTestNoti) _start3MinTestNotifications();
       });
     } else {
       isLoading.value = false;
@@ -136,43 +142,79 @@ class CaseController extends GetxController {
   }
 
   Future<void> _scheduleTomorrowNotification() async {
-    // Always schedule daily at 4 PM BD time with up-to-date count
+    // Daily at 4 PM BD time — only if there are tomorrow cases
     final count = tomorrowCases.length;
-    final title = 'আগামীকালের কেস';
-    final body = count > 0
-        ? 'আগামীকাল $count টি কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।'
-        : 'আগামীকালের কোনো কেস নেই। বিস্তারিত দেখতে ট্যাপ করুন।';
-    await _localNoti.scheduleDailyAtTime(
-      id: 2,
-      title: title,
-      body: body,
-      hour: 16,
-      minute: 0,
-      payload: 'tomorrow_cases',
-    );
+    if (count > 0) {
+      final title = 'আগামীকালের কেস';
+      final body = 'আগামীকাল $count টি কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।';
+      await _localNoti.scheduleDailyAtTime(
+        id: 2,
+        title: title,
+        body: body,
+        hour: 16,
+        minute: 0,
+        payload: 'tomorrow_cases',
+      );
+    } else {
+      await _localNoti.cancel(2);
+    }
   }
 
   Future<void> _scheduleOverdueNotificationsEvery3Hours() async {
-    // Clean up any previously scheduled every-3-hours notifications
+    // Clean up legacy every-3-hours notifications (from older builds)
     const oldHours = [0, 3, 6, 9, 12, 15, 18, 21];
     for (final h in oldHours) {
       await _localNoti.cancel(300 + h);
     }
 
+    // Daily at 11 PM BD time — only if there are overdue cases
     final count = overdueCases.length;
-    final title = 'ওভারডিউ কেসের আপডেট';
-    final body = count > 0
-        ? 'আপনার $count টি ওভারডিউ কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।'
-        : 'কোনো ওভারডিউ কেস নেই। বিস্তারিত দেখতে ট্যাপ করুন।';
+    if (count > 0) {
+      final title = 'ওভারডিউ কেসের আপডেট';
+      final body = 'আপনার $count টি ওভারডিউ কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।';
+      await _localNoti.scheduleDailyAtTime(
+        id: 310,
+        title: title,
+        body: body,
+        hour: 23,
+        minute: 0,
+        payload: 'overdue_cases',
+      );
+    } else {
+      await _localNoti.cancel(310);
+    }
+  }
 
-    // Schedule a single daily notification at 11 PM BD time
-    await _localNoti.scheduleDailyAtTime(
-      id: 310,
-      title: title,
-      body: body,
-      hour: 23,
-      minute: 0,
-      payload: 'overdue_cases',
-    );
+  // DEBUG ONLY: Send notifications every 3 minutes based on current case lists.
+  void _start3MinTestNotifications() {
+    _testNotiTimer?.cancel();
+    // Kick once shortly after startup for quick verification
+    Future.delayed(const Duration(seconds: 10), _send3MinTestNotifications);
+    _testNotiTimer =
+        Timer.periodic(const Duration(minutes: 3), (_) => _send3MinTestNotifications());
+  }
+
+  Future<void> _send3MinTestNotifications() async {
+    // Overdue notification if any
+    final overdueCount = overdueCases.length;
+    if (overdueCount > 0) {
+      final title = 'ওভারডিউ কেসের আপডেট (TEST)';
+      final body = 'আপনার $overdueCount টি ওভারডিউ কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।';
+      await _localNoti.showNotification(title: title, body: body);
+    }
+
+    // Tomorrow notification if any
+    final tmwCount = tomorrowCases.length;
+    if (tmwCount > 0) {
+      final title = 'আগামীকালের কেস (TEST)';
+      final body = 'আগামীকাল $tmwCount টি কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।';
+      await _localNoti.showNotification(title: title, body: body);
+    }
+  }
+
+  @override
+  void onClose() {
+    _testNotiTimer?.cancel();
+    super.onClose();
   }
 }

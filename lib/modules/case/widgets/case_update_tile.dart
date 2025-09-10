@@ -19,8 +19,6 @@ class CaseUpdateTile extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       child: ListTile(
-        visualDensity: const VisualDensity(vertical: -2),
-        minVerticalPadding: 0,
         title: Text(caseItem.caseTitle),
         subtitle: Text(
           'Case No: ${caseItem.caseNumber}\nNext date: ${lastDate != null ? _format(lastDate) : 'N/A'}',
