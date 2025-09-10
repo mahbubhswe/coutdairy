@@ -15,6 +15,7 @@ exports.deactivateExpiredLawyers = functions.pubsub
       .get();
 
     const batch = db.batch();
+    const tokens = [];
     snapshot.forEach((doc) => {
       const data = doc.data();
       const subFor = data.subFor;
@@ -27,8 +28,21 @@ exports.deactivateExpiredLawyers = functions.pubsub
       expiry.setDate(expiry.getDate() + subFor);
       if (expiry < now) {
         batch.update(doc.ref, { isActive: false });
+        if (data.fcmToken) {
+          tokens.push(data.fcmToken);
+        }
       }
     });
     await batch.commit();
+
+    if (tokens.length > 0) {
+      await admin.messaging().sendEachForMulticast({
+        tokens,
+        notification: {
+          title: 'Account Deactivated',
+          body: 'Your subscription has expired and your account has been deactivated.',
+        },
+      });
+    }
     return null;
   });
