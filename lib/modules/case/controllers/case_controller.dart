@@ -167,7 +167,7 @@ class CaseController extends GetxController {
       await _localNoti.cancel(300 + h);
     }
 
-    // Daily at 12 AM BD time — only if there are overdue cases
+    // Daily at 12 PM BD time — only if there are overdue cases
     final count = overdueCases.length;
     if (count > 0) {
       final title = 'ওভারডিউ কেসের আপডেট';
@@ -176,7 +176,7 @@ class CaseController extends GetxController {
         id: 310,
         title: title,
         body: body,
-        hour: 0,
+        hour: 12,
         minute: 0,
         payload: 'overdue_cases',
       );

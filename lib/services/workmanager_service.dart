@@ -103,11 +103,11 @@ class WorkManagerService {
       existingWorkPolicy: ExistingWorkPolicy.keep,
     );
 
-    // Next midnight for overdue-case checks
-    final nextMidnight = DateTime(now.year, now.month, now.day).add(
-      const Duration(days: 1),
-    );
-    final overdueDelay = nextMidnight.difference(now);
+    // Next 12 PM for overdue-case checks
+    final nextNoon = DateTime(now.year, now.month, now.day, 12);
+    final overdueDelay = nextNoon.isBefore(now)
+        ? nextNoon.add(const Duration(days: 1)).difference(now)
+        : nextNoon.difference(now);
     await Workmanager().registerPeriodicTask(
       overdueCaseCheckTask,
       overdueCaseCheckTask,
