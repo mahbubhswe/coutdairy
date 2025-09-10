@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import '../../auth/controllers/auth_controller.dart';
 import '../../court_dairy/screens/account_reset_screen.dart';
 import '../controllers/layout_controller.dart';
-import 'package:court_dairy/themes/theme_controller.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({super.key});
@@ -97,8 +96,8 @@ class AppDrawer extends StatelessWidget {
 
           // Compute subscription info only when lawyer doc is available
           final now = DateTime.now();
-          final subscriptionEnd = lawyer?.subscriptionEndsAt;
-          final daysLeft = subscriptionEnd?.difference(now).inDays;
+          final subscriptionEnd = lawyer.subscriptionEndsAt;
+          final daysLeft = subscriptionEnd.difference(now).inDays;
 
           final lastSignIn = user.metadata.lastSignInTime;
           final formattedSignIn = lastSignIn != null
@@ -164,7 +163,7 @@ class AppDrawer extends StatelessWidget {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          user.email ?? lawyer?.phone ?? '',
+                          user.email ?? lawyer.phone,
                           style: Theme.of(context).textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
@@ -193,7 +192,7 @@ class AppDrawer extends StatelessWidget {
                     ),
                   ),
 
-                  // const SizedBox(height: 36),
+                  const SizedBox(height: 36),
 
                   // // অ্যাপ সেটিংস Section
                   // _sectionHeader(context, 'অ্যাপ সেটিংস'),
@@ -215,7 +214,7 @@ class AppDrawer extends StatelessWidget {
                   //     );
                   //   }),
                   // ),
-                  const SizedBox(height: 36),
+                  // const SizedBox(height: 36),
 
                   // সাবস্ক্রিপশন বিস্তারিত Section
                   _sectionHeader(context, 'সাবস্ক্রিপশন বিস্তারিত'),
@@ -237,13 +236,13 @@ class AppDrawer extends StatelessWidget {
                     context,
                     icon: CupertinoIcons.timer,
                     title: 'শেষ তারিখ',
-                    subtitle: subscriptionEnd!.formattedDate,
+                    subtitle: subscriptionEnd.formattedDate,
                   ),
                   _infoTile(
                     context,
                     icon: CupertinoIcons.hourglass,
                     title: 'বাকি দিন',
-                    subtitle: daysLeft! > 0
+                    subtitle: daysLeft > 0
                         ? '$daysLeft দিন বাকি'
                         : 'মেয়াদ শেষ',
                   ),

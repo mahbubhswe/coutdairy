@@ -22,12 +22,12 @@ class AccountsCard extends StatelessWidget {
           padding: const EdgeInsets.all(3.0),
           child: Column(
             children: [
-              Text(
-                title,
-              ),
+              Text(title),
               TweenAnimationBuilder<int>(
                 tween: IntTween(
-                    begin: 0, end: amount.floor()), // Count up to endValue
+                  begin: 0,
+                  end: amount.floor(),
+                ), // Count up to endValue
                 duration: const Duration(seconds: 1),
                 builder: (context, value, child) {
                   return Text(

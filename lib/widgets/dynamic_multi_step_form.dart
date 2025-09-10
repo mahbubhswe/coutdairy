@@ -91,8 +91,9 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
                     TextButton(
                       onPressed: _back,
                       style: TextButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onSurface,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onSurface,
                       ),
                       child: const Text('Back'),
                     ),
@@ -109,20 +110,22 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
       steps: widget.steps
           .asMap()
           .entries
-          .map((entry) => Step(
-                title: entry.value.title,
-                content: entry.value.content,
-                isActive: entry.key <= _currentStep,
-              ))
+          .map(
+            (entry) => Step(
+              title: entry.value.title,
+              content: entry.value.content,
+              isActive: entry.key <= _currentStep,
+            ),
+          )
           .toList(),
     );
 
     if (widget.stepIconColor != null) {
       stepper = Theme(
         data: Theme.of(context).copyWith(
-          colorScheme: Theme.of(context).colorScheme.copyWith(
-                primary: widget.stepIconColor,
-              ),
+          colorScheme: Theme.of(
+            context,
+          ).colorScheme.copyWith(primary: widget.stepIconColor),
         ),
         child: stepper,
       );
@@ -144,7 +147,10 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
                     onPressed: _back,
                     style: TextButton.styleFrom(
                       foregroundColor: Theme.of(context).colorScheme.onSurface,
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       minimumSize: const Size(0, 36),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
@@ -154,7 +160,10 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
                 ElevatedButton(
                   onPressed: widget.isLoading ? null : _next,
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     minimumSize: const Size(0, 36),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
