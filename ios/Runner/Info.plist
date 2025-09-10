@@ -43,9 +43,11 @@
 		</array>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
-		<key>UIApplicationSupportsIndirectInputEvents</key>
-		<true/>
-		<key>UIStatusBarHidden</key>
-		<false/>
-	</dict>
+        <key>UIApplicationSupportsIndirectInputEvents</key>
+        <true/>
+        <key>UIStatusBarHidden</key>
+        <false/>
+        <key>NSFaceIDUsageDescription</key>
+        <string>Use Face ID to secure your account</string>
+       </dict>
 </plist>
