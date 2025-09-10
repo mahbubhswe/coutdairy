@@ -111,7 +111,7 @@ class CaseController extends GetxController {
         cases.value = event;
         isLoading.value = false;
         _scheduleTomorrowNotification();
-        _scheduleOverdueNotificationsEvery3Hours();
+        _scheduleOverdueNotification();
         if (_enable3MinTestNoti) _start3MinTestNotifications();
       });
     } else {
@@ -160,14 +160,14 @@ class CaseController extends GetxController {
     }
   }
 
-  Future<void> _scheduleOverdueNotificationsEvery3Hours() async {
+  Future<void> _scheduleOverdueNotification() async {
     // Clean up legacy every-3-hours notifications (from older builds)
     const oldHours = [0, 3, 6, 9, 12, 15, 18, 21];
     for (final h in oldHours) {
       await _localNoti.cancel(300 + h);
     }
 
-    // Daily at 11 PM BD time — only if there are overdue cases
+    // Daily at 12 AM BD time — only if there are overdue cases
     final count = overdueCases.length;
     if (count > 0) {
       final title = 'ওভারডিউ কেসের আপডেট';
@@ -176,7 +176,7 @@ class CaseController extends GetxController {
         id: 310,
         title: title,
         body: body,
-        hour: 23,
+        hour: 0,
         minute: 0,
         payload: 'overdue_cases',
       );
