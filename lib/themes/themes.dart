@@ -1,102 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../constants/app_colors.dart';
 
 class Themes {
-  // WhatsApp colors
+  // ===== Colors derived from your FIRST theme =====
   // Light
-  static const Color _waLightPrimary = Color(0xFF128C7E); // App bar green
-  static const Color _waLightSecondary = Color(0xFF25D366); // FAB green
-  static const Color _waLightTertiary = Color(0xFF34B7F1); // Link blue
-  static const Color _waLightBackground = Color(0xFFFFFFFF);
-  static const Color _waLightSurface = Color(0xFFFFFFFF);
-  static const Color _waLightOutline = Color(0xFFDBDBDB);
+  static const Color _lightBackground = Colors.white;
+  static const Color _lightSurface = Colors.white;
+  static const Color _lightOnSurface = Colors.black;
+  static const Color _lightPrimary = Colors.black; // e.g. indicators/icons
+  static const Color _lightSecondary = AppColors.fixedPrimary; // FAB / CTA
+  static const Color _lightOutline = Colors.black26;
 
   // Dark
-  static const Color _waDarkBackground = Color.fromARGB(255, 10, 14, 18);
-  static const Color _waDarkSurface = Color.fromARGB(255, 18, 23, 27);
-  static const Color _waDarkPrimary = Color(0xFF1F2C34); // App bar bg
-  static const Color _waDarkSecondary = Color(0xFF00A884); // Action green
-  static const Color _waDarkTertiary = Color(0xFF53BDEB); // Link blue
-  static const Color _waDarkOutline = Color(0xFF2A3942);
+  static const Color _darkBackground = Colors.black;
+  static const Color _darkSurface = Colors.black; // pages default
+  static const Color _darkOnSurface = Colors.white;
+  static const Color _darkPrimary = Colors.white; // e.g. indicators/icons
+  static const Color _darkSecondary = Color(0xFF212121); // grey[900] for FAB
+  static const Color _darkOutline = Colors.white10;
 
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    colorScheme:
-        ColorScheme.light(
-          primary: _waLightPrimary,
-          secondary: _waLightSecondary,
-          background: _waLightBackground,
-        ).copyWith(
-          surface: _waLightSurface,
-          onSurface: Colors.black,
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
-          tertiary: _waLightTertiary,
-          onTertiary: Colors.white,
-          outline: _waLightOutline,
-          primaryContainer: _waLightPrimary,
-          secondaryContainer: _waLightSecondary,
-          tertiaryContainer: _waLightTertiary,
-          onPrimaryContainer: Colors.white,
-          onSecondaryContainer: Colors.white,
-          onTertiaryContainer: Colors.white,
-        ),
-    scaffoldBackgroundColor: _waLightBackground,
+    colorScheme: const ColorScheme.light(
+      primary: _lightPrimary,
+      secondary: _lightSecondary,
+      background: _lightBackground,
+      surface: _lightSurface,
+      onSurface: _lightOnSurface,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      outline: _lightOutline,
+    ),
+    scaffoldBackgroundColor: _lightBackground,
+
     appBarTheme: const AppBarTheme(
-      // Match scaffold background
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
-      elevation: 1.0,
-      scrolledUnderElevation: 1.0,
+      elevation: 0.1,
+      scrolledUnderElevation: 0.1,
       surfaceTintColor: Colors.transparent,
-      shadowColor: Colors.black26,
+      shadowColor: Colors.black,
       iconTheme: IconThemeData(color: Colors.black),
       titleTextStyle: TextStyle(
         color: Colors.black,
         fontSize: 20,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.bold,
       ),
     ),
-    // Ensure tabs are visible on light (white) surfaces
+
     tabBarTheme: const TabBarThemeData(
-      labelColor: Colors.black87,
-      unselectedLabelColor: Colors.black54,
-      indicatorColor: _waLightPrimary,
-      indicatorSize: TabBarIndicatorSize.tab,
+      labelColor: Colors.black,
+      unselectedLabelColor: Colors.grey,
+      indicator: UnderlineTabIndicator(
+        borderSide: BorderSide(color: Colors.black, width: 2.0),
+      ),
       dividerColor: Colors.transparent,
     ),
+
     cardTheme: const CardThemeData(
-      color: _waLightSurface,
-      elevation: 0,
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      color: Colors.white,
+      shadowColor: Colors.black26,
+      elevation: 0.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
+      margin: EdgeInsets.symmetric(horizontal: 1.0, vertical: 2.0),
     ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: _waLightSecondary,
+        backgroundColor: _lightSecondary,
         foregroundColor: Colors.white,
       ),
     ),
     textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        // Make dialog/action buttons clearly visible on light background
-        foregroundColor: _waLightTertiary,
-      ),
+      style: TextButton.styleFrom(foregroundColor: Colors.black),
     ),
+
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: _waLightSecondary,
+      backgroundColor: _lightSecondary, // AppColors.fixedPrimary
       foregroundColor: Colors.white,
-      elevation: 2.0,
+      elevation: 3.0,
     ),
+
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
-      selectionColor: Color(0x3325D366),
-      selectionHandleColor: _waLightSecondary,
+      selectionColor: Color(0x33212121),
+      selectionHandleColor: _lightSecondary,
     ),
+
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
         TargetPlatform.android: FadeThroughPageTransitionsBuilder(),
@@ -106,85 +101,81 @@ class Themes {
         TargetPlatform.linux: FadeThroughPageTransitionsBuilder(),
       },
     ),
+
     textTheme: GoogleFonts.hindSiliguriTextTheme(),
   );
 
   static final ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-    colorScheme:
-        ColorScheme.dark(
-          primary: _waDarkPrimary,
-          secondary: _waDarkSecondary,
-          background: _waDarkBackground,
-        ).copyWith(
-          surface: _waDarkSurface,
-          onSurface: Colors.white,
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
-          tertiary: _waDarkTertiary,
-          onTertiary: Colors.black,
-          outline: _waDarkOutline,
-          primaryContainer: _waDarkPrimary,
-          secondaryContainer: _waDarkSecondary,
-          tertiaryContainer: _waDarkTertiary,
-          onPrimaryContainer: Colors.white,
-          onSecondaryContainer: Colors.white,
-          onTertiaryContainer: Colors.black,
-        ),
-    scaffoldBackgroundColor: _waDarkBackground,
+    colorScheme: const ColorScheme.dark(
+      primary: _darkPrimary,
+      secondary: _darkSecondary,
+      background: _darkBackground,
+      surface: _darkSurface,
+      onSurface: _darkOnSurface,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      outline: _darkOutline,
+    ),
+    scaffoldBackgroundColor: _darkBackground,
+
     appBarTheme: const AppBarTheme(
-      // Match scaffold background
-      backgroundColor: _waDarkBackground,
+      backgroundColor: Colors.black,
       foregroundColor: Colors.white,
-      elevation: 1.0,
-      scrolledUnderElevation: 1.0,
+      elevation: 0.1,
+      scrolledUnderElevation: 0.1,
       surfaceTintColor: Colors.transparent,
-      shadowColor: Colors.black54,
+      shadowColor: Colors.white,
       iconTheme: IconThemeData(color: Colors.white),
       titleTextStyle: TextStyle(
         color: Colors.white,
         fontSize: 20,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.bold,
       ),
     ),
+
     tabBarTheme: const TabBarThemeData(
       labelColor: Colors.white,
-      unselectedLabelColor: Colors.white70,
-      indicatorColor: Colors.white,
-      indicatorSize: TabBarIndicatorSize.tab,
+      unselectedLabelColor: Colors.grey,
+      indicator: UnderlineTabIndicator(
+        borderSide: BorderSide(color: Colors.white, width: 2.0),
+      ),
       dividerColor: Colors.transparent,
     ),
+
     cardTheme: const CardThemeData(
-      color: _waDarkSurface,
-      elevation: 0,
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      color: Color(0xFF212121), // grey[900]
+      shadowColor: Colors.white10,
+      elevation: 4.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
+      margin: EdgeInsets.symmetric(horizontal: 1.0, vertical: 2.0),
     ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: _waDarkSecondary,
+        backgroundColor: _darkSecondary, // grey[900]
         foregroundColor: Colors.white,
       ),
     ),
     textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        // Ensure Cancel/OK in dialogs & pickers are readable on dark surface
-        foregroundColor: _waDarkTertiary,
-      ),
+      style: TextButton.styleFrom(foregroundColor: Colors.white),
     ),
+
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: _waDarkSecondary,
+      backgroundColor: Color(0xFF212121), // grey[900]
       foregroundColor: Colors.white,
-      elevation: 2.0,
+      elevation: 3.0,
     ),
+
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.white,
-      selectionColor: Color(0x3300A884),
-      selectionHandleColor: _waDarkSecondary,
+      selectionColor: Color(0x33424242),
+      selectionHandleColor: Colors.white,
     ),
+
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
         TargetPlatform.android: FadeThroughPageTransitionsBuilder(),
@@ -194,6 +185,7 @@ class Themes {
         TargetPlatform.linux: FadeThroughPageTransitionsBuilder(),
       },
     ),
+
     textTheme: GoogleFonts.hindSiliguriTextTheme(ThemeData.dark().textTheme),
   );
 }

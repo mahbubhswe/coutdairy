@@ -1,7 +1,7 @@
+import 'package:court_dairy/constants/app_colors.dart';
 import 'package:court_dairy/local_library/text_from_field_wraper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 
 class AppTextFromField extends StatelessWidget {
   final TextEditingController controller;
@@ -48,7 +48,7 @@ class AppTextFromField extends StatelessWidget {
 
     final cs = Theme.of(context).colorScheme;
     return TextFormFieldWrapper(
-      borderFocusedColor: cs.primary,
+      borderFocusedColor: AppColors.fixedPrimary,
       formField: TextFormField(
         controller: controller,
         cursorColor: Theme.of(context).colorScheme.onSurface,

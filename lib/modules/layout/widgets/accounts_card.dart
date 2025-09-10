@@ -12,13 +12,12 @@ class AccountsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     return SizedBox(
       width: Get.width * 0.3,
       child: Material(
         elevation: 0.1,
         borderRadius: BorderRadius.circular(7),
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: themeController.isDarkMode ? Colors.grey[900] : Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(3.0),
           child: Column(

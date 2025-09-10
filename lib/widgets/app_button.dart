@@ -1,3 +1,4 @@
+import 'package:court_dairy/constants/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_shadow/simple_shadow.dart';
@@ -29,7 +30,7 @@ class AppButton extends StatelessWidget {
           decoration: BoxDecoration(
             // When enabled, use brand (logo) background color -> secondary
             color: isEnabled
-                ? cs.secondary
+                ? AppColors.fixedPrimary
                 : cs.outlineVariant.withOpacity(0.6),
             borderRadius: BorderRadius.circular(12),
           ),

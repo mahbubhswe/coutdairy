@@ -2,5 +2,5 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Fixed Mode Colors
-  static const Color fixedPrimary = Color(0xFFC42B3A);
+  static const Color fixedPrimary = Color(0xFF1F3344);
 }
