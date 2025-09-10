@@ -11,7 +11,8 @@ import '../firebase_options.dart';
 import '../models/court_case.dart';
 import 'local_notification.dart';
 
-const String caseCheckTask = 'case_check_task';
+const String tomorrowCaseCheckTask = 'tomorrow_case_check_task';
+const String overdueCaseCheckTask = 'overdue_case_check_task';
 
 @pragma('vm:entry-point')
 void workManagerCallbackDispatcher() {
@@ -39,56 +40,41 @@ void workManagerCallbackDispatcher() {
         .toList();
 
     final now = DateTime.now();
-    final tomorrow = now.add(const Duration(days: 1));
-
-    int tmwCount = 0;
-    int overdueCount = 0;
-
-    for (final c in cases) {
-      final d = c.nextHearingDate?.toDate();
-      if (d == null) continue;
-      if (d.year == tomorrow.year &&
-          d.month == tomorrow.month &&
-          d.day == tomorrow.day) {
-        tmwCount++;
-      }
-      if (d.isBefore(now)) {
-        overdueCount++;
-      }
-    }
-
     final localNoti = LocalNotificationService();
     await localNoti.initialize();
 
-    if (tmwCount > 0) {
-      final title = 'আগামীকালের কেস';
-      final body = 'আগামীকাল $tmwCount টি কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।';
-      await localNoti.scheduleDailyAtTime(
-        id: 2,
-        title: title,
-        body: body,
-        hour: 16,
-        minute: 0,
-        payload: 'tomorrow_cases',
-      );
-    } else {
-      await localNoti.cancel(2);
-    }
-
-    if (overdueCount > 0) {
-      final title = 'ওভারডিউ কেসের আপডেট';
-      final body =
-          'আপনার $overdueCount টি ওভারডিউ কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।';
-      await localNoti.scheduleDailyAtTime(
-        id: 310,
-        title: title,
-        body: body,
-        hour: 23,
-        minute: 0,
-        payload: 'overdue_cases',
-      );
-    } else {
-      await localNoti.cancel(310);
+    if (task == tomorrowCaseCheckTask) {
+      final tomorrow = now.add(const Duration(days: 1));
+      int count = 0;
+      for (final c in cases) {
+        final d = c.nextHearingDate?.toDate();
+        if (d == null) continue;
+        if (d.year == tomorrow.year &&
+            d.month == tomorrow.month &&
+            d.day == tomorrow.day) {
+          count++;
+        }
+      }
+      if (count > 0) {
+        final title = 'আগামীকালের কেস';
+        final body = 'আগামীকাল $count টি কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।';
+        await localNoti.showNotification(title: title, body: body);
+      }
+    } else if (task == overdueCaseCheckTask) {
+      int count = 0;
+      for (final c in cases) {
+        final d = c.nextHearingDate?.toDate();
+        if (d == null) continue;
+        if (d.isBefore(now)) {
+          count++;
+        }
+      }
+      if (count > 0) {
+        final title = 'ওভারডিউ কেসের আপডেট';
+        final body =
+            'আপনার $count টি ওভারডিউ কেস আছে। বিস্তারিত দেখতে ট্যাপ করুন।';
+        await localNoti.showNotification(title: title, body: body);
+      }
     }
 
     return Future.value(true);
@@ -101,10 +87,32 @@ class WorkManagerService {
       workManagerCallbackDispatcher,
       isInDebugMode: false,
     );
+
+    final now = DateTime.now();
+
+    // Next 4 PM for tomorrow-case checks
+    final nextFourPm = DateTime(now.year, now.month, now.day, 16);
+    final tmwDelay = nextFourPm.isBefore(now)
+        ? nextFourPm.add(const Duration(days: 1)).difference(now)
+        : nextFourPm.difference(now);
     await Workmanager().registerPeriodicTask(
-      caseCheckTask,
-      caseCheckTask,
+      tomorrowCaseCheckTask,
+      tomorrowCaseCheckTask,
       frequency: const Duration(hours: 24),
+      initialDelay: tmwDelay,
+      existingWorkPolicy: ExistingWorkPolicy.keep,
+    );
+
+    // Next midnight for overdue-case checks
+    final nextMidnight = DateTime(now.year, now.month, now.day).add(
+      const Duration(days: 1),
+    );
+    final overdueDelay = nextMidnight.difference(now);
+    await Workmanager().registerPeriodicTask(
+      overdueCaseCheckTask,
+      overdueCaseCheckTask,
+      frequency: const Duration(hours: 24),
+      initialDelay: overdueDelay,
       existingWorkPolicy: ExistingWorkPolicy.keep,
     );
   }
