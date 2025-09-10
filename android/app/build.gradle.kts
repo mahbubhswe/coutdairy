@@ -40,7 +40,8 @@ android {
         applicationId = "com.appseba.courtdiary"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        // local_auth requires at least SDK 23
+        minSdk = 23
         // Target the latest stable Android API level (Android 15)
         targetSdk = 35
         versionCode = flutter.versionCode

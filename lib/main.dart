@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'modules/auth/controllers/auth_controller.dart';
+import 'modules/auth/controllers/local_auth_controller.dart';
 import 'modules/auth/screens/auth_view.dart';
 import 'modules/layout/screens/layout_screen.dart';
 import 'navigation/app_transitions.dart';
@@ -97,8 +98,14 @@ class _AuthGate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = Get.find<AuthController>();
+    final localAuth = Get.find<LocalAuthController>();
     return Obx(() {
       if (auth.user.value != null) {
+        if (localAuth.isEnabled.value && !localAuth.isAuthenticated.value) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
         return LayoutScreen();
       } else {
         return const AuthScreen();

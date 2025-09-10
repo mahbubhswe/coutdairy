@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import '../modules/auth/controllers/auth_controller.dart';
+import '../modules/auth/controllers/local_auth_controller.dart';
 import '../modules/layout/controllers/layout_controller.dart';
 
 class InitialBindings extends Bindings {
@@ -7,5 +8,6 @@ class InitialBindings extends Bindings {
   void dependencies() {
     Get.put(AuthController());
     Get.put(LayoutController());
+    Get.put(LocalAuthController());
   }
 }

@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import '../../auth/controllers/auth_controller.dart';
+import '../../auth/controllers/local_auth_controller.dart';
 import '../../court_dairy/screens/account_reset_screen.dart';
 import '../controllers/layout_controller.dart';
 
@@ -13,6 +14,7 @@ class AppDrawer extends StatelessWidget {
 
   final layoutController = Get.find<LayoutController>();
   final authController = Get.find<AuthController>();
+  final localAuthController = Get.find<LocalAuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -194,27 +196,23 @@ class AppDrawer extends StatelessWidget {
 
                   const SizedBox(height: 36),
 
-                  // // অ্যাপ সেটিংস Section
-                  // _sectionHeader(context, 'অ্যাপ সেটিংস'),
-                  // const SizedBox(height: 8),
-                  // _infoTile(
-                  //   context,
-                  //   icon: Icons.brightness_6_rounded,
-                  //   title: 'থিম পরিবর্তন',
-                  //   subtitle: theme.brightness == Brightness.dark
-                  //       ? 'ডার্ক মোড'
-                  //       : 'লাইট মোড',
-                  //   onTap: () => Get.find<ThemeController>().toggleTheme(),
-                  //   trailing: Obx(() {
-                  //     final isDark = Get.find<ThemeController>().isDarkMode;
-                  //     return Switch.adaptive(
-                  //       value: isDark,
-                  //       onChanged: (_) =>
-                  //           Get.find<ThemeController>().toggleTheme(),
-                  //     );
-                  //   }),
-                  // ),
-                  // const SizedBox(height: 36),
+                  _sectionHeader(context, 'অ্যাপ সেটিংস'),
+                  const SizedBox(height: 8),
+                  Obx(() {
+                    final enabled = localAuthController.isEnabled.value;
+                    return _infoTile(
+                      context,
+                      icon: Icons.fingerprint,
+                      title: 'লোকাল অথেন্টিকেশন',
+                      subtitle: enabled ? 'চালু' : 'বন্ধ',
+                      trailing: Switch.adaptive(
+                        value: enabled,
+                        onChanged: (v) => localAuthController.toggle(v),
+                      ),
+                    );
+                  }),
+
+                  const SizedBox(height: 36),
 
                   // সাবস্ক্রিপশন বিস্তারিত Section
                   _sectionHeader(context, 'সাবস্ক্রিপশন বিস্তারিত'),
