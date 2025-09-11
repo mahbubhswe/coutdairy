@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 import '../../../models/court_case.dart';
 import '../../../utils/app_date_formatter.dart';
@@ -19,12 +20,13 @@ class CaseUpdateTile extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       child: ListTile(
+        contentPadding: EdgeInsets.only(left: 4),
         title: Text(caseItem.caseTitle),
         subtitle: Text(
           'Case No: ${caseItem.caseNumber}\nNext date: ${lastDate != null ? _format(lastDate) : 'N/A'}',
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.edit_calendar_outlined),
+          icon: const Icon(HugeIcons.strokeRoundedCalendar01),
           onPressed: () async {
             final picked = await showDatePicker(
               context: context,

@@ -19,7 +19,8 @@ class Themes {
   static const Color _darkSurface = Color(0xFF303134); // surface containers
   static const Color _darkOnSurface = Color(0xFFE8EAED); // primary text color
   static const Color _darkPrimary = Color(0xFFE8EAED); // indicators/icons
-  static const Color _darkSecondary = Color(0xFF8AB4F8); // accent for FAB/CTA
+  static const Color _darkSecondary =
+      AppColors.fixedPrimary; // brand for FAB/CTA
   static const Color _darkOutline = Color(0xFF5F6368);
 
   static final ThemeData lightTheme = ThemeData(
@@ -55,9 +56,13 @@ class Themes {
     tabBarTheme: const TabBarThemeData(
       labelColor: Colors.black,
       unselectedLabelColor: Colors.grey,
+      labelStyle: TextStyle(fontWeight: FontWeight.w400),
+      unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
+      indicatorSize: TabBarIndicatorSize.tab,
       indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(color: Colors.black, width: 2.0),
+        borderSide: BorderSide(color: Colors.black, width: 3.0),
       ),
+
       dividerColor: Colors.transparent,
     ),
 
@@ -93,6 +98,24 @@ class Themes {
       selectionHandleColor: _lightSecondary,
     ),
 
+    // Note: Flutter ThemeData does not have `dropdownButtonTheme`.
+    // Per-widget styling handled via wrappers and InputDecoration.
+
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      elevation: 8,
+      backgroundColor: Colors.black87,
+      contentTextStyle: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+      ),
+      showCloseIcon: true,
+      closeIconColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+    ),
+
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
         TargetPlatform.android: FadeThroughPageTransitionsBuilder(),
@@ -116,7 +139,7 @@ class Themes {
       surface: _darkSurface,
       onSurface: _darkOnSurface,
       onPrimary: Colors.black,
-      onSecondary: Colors.black,
+      onSecondary: Colors.white,
       outline: _darkOutline,
     ),
     scaffoldBackgroundColor: _darkBackground,
@@ -139,8 +162,11 @@ class Themes {
     tabBarTheme: const TabBarThemeData(
       labelColor: _darkOnSurface,
       unselectedLabelColor: Color(0xFF9AA0A6),
+      labelStyle: TextStyle(fontWeight: FontWeight.w400),
+      unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
+      indicatorSize: TabBarIndicatorSize.tab,
       indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(color: _darkSecondary, width: 2.0),
+        borderSide: BorderSide(color: _darkOnSurface, width: 1.0),
       ),
       dividerColor: Colors.transparent,
     ),
@@ -158,7 +184,7 @@ class Themes {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: _darkSecondary,
-        foregroundColor: _darkBackground,
+        foregroundColor: Colors.white,
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -167,7 +193,7 @@ class Themes {
 
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: _darkSecondary,
-      foregroundColor: _darkBackground,
+      foregroundColor: Colors.white,
       elevation: 3.0,
     ),
 
@@ -175,6 +201,24 @@ class Themes {
       cursorColor: _darkSecondary,
       selectionColor: Color(0x338AB4F8),
       selectionHandleColor: _darkSecondary,
+    ),
+
+    // Note: Flutter ThemeData does not have `dropdownButtonTheme`.
+    // Per-widget styling handled via wrappers and InputDecoration.
+
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      elevation: 8,
+      backgroundColor: const Color(0xFF2C2D30),
+      contentTextStyle: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+      ),
+      showCloseIcon: true,
+      closeIconColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
     ),
 
     pageTransitionsTheme: const PageTransitionsTheme(

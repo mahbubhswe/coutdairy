@@ -41,7 +41,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         // local_auth requires at least SDK 23
-        minSdk = 23
+        minSdk = flutter.minSdkVersion
         // Target the latest stable Android API level (Android 15)
         targetSdk = 35
         versionCode = flutter.versionCode

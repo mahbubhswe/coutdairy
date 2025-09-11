@@ -30,7 +30,7 @@ class LayoutScreen extends GetView<LayoutController> {
             appBar: AppBar(
               leadingWidth: 40,
               titleSpacing: 0,
-              title: const Text('কোর্ট ডায়রি'),
+              title: const Text('Court Diary'),
               actions: [
                 IconButton(
                   onPressed: () {
@@ -117,6 +117,7 @@ class LayoutScreen extends GetView<LayoutController> {
                     children: [
                       TabBar(
                         dividerColor: Theme.of(context).colorScheme.outline,
+                        enableFeedback: true,
                         tabs: const [
                           Tab(text: AppTexts.tabParty),
                           Tab(text: AppTexts.tabCase),

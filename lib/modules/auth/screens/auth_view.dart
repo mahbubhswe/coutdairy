@@ -108,6 +108,7 @@ class AuthScreen extends StatelessWidget {
                       ),
                     Obx(() {
                       return AppButton(
+                        surfaceStyle: true,
                         label: 'লগইন',
                         onPressed: controller.enableBtn.value
                             ? () => controller.login()

@@ -6,7 +6,7 @@ import '../../party/controllers/party_controller.dart';
 import 'accounts_card.dart';
 
 class AccountsSecondCard extends StatelessWidget {
-  AccountsSecondCard({super.key});
+  const AccountsSecondCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,12 @@ class AccountsSecondCard extends StatelessWidget {
     double sumWhereMonth(String type) {
       final now = DateTime.now();
       return transactionController.transactions
-          .where((t) =>
-              t.type == type &&
-              t.createdAt.year == now.year &&
-              t.createdAt.month == now.month)
+          .where(
+            (t) =>
+                t.type == type &&
+                t.createdAt.year == now.year &&
+                t.createdAt.month == now.month,
+          )
           .fold<double>(0, (p, e) => p + e.amount);
     }
 
@@ -65,7 +67,7 @@ class AccountsSecondCard extends StatelessWidget {
                   AccountsCard(title: 'মোট খরচ', amount: totalExpense),
                   AccountsCard(title: 'বর্তমান ব্যালেন্স', amount: balance),
                 ],
-              )
+              ),
             ],
           ),
         ),

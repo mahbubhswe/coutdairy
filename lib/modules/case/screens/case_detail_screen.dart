@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:panara_dialogs/panara_dialogs.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../models/court_case.dart';
 import '../../../widgets/app_info_row.dart';
 import '../../../utils/activation_guard.dart';
@@ -131,47 +130,33 @@ class CaseDetailScreen extends StatelessWidget {
         child: Stack(
           children: [
             SingleChildScrollView(
-              padding: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 spacing: 5,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Header summary - gradient container
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            theme.colorScheme.primary.withOpacity(0.15),
-                            theme.colorScheme.primary.withOpacity(0.05),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          caseItem.caseTitle,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: theme.colorScheme.onSurface,
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            caseItem.caseTitle,
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: theme.colorScheme.onSurface,
-                            ),
+                        const SizedBox(height: 6),
+                        Text(
+                          'কেস নং: ${caseItem.caseNumber}',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.textTheme.bodyMedium?.color
+                                ?.withOpacity(0.9),
                           ),
-                          const SizedBox(height: 6),
-                          Text(
-                            'কেস নং: ${caseItem.caseNumber}',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.textTheme.bodyMedium?.color
-                                  ?.withOpacity(0.9),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
 
@@ -241,12 +226,15 @@ class CaseDetailScreen extends StatelessWidget {
                                                 ok = true;
                                               }
                                             } catch (_) {}
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
                                               SnackBar(
-                                                content: Text(ok
-                                                    ? 'নেক্সট হিয়ারিং ডেট আপডেট হয়েছে'
-                                                    : 'আপডেট করতে ব্যর্থ'),
+                                                content: Text(
+                                                  ok
+                                                      ? 'নেক্সট হিয়ারিং ডেট আপডেট হয়েছে'
+                                                      : 'আপডেট করতে ব্যর্থ',
+                                                ),
                                               ),
                                             );
                                           },
@@ -364,12 +352,15 @@ class CaseDetailScreen extends StatelessWidget {
                                               ok = true;
                                             }
                                           } catch (_) {}
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
                                             SnackBar(
-                                              content: Text(ok
-                                                  ? 'নেক্সট অর্ডার আপডেট হয়েছে'
-                                                  : 'আপডেট করতে ব্যর্থ'),
+                                              content: Text(
+                                                ok
+                                                    ? 'নেক্সট অর্ডার আপডেট হয়েছে'
+                                                    : 'আপডেট করতে ব্যর্থ',
+                                              ),
                                             ),
                                           );
                                         },
@@ -462,9 +453,7 @@ class CaseDetailScreen extends StatelessWidget {
                         ListTile(
                           contentPadding: EdgeInsets.zero,
                           title: Text(caseItem.plaintiff.name),
-                          subtitle: Text(
-                            'বাদী\n${caseItem.plaintiff.address}',
-                          ),
+                          subtitle: Text('বাদী\n${caseItem.plaintiff.address}'),
                           isThreeLine: true,
                           trailing: IconButton(
                             icon: const Icon(HugeIcons.strokeRoundedCall02),
@@ -574,20 +563,10 @@ class CaseDetailScreen extends StatelessWidget {
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: theme.colorScheme.outlineVariant,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: theme.colorScheme.primary,
-                              width: 1.4,
-                            ),
-                          ),
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
                         ),
                         items: statuses
                             .map(
@@ -628,9 +607,11 @@ class CaseDetailScreen extends StatelessWidget {
                               }
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(ok
-                                      ? 'স্ট্যাটাস আপডেট হয়েছে'
-                                      : 'স্ট্যাটাস আপডেট ব্যর্থ'),
+                                  content: Text(
+                                    ok
+                                        ? 'স্ট্যাটাস আপডেট হয়েছে'
+                                        : 'স্ট্যাটাস আপডেট ব্যর্থ',
+                                  ),
                                 ),
                               );
                             },

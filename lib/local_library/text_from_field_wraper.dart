@@ -126,9 +126,9 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
     final Color borderColorUnFocused = widget.borderColor ?? cs.outlineVariant;
     final Color borderColorFocused = widget.borderFocusedColor ?? cs.primary;
     final Color fillColor = cs.surface;
-    Color borderColor = hasFocus ? borderColorFocused : borderColorUnFocused;
-    double borderWidth =
-        hasFocus ? widget.borderFocusedThickness : widget.borderThickness;
+    // Remove outline border entirely
+    Color borderColor = Colors.transparent;
+    double borderWidth = 0.0;
     double cornerRadius = widget.borderRadius;
     double innerRadius = cornerRadius - borderWidth;
 

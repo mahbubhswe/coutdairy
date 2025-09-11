@@ -55,7 +55,7 @@ class PartyProfileScreen extends StatelessWidget {
           child: Stack(
             children: [
               SingleChildScrollView(
-                padding: const EdgeInsets.all(3),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   spacing: 12,
                   crossAxisAlignment: CrossAxisAlignment.start,

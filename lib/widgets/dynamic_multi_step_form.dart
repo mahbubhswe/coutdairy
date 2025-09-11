@@ -112,9 +112,8 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
                       width: 26,
                       height: 26,
                       decoration: BoxDecoration(
-                        color: isCurrent
-                            ? active.withOpacity(0.15)
-                            : Colors.transparent,
+                        // Fill the current step with the active color for strong contrast
+                        color: isCurrent ? active : Colors.transparent,
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: isCompleted
@@ -130,9 +129,14 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
                           fontWeight: isCurrent
                               ? FontWeight.w600
                               : FontWeight.w500,
-                          color: isCompleted
-                              ? completed
-                              : (isActive ? active : inactive),
+                          // Ensure the current number contrasts against its background
+                          color: isCurrent
+                              ? ((active.computeLuminance() < 0.5)
+                                  ? Colors.white
+                                  : Colors.black)
+                              : (isCompleted
+                                  ? completed
+                                  : (isActive ? active : inactive)),
                         ),
                       ),
                     ),

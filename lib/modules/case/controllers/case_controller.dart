@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+// Removed HomeWidget integration
 
 import '../../../models/court_case.dart';
 import '../../../services/app_firebase.dart';
@@ -176,7 +177,7 @@ class CaseController extends GetxController {
         id: 310,
         title: title,
         body: body,
-        hour: 12,
+        hour: 0,
         minute: 0,
         payload: 'overdue_cases',
       );

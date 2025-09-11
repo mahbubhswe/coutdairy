@@ -10,7 +10,6 @@ import 'package:panara_dialogs/panara_dialogs.dart';
 import '../../../utils/app_date_formatter.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../../local_library/text_from_field_wraper.dart';
-import '../../../widgets/app_dropdown.dart';
 
 import '../controllers/add_case_controller.dart';
 import '../../../models/party.dart';
@@ -101,17 +100,6 @@ class AddCaseScreen extends StatelessWidget {
           onChanged: (v) => controller.selectedCaseStatus.value = v,
         ),
       );
-    }
-
-    Widget appCaseStatusDropdown() {
-      return Obx(() => AppDropdown(
-            value: controller.selectedCaseStatus.value,
-            label: 'Case Status',
-            hintText: 'Select current case status',
-            items: controller.caseStatuses,
-            prefixIcon: Icons.flag_outlined,
-            onChanged: (v) => controller.selectedCaseStatus.value = v,
-          ));
     }
 
     Widget partyDropdown({
@@ -211,7 +199,7 @@ class AddCaseScreen extends StatelessWidget {
                       prefixIcon: Icons.numbers,
                       keyboardType: TextInputType.text,
                     ),
-                  appCaseStatusDropdown(),
+                    caseStatusDropdown(),
                     AppTextFromField(
                       controller: controller.caseSummary,
                       label: 'সারাংশ',
@@ -340,20 +328,6 @@ class AddCaseScreen extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('কেস যুক্ত করা হয়েছে')),
                     );
-                    // Replace simple snackbar with an icon-enhanced variant
-                    ScaffoldMessenger.of(context)
-                      ..clearSnackBars()
-                      ..showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: const [
-                              Icon(Icons.check_circle_outline, color: Colors.white),
-                              SizedBox(width: 10),
-                              Expanded(child: Text('Success')), // customize message if needed
-                            ],
-                          ),
-                        ),
-                      );
                     Get.back();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -361,20 +335,6 @@ class AddCaseScreen extends StatelessWidget {
                         content: Text('কেস যুক্ত করতে ব্যর্থ হয়েছে'),
                       ),
                     );
-                    // Replace simple snackbar with an icon-enhanced variant
-                    ScaffoldMessenger.of(context)
-                      ..clearSnackBars()
-                      ..showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: const [
-                              Icon(Icons.error_outline, color: Colors.white),
-                              SizedBox(width: 10),
-                              Expanded(child: Text('Failed')), // customize message if needed
-                            ],
-                          ),
-                        ),
-                      );
                   }
                 },
                 panaraDialogType: PanaraDialogType.normal,
