@@ -99,8 +99,8 @@ class EditPartyScreen extends StatelessWidget {
                             if (success) {
                               PanaraInfoDialog.show(
                                 context,
-                                title: 'সফল হয়েছে',
-                                buttonText: 'Okey',
+                                title: 'সফল হয়েছে',
+                                buttonText: 'ঠিক আছে',
                                 message: 'পক্ষ আপডেট করা হয়েছে',
                                 panaraDialogType: PanaraDialogType.success,
                                 barrierDismissible: false,
@@ -113,7 +113,7 @@ class EditPartyScreen extends StatelessWidget {
                               PanaraInfoDialog.show(
                                 context,
                                 title: 'ত্রুটি',
-                                buttonText: 'Okey',
+                                buttonText: 'ঠিক আছে',
                                 message: 'পক্ষ আপডেট করতে ব্যর্থ হয়েছে',
                                 panaraDialogType: PanaraDialogType.error,
                                 barrierDismissible: false,

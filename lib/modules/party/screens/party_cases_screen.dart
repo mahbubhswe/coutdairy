@@ -33,7 +33,7 @@ class PartyCasesScreen extends StatelessWidget {
         }).toList();
 
         if (cases.isEmpty) {
-          return const DataNotFound(title: 'Sorry', subtitle: 'No Case Found');
+          return const DataNotFound(title: 'দুঃখিত', subtitle: 'কোনো কেস পাওয়া যায়নি');
         }
 
         return ListView.builder(

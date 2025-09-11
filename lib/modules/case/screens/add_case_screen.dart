@@ -70,8 +70,8 @@ class AddCaseScreen extends StatelessWidget {
           menuMaxHeight: 320,
           icon: const Icon(Icons.keyboard_arrow_down_rounded),
           decoration: InputDecoration(
-            labelText: 'Case Status',
-            hintText: 'Select case status',
+            labelText: 'কেসের অবস্থা',
+            hintText: 'কেসের অবস্থা নির্বাচন করুন',
             prefixIcon: const Icon(Icons.flag_outlined),
             filled: true,
             fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
@@ -156,52 +156,52 @@ class AddCaseScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Case')),
+      appBar: AppBar(title: const Text('কেস যোগ করুন')),
       body: Obx(
         () => DynamicMultiStepForm(
           steps: [
             FormStep(
-              title: const Text('Case Info'),
+              title: const Text('কেস তথ্য'),
               content: Column(
                 spacing: 10,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   titledChipRow(
-                    title: 'Case Type',
+                    title: 'কেসের ধরন',
                     options: controller.caseTypes,
                     selected: controller.selectedCaseType,
                   ),
                   titledChipRow(
-                    title: 'Court Type',
+                    title: 'আদালতের ধরন',
                     options: controller.courtTypes,
                     selected: controller.selectedCourtType,
                   ),
                   AppTextFromField(
                     controller: controller.caseTitle,
-                    label: 'Case Title',
-                    hintText: 'Enter case title',
+                    label: 'কেসের শিরোনাম',
+                    hintText: 'কেসের শিরোনাম লিখুন',
                     prefixIcon: Icons.title,
                   ),
                   AppTypeAheadField(
                     controller: controller.courtName,
-                    label: 'Court Name',
-                    hintText: 'Enter court name',
+                    label: 'আদালতের নাম',
+                    hintText: 'আদালতের নাম লিখুন',
                     prefixIcon: Icons.account_balance,
                     suggestions: controller.allCourtNames,
                   ),
                   AppTextFromField(
                     controller: controller.caseNumber,
-                    label: 'Case Number',
-                    hintText: 'Enter case number',
+                    label: 'কেস নম্বর',
+                    hintText: 'কেস নম্বর লিখুন',
                     prefixIcon: Icons.numbers,
                     keyboardType: TextInputType.text,
                   ),
                   caseStatusDropdown(),
                   AppTextFromField(
                     controller: controller.caseSummary,
-                    label: 'Summary',
-                    hintText: 'Enter summary',
+                    label: 'সারাংশ',
+                    hintText: 'সারাংশ লিখুন',
                     prefixIcon: Icons.description_outlined,
                     isMaxLines: 3,
                   ),
@@ -214,7 +214,7 @@ class AddCaseScreen extends StatelessWidget {
                       ),
                       title: Text(
                         controller.filedDate.value?.formattedDate ??
-                            'Filed Date',
+                            'দাখিলের তারিখ',
                       ),
                       trailing: const Icon(HugeIcons.strokeRoundedCalendar01),
                       onTap: () async {
@@ -233,41 +233,41 @@ class AddCaseScreen extends StatelessWidget {
               ),
             ),
             FormStep(
-              title: const Text('Parties'),
+              title: const Text('পক্ষসমূহ'),
               content: Column(
                 spacing: 10,
                 children: [
                   partyDropdown(
                     selected: controller.selectedPlaintiff,
-                    label: 'Plaintiff',
-                    hint: 'Select plaintiff',
+                    label: 'বাদী',
+                    hint: 'বাদী নির্বাচন করুন',
                     icon: Icons.person_outline,
                   ),
                   partyDropdown(
                     selected: controller.selectedDefendant,
-                    label: 'Defendant',
-                    hint: 'Select defendant',
+                    label: 'বিবাদী',
+                    hint: 'বিবাদী নির্বাচন করুন',
                     icon: Icons.person_outline,
                   ),
                 ],
               ),
             ),
             FormStep(
-              title: const Text('More'),
+              title: const Text('আরও'),
               content: Column(
                 spacing: 10,
                 children: [
                   AppTypeAheadField(
                     controller: controller.judgeName,
-                    label: 'Judge Name',
-                    hintText: 'Enter judge name',
+                    label: 'বিচারকের নাম',
+                    hintText: 'বিচারকের নাম লিখুন',
                     prefixIcon: Icons.gavel,
                     suggestions: controller.allJudgeNames,
                   ),
                   AppTextFromField(
                     controller: controller.courtOrder,
-                    label: 'Court Order',
-                    hintText: 'Enter court order',
+                    label: 'আদালতের আদেশ',
+                    hintText: 'আদালতের আদেশ লিখুন',
                     prefixIcon: Icons.article_outlined,
                   ),
                   Obx(
@@ -279,7 +279,7 @@ class AddCaseScreen extends StatelessWidget {
                       ),
                       title: Text(
                         controller.hearingDate.value?.formattedDate ??
-                            'Hearing Date',
+                            'শুনানির তারিখ',
                       ),
                       trailing: const Icon(HugeIcons.strokeRoundedCalendar01),
                       onTap: () async {
@@ -324,8 +324,8 @@ class AddCaseScreen extends StatelessWidget {
                 if (success) {
                   PanaraInfoDialog.show(
                     context,
-                    title: 'সফল হয়েছে',
-                    buttonText: 'Okey',
+                    title: 'সফল হয়েছে',
+                    buttonText: 'ঠিক আছে',
                     message: 'কেস যুক্ত করা হয়েছে',
                     panaraDialogType: PanaraDialogType.success,
                     barrierDismissible: false,
@@ -338,8 +338,8 @@ class AddCaseScreen extends StatelessWidget {
                   PanaraInfoDialog.show(
                     context,
                     title: 'ত্রুটি',
-                    buttonText: 'Okey',
-                    message: 'কেস যুক্ত করতে ব্যর্থ হয়েছে',
+                    buttonText: 'ঠিক আছে',
+                    message: 'কেস যুক্ত করতে ব্যর্থ হয়েছে',
                     panaraDialogType: PanaraDialogType.error,
                     barrierDismissible: false,
                     onTapDismiss: () {

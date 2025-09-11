@@ -17,7 +17,7 @@ class AllCaseScreen extends StatelessWidget {
     final appBarColor = Theme.of(context).appBarTheme.backgroundColor ??
         Theme.of(context).colorScheme.primary;
     return Scaffold(
-      appBar: AppBar(title: const Text('All Cases')),
+      appBar: AppBar(title: const Text('সমস্ত কেস')),
       body: Column(
         spacing: 10,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +34,7 @@ class AllCaseScreen extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Case Type',
+                  const Text('কেসের ধরন',
                       style: TextStyle(fontWeight: FontWeight.w600)),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -44,8 +44,9 @@ class AllCaseScreen extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: ChoiceChip(
-                            label:
-                                Text(t, style: const TextStyle(fontSize: 12)),
+                            label: Text(
+                                t == 'All' ? 'সব' : t,
+                                style: const TextStyle(fontSize: 12)),
                             selected: selected,
                             onSelected: (_) => typeFilter.value = t,
                             shape: RoundedRectangleBorder(
@@ -65,7 +66,7 @@ class AllCaseScreen extends StatelessWidget {
                       }).toList(),
                     ),
                   ),
-                  const Text('Court Type',
+                  const Text('আদালতের ধরন',
                       style: TextStyle(fontWeight: FontWeight.w600)),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -75,8 +76,9 @@ class AllCaseScreen extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: ChoiceChip(
-                            label:
-                                Text(t, style: const TextStyle(fontSize: 12)),
+                            label: Text(
+                                t == 'All' ? 'সব' : t,
+                                style: const TextStyle(fontSize: 12)),
                             selected: selected,
                             onSelected: (_) => courtFilter.value = t,
                             shape: RoundedRectangleBorder(
@@ -112,7 +114,7 @@ class AllCaseScreen extends StatelessWidget {
 
               if (filtered.isEmpty) {
                 return const DataNotFound(
-                    title: 'Sorry', subtitle: 'No cases found');
+                    title: 'দুঃখিত', subtitle: 'কোনো কেস পাওয়া যায়নি');
               }
 
               return ListView.builder(

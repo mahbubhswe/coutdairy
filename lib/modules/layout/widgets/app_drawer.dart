@@ -78,7 +78,7 @@ class AppDrawer extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      user.displayName ?? 'User',
+                      user.displayName ?? 'ব্যবহারকারী',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -158,7 +158,7 @@ class AppDrawer extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          user.displayName ?? "Not Found",
+                          user.displayName ?? "নেই",
                           style: Theme.of(context).textTheme.titleLarge
                               ?.copyWith(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,

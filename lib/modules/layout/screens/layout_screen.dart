@@ -30,7 +30,7 @@ class LayoutScreen extends GetView<LayoutController> {
             appBar: AppBar(
               leadingWidth: 40,
               titleSpacing: 0,
-              title: const Text('Court Dairy'),
+              title: const Text('কোর্ট ডায়রি'),
               actions: [
                 IconButton(
                   onPressed: () {

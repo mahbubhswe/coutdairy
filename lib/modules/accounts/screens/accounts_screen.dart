@@ -24,7 +24,7 @@ class AccountsScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Recent Transactions',
+                const Text('সাম্প্রতিক লেনদেন',
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 TextButton(
@@ -34,7 +34,7 @@ class AccountsScreen extends StatelessWidget {
                   style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onSurface,
                   ),
-                  child: const Text('All Transactions'),
+                  child: const Text('সমস্ত লেনদেন'),
                 ),
               ],
             ),
@@ -42,7 +42,7 @@ class AccountsScreen extends StatelessWidget {
           Expanded(
             child: controller.transactions.isEmpty
                 ? const DataNotFound(
-                    title: 'Sorry', subtitle: 'No Transaction Found')
+                    title: 'দুঃখিত', subtitle: 'কোনো লেনদেন পাওয়া যায়নি')
                 : ListView.builder(
                     controller: layoutController.scrollController,
                     itemCount: controller.transactions.length > 10

@@ -150,8 +150,8 @@ class AddTransactionScreen extends StatelessWidget {
                             if (success) {
                               PanaraInfoDialog.show(
                                 context,
-                                title: 'সফল হয়েছে',
-                                buttonText: 'Okey',
+                                title: 'সফল হয়েছে',
+                                buttonText: 'ঠিক আছে',
                                 message: 'লেনদেন যুক্ত করা হয়েছে',
                                 panaraDialogType: PanaraDialogType.success,
                                 barrierDismissible: false,
@@ -164,7 +164,7 @@ class AddTransactionScreen extends StatelessWidget {
                               PanaraInfoDialog.show(
                                 context,
                                 title: 'ত্রুটি',
-                                buttonText: 'Okey',
+                                buttonText: 'ঠিক আছে',
                                 message: 'লেনদেন যুক্ত করতে ব্যর্থ হয়েছে',
                                 panaraDialogType: PanaraDialogType.error,
                                 barrierDismissible: false,

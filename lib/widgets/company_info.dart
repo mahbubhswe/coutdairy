@@ -10,10 +10,10 @@ class CompanyInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          'Powered by AppSeba',
+          'অ্যাপসেবা দ্বারা পরিচালিত',
         ),
         Text(
-          'Your Trusted Friend',
+          'আপনার বিশ্বস্ত বন্ধু',
           style: TextStyle(
             color: Colors.grey,
           ),

@@ -147,8 +147,8 @@ class EditTransactionScreen extends StatelessWidget {
                             if (success) {
                               PanaraInfoDialog.show(
                                 context,
-                                title: 'সফল হয়েছে',
-                                buttonText: 'Okey',
+                                title: 'সফল হয়েছে',
+                                buttonText: 'ঠিক আছে',
                                 message: 'লেনদেন আপডেট করা হয়েছে',
                                 panaraDialogType: PanaraDialogType.success,
                                 barrierDismissible: false,
@@ -161,7 +161,7 @@ class EditTransactionScreen extends StatelessWidget {
                               PanaraInfoDialog.show(
                                 context,
                                 title: 'ত্রুটি',
-                                buttonText: 'Okey',
+                                buttonText: 'ঠিক আছে',
                                 message: 'লেনদেন আপডেট করতে ব্যর্থ হয়েছে',
                                 panaraDialogType: PanaraDialogType.error,
                                 barrierDismissible: false,

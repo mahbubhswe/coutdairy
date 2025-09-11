@@ -28,7 +28,7 @@ class CaseScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Your Cases',
+                    'আপনার কেস',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   TextButton(
@@ -37,7 +37,7 @@ class CaseScreen extends StatelessWidget {
                         foregroundColor:
                             Theme.of(context).colorScheme.onSurface,
                       ),
-                      child: Text("See All"))
+                      child: Text("সব দেখুন"))
                 ],
               ),
             ),
@@ -46,13 +46,13 @@ class CaseScreen extends StatelessWidget {
             child: Row(
               children: [
                 filterChip(context, 'today',
-                    "Today's (${controller.todayCount})", controller),
+                    "আজকের (${controller.todayCount})", controller),
                 filterChip(context, 'tomorrow',
-                    'Tomorrow (${controller.tomorrowCount})', controller),
+                    'আগামীকাল (${controller.tomorrowCount})', controller),
                 filterChip(context, 'week',
-                    'This Week (${controller.weekCount})', controller),
+                    'এই সপ্তাহ (${controller.weekCount})', controller),
                 filterChip(context, 'month',
-                    'This Month (${controller.monthCount})', controller),
+                    'এই মাস (${controller.monthCount})', controller),
               ],
             ),
           ),
@@ -64,7 +64,7 @@ class CaseScreen extends StatelessWidget {
                   ? const Center(
                       key: ValueKey('empty_cases'),
                       child: DataNotFound(
-                          title: "Sorry", subtitle: "No cases found"),
+                          title: "দুঃখিত", subtitle: "কোনো কেস পাওয়া যায়নি"),
                     )
                   : ListView.builder(
                       key: ValueKey(controller.selectedFilter.value),

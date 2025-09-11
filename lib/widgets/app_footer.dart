@@ -7,9 +7,9 @@ class AppFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: const [
-        Text('Powered by App Seba - Your Trusted Friend.'),
+        Text('আপ সেবা দ্বারা পরিচালিত - আপনার বিশ্বস্ত বন্ধু।'),
         Text(
-          'Software Company',
+          'সফটওয়্যার কোম্পানি',
           style: TextStyle(color: Colors.grey),
         ),
       ],

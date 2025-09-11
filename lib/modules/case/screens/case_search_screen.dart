@@ -19,7 +19,7 @@ class CaseSearchScreen extends StatelessWidget {
           style: const TextStyle(color: Colors.white),
           cursorColor: Colors.white,
           decoration: const InputDecoration(
-            hintText: 'Search cases',
+            hintText: 'কেস খুঁজুন',
             hintStyle: TextStyle(color: Colors.white70),
             border: InputBorder.none,
           ),
