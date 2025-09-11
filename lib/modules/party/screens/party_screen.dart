@@ -28,7 +28,7 @@ class PartyScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Your Parties',
+                  'আপনার পক্ষসমূহ',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 TextButton(
@@ -38,7 +38,7 @@ class PartyScreen extends StatelessWidget {
                   style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onSurface,
                   ),
-                  child: const Text('See All'),
+                  child: const Text('সব দেখুন'),
                 ),
               ],
             ),
@@ -46,7 +46,7 @@ class PartyScreen extends StatelessWidget {
           Expanded(
             child: controller.parties.isEmpty
                 ? const DataNotFound(
-                    title: "Sorry", subtitle: 'No Party Found')
+                    title: "দুঃখিত", subtitle: 'কোনো পক্ষ পাওয়া যায়নি')
                 : ListView.builder(
                     controller: layoutController.scrollController,
                     itemCount: controller.parties.length > 10

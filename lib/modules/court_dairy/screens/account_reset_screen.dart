@@ -40,10 +40,10 @@ class AccountResetController extends GetxController {
     try {
       HapticFeedback.heavyImpact();
       await _resetAllData();
-      Get.snackbar('Done', 'All cases, parties and transactions deleted.',
+      Get.snackbar('সম্পন্ন', 'সব কেস, পক্ষ এবং লেনদেন মুছে ফেলা হয়েছে।',
           snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar('Error', e.toString(),
+      Get.snackbar('ত্রুটি', e.toString(),
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red.shade100,
           colorText: Colors.black);
@@ -93,7 +93,7 @@ class AccountResetScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Account Reset'),
+        title: const Text('অ্যাকাউন্ট রিসেট'),
         iconTheme: IconThemeData(color: cs.onPrimary),
       ),
       body: SingleChildScrollView(
@@ -104,7 +104,7 @@ class AccountResetScreen extends StatelessWidget {
           children: [
             Icon(Icons.warning_amber_rounded, color: dangerColor, size: 100),
             Text(
-              'Danger Zone',
+              'বিপদ অঞ্চল',
               style: theme.textTheme.titleLarge?.copyWith(
                 color: dangerTextColor,
                 fontWeight: FontWeight.w800,
@@ -132,9 +132,9 @@ class AccountResetScreen extends StatelessWidget {
                     spacing: 8,
                     runSpacing: 8,
                     children: const [
-                      _DangerChip(label: 'Cases'),
-                      _DangerChip(label: 'Parties'),
-                      _DangerChip(label: 'Transactions'),
+                      _DangerChip(label: 'কেস'),
+                      _DangerChip(label: 'পক্ষসমূহ'),
+                      _DangerChip(label: 'লেনদেন'),
                     ],
                   ),
                 ],
@@ -194,10 +194,10 @@ class AccountResetScreen extends StatelessWidget {
                             const SizedBox(width: 8),
                             Text(
                               resetting
-                                  ? 'Resetting...'
+                                  ? 'রিসেট হচ্ছে...'
                                   : (p <= 0
-                                      ? 'Hold to RESET account (3.0s)'
-                                      : 'Keep holding... (${timeLeft.toStringAsFixed(1)}s)'),
+                                      ? 'অ্যাকাউন্ট রিসেট করতে ধরে রাখুন (৩.০ সেকেন্ড)'
+                                      : 'ধরে থাকুন... (${timeLeft.toStringAsFixed(1)}সেকেন্ড)'),
                               style: TextStyle(
                                 fontWeight: FontWeight.w800,
                                 color: p > 0.5 ? Colors.white : dangerTextColor,

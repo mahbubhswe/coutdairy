@@ -14,13 +14,13 @@ class AllPartyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('All Parties')),
+      appBar: AppBar(title: const Text('সমস্ত পক্ষ')),
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
         if (controller.parties.isEmpty) {
-          return const DataNotFound(title: 'Sorry', subtitle: 'No Party Found');
+          return const DataNotFound(title: 'দুঃখিত', subtitle: 'কোনো পক্ষ পাওয়া যায়নি');
         }
         return ListView.builder(
           itemCount: controller.parties.length,

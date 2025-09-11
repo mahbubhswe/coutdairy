@@ -27,8 +27,8 @@ class CaseTile extends StatelessWidget {
             }
           },
           itemBuilder: (context) => [
-            const PopupMenuItem(value: 'edit', child: Text('Edit')),
-            const PopupMenuItem(value: 'delete', child: Text('Delete')),
+            const PopupMenuItem(value: 'edit', child: Text('সম্পাদনা')),
+            const PopupMenuItem(value: 'delete', child: Text('মুছে ফেলুন')),
           ],
         ),
       ),

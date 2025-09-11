@@ -64,7 +64,7 @@ class TransactionTile extends StatelessWidget {
               ),
             ),
             Text(
-              'Payment: ${transaction.paymentMethod}',
+              'পেমেন্ট: ${transaction.paymentMethod}',
             ),
           ],
         ),
@@ -93,11 +93,11 @@ class TransactionTile extends StatelessWidget {
                   final items = <PopupMenuEntry<String>>[];
                   if (onEdit != null) {
                     items.add(
-                        const PopupMenuItem(value: 'edit', child: Text('Edit')));
+                        const PopupMenuItem(value: 'edit', child: Text('সম্পাদনা')));
                   }
                   if (onDelete != null) {
                     items.add(const PopupMenuItem(
-                        value: 'delete', child: Text('Delete')));
+                        value: 'delete', child: Text('মুছে ফেলুন')));
                   }
                   return items;
                 },

@@ -70,7 +70,7 @@ class AuthController extends GetxController {
           showNewUserDialog();
         }
       } else {
-        _showError("Google Sign-In canceled or failed");
+        _showError("গুগল সাইন-ইন বাতিল হয়েছে বা ব্যর্থ হয়েছে");
       }
     } catch (e) {
       _showError(e);
@@ -82,7 +82,7 @@ class AuthController extends GetxController {
   Future<void> forgotPassword() async {
     if (!RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com$')
         .hasMatch(email.text.trim())) {
-      _showError("Please enter a valid Gmail address to reset password");
+      _showError("পাসওয়ার্ড রিসেট করতে একটি বৈধ জিমেইল ঠিকানা লিখুন");
       return;
     }
     try {
@@ -112,7 +112,7 @@ class AuthController extends GetxController {
       try {
         await intent.launch();
       } catch (e) {
-        Get.snackbar("Error", "Could not open Gmail app.",
+        Get.snackbar("ত্রুটি", "জিমেইল অ্যাপ খোলা যায়নি।",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.red.shade100,
             colorText: Colors.black);
@@ -128,7 +128,7 @@ class AuthController extends GetxController {
         if (await canLaunchUrl(Uri.parse(mailtoUrl))) {
           await launchUrl(Uri.parse(mailtoUrl));
         } else {
-          Get.snackbar("Error", "No email app found to open.",
+          Get.snackbar("ত্রুটি", "খুলতে কোনো ইমেইল অ্যাপ পাওয়া যায়নি।",
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.red.shade100,
               colorText: Colors.black);

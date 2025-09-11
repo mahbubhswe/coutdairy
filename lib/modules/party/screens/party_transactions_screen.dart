@@ -30,7 +30,7 @@ class PartyTransactionsScreen extends StatelessWidget {
             .where((t) => t.partyId == party.docId)
             .toList();
         if (filtered.isEmpty) {
-          return const DataNotFound(title: 'Sorry', subtitle: 'No Transaction Found');
+          return const DataNotFound(title: 'দুঃখিত', subtitle: 'কোনো লেনদেন পাওয়া যায়নি');
         }
         return ListView.builder(
           itemCount: filtered.length,

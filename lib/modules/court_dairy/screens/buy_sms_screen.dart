@@ -65,7 +65,7 @@ class BuySmsView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'SMS Package',
+                                  'এসএমএস প্যাকেজ',
                                   style: theme.textTheme.titleLarge?.copyWith(
                                     fontWeight: FontWeight.w800,
                                   ),
@@ -151,7 +151,7 @@ class BuySmsView extends StatelessWidget {
                                       final selected =
                                           controller.smsCount.value == v;
                                       return ChoiceChip(
-                                        label: Text('$v SMS'),
+                                        label: Text('$v এসএমএস'),
                                         selected: selected,
                                         onSelected: (_) =>
                                             controller.smsCount.value = v,

@@ -121,8 +121,8 @@ class CaseDetailScreen extends StatelessWidget {
           PopupMenuButton<String>(
             onSelected: handleMenu,
             itemBuilder: (context) => const [
-              PopupMenuItem(value: 'edit', child: Text('Edit')),
-              PopupMenuItem(value: 'delete', child: Text('Delete')),
+              PopupMenuItem(value: 'edit', child: Text('সম্পাদনা')),
+              PopupMenuItem(value: 'delete', child: Text('মুছে ফেলুন')),
             ],
           ),
         ],
@@ -164,7 +164,7 @@ class CaseDetailScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            'Case No: ${caseItem.caseNumber}',
+                            'কেস নং: ${caseItem.caseNumber}',
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.textTheme.bodyMedium?.color
                                   ?.withOpacity(0.9),
@@ -192,7 +192,7 @@ class CaseDetailScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Last: '
+                                'সর্বশেষ: '
                                 '${last != null ? last.toDate().formattedDate : '-'}',
                               ),
                               const SizedBox(height: 6),
@@ -202,7 +202,7 @@ class CaseDetailScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      'Next: '
+                                      'পরবর্তী: '
                                       '${next != null ? next.toDate().formattedDate : '-'}',
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -249,7 +249,7 @@ class CaseDetailScreen extends StatelessWidget {
                                               message: ok
                                                   ? 'নেক্সট হিয়ারিং ডেট আপডেট হয়েছে'
                                                   : 'আপডেট করতে ব্যর্থ',
-                                              buttonText: 'Okey',
+                                              buttonText: 'ঠিক আছে',
                                               panaraDialogType: ok
                                                   ? PanaraDialogType.success
                                                   : PanaraDialogType.error,
@@ -266,7 +266,7 @@ class CaseDetailScreen extends StatelessWidget {
                                     icon: const Icon(
                                       HugeIcons.strokeRoundedCalendar01,
                                     ),
-                                    tooltip: 'Update Next Hearing',
+                                    tooltip: 'পরবর্তী শুনানি আপডেট',
                                     iconSize: 20,
                                     splashRadius: 20,
                                     constraints: const BoxConstraints.tightFor(
@@ -286,7 +286,7 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Court Orders (moved up)
                   section(
-                    'Court Orders',
+                    'আদালতের আদেশ',
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -300,7 +300,7 @@ class CaseDetailScreen extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Last: ${last ?? '-'}'),
+                              Text('সর্বশেষ: ${last ?? '-'}'),
                               const SizedBox(height: 6),
                               Row(
                                 mainAxisAlignment:
@@ -308,7 +308,7 @@ class CaseDetailScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      'Next: ${next ?? '-'}',
+                                      'পরবর্তী: ${next ?? '-'}',
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
@@ -321,7 +321,7 @@ class CaseDetailScreen extends StatelessWidget {
                                         builder: (ctx) {
                                           return AlertDialog(
                                             title: const Text(
-                                              'Update Next Order',
+                                              'পরবর্তী আদেশ আপডেট',
                                             ),
                                             content: TextField(
                                               controller: controllerText,
@@ -333,14 +333,14 @@ class CaseDetailScreen extends StatelessWidget {
                                               TextButton(
                                                 onPressed: () =>
                                                     Navigator.pop(ctx),
-                                                child: const Text('Cancel'),
+                                                child: const Text('বাতিল'),
                                               ),
                                               TextButton(
                                                 onPressed: () => Navigator.pop(
                                                   ctx,
                                                   controllerText.text.trim(),
                                                 ),
-                                                child: const Text('Update'),
+                                                child: const Text('আপডেট'),
                                               ),
                                             ],
                                           );
@@ -378,7 +378,7 @@ class CaseDetailScreen extends StatelessWidget {
                                             message: ok
                                                 ? 'নেক্সট অর্ডার আপডেট হয়েছে'
                                                 : 'আপডেট করতে ব্যর্থ',
-                                            buttonText: 'Okey',
+                                            buttonText: 'ঠিক আছে',
                                             panaraDialogType: ok
                                                 ? PanaraDialogType.success
                                                 : PanaraDialogType.error,
@@ -394,7 +394,7 @@ class CaseDetailScreen extends StatelessWidget {
                                     icon: const Icon(
                                       HugeIcons.strokeRoundedEdit03,
                                     ),
-                                    tooltip: 'Update Next Order',
+                                    tooltip: 'পরবর্তী আদেশ আপডেট',
                                     iconSize: 20,
                                     splashRadius: 20,
                                     constraints: const BoxConstraints.tightFor(
@@ -413,19 +413,19 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Case Information
                   section(
-                    'Case Information',
+                    'কেস তথ্য',
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        appInfoRow('Case Type', caseItem.caseType),
+                        appInfoRow('কেসের ধরন', caseItem.caseType),
                         const SizedBox(height: 8),
-                        appInfoRow('Court Type', caseItem.courtType),
+                        appInfoRow('আদালতের ধরন', caseItem.courtType),
                         const SizedBox(height: 8),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Case Status',
+                              'কেসের অবস্থা',
                               style: TextStyle(fontSize: 14),
                             ),
                             Container(
@@ -454,14 +454,14 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Court Information
                   section(
-                    'Court Information',
+                    'আদালত তথ্য',
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        appInfoRow('Court Name', caseItem.courtName),
+                        appInfoRow('আদালতের নাম', caseItem.courtName),
                         const SizedBox(height: 8),
                         appInfoRow(
-                          'Judge',
+                          'বিচারক',
                           caseItem.judgeName.isEmpty ? '-' : caseItem.judgeName,
                         ),
                       ],
@@ -470,19 +470,19 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Parties
                   section(
-                    'Parties',
+                    'পক্ষসমূহ',
                     Column(
                       children: [
                         ListTile(
                           contentPadding: EdgeInsets.zero,
                           title: Text(caseItem.plaintiff.name),
                           subtitle: Text(
-                            'Plaintiff\n${caseItem.plaintiff.address}',
+                            'বাদী\n${caseItem.plaintiff.address}',
                           ),
                           isThreeLine: true,
                           trailing: IconButton(
                             icon: const Icon(HugeIcons.strokeRoundedCall02),
-                            tooltip: 'Call plaintiff',
+                            tooltip: 'বাদীকে কল করুন',
                             onPressed: (caseItem.plaintiff.phone.isEmpty)
                                 ? null
                                 : () async {
@@ -504,12 +504,12 @@ class CaseDetailScreen extends StatelessWidget {
                           contentPadding: EdgeInsets.zero,
                           title: Text(caseItem.defendant.name),
                           subtitle: Text(
-                            'Defendant\n${caseItem.defendant.address}',
+                            'বিবাদী\n${caseItem.defendant.address}',
                           ),
                           isThreeLine: true,
                           trailing: IconButton(
                             icon: const Icon(HugeIcons.strokeRoundedCall02),
-                            tooltip: 'Call defendant',
+                            tooltip: 'বিবাদীকে কল করুন',
                             onPressed: (caseItem.defendant.phone.isEmpty)
                                 ? null
                                 : () async {
@@ -562,7 +562,7 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Case Status (inline update)
                   section(
-                    'Case Status',
+                    'কেসের অবস্থা',
                     Obx(() {
                       final current = controller.cases.firstWhere(
                         (c) => c.docId == caseItem.docId,
@@ -577,7 +577,7 @@ class CaseDetailScreen extends StatelessWidget {
                         menuMaxHeight: 320,
                         icon: const Icon(Icons.keyboard_arrow_down_rounded),
                         decoration: InputDecoration(
-                          labelText: 'Case Status',
+                          labelText: 'কেসের অবস্থা',
                           hintText: 'Select case status',
                           prefixIcon: const Icon(Icons.flag_outlined),
                           filled: true,
@@ -646,7 +646,7 @@ class CaseDetailScreen extends StatelessWidget {
                                 message: ok
                                     ? 'স্ট্যাটাস আপডেট হয়েছে'
                                     : 'স্ট্যাটাস আপডেট ব্যর্থ',
-                                buttonText: 'Okey',
+                                buttonText: 'ঠিক আছে',
                                 panaraDialogType: ok
                                     ? PanaraDialogType.success
                                     : PanaraDialogType.error,

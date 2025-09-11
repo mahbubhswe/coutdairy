@@ -103,14 +103,14 @@ class PartyTile extends StatelessWidget {
                   final items = <PopupMenuEntry<String>>[];
                   if (onEdit != null) {
                     items.add(
-                      const PopupMenuItem(value: 'edit', child: Text('Edit')),
+                      const PopupMenuItem(value: 'edit', child: Text('সম্পাদনা')),
                     );
                   }
                   if (onDelete != null) {
                     items.add(
                       const PopupMenuItem(
                         value: 'delete',
-                        child: Text('Delete'),
+                        child: Text('মুছে ফেলুন'),
                       ),
                     );
                   }

@@ -73,13 +73,13 @@ class AppSmsSender {
         if (kDebugMode) {
           print('SMS failed: ${response.data}');
         }
-        Get.snackbar('SMS', 'Failed to send message');
+        Get.snackbar('এসএমএস', 'বার্তা পাঠাতে ব্যর্থ');
       }
     } catch (e) {
       if (kDebugMode) {
         print('Error sending SMS: $e');
       }
-      Get.snackbar('SMS', 'Error sending message');
+      Get.snackbar('এসএমএস', 'বার্তা পাঠাতে ত্রুটি');
     }
   }
 }

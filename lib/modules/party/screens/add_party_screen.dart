@@ -161,7 +161,7 @@ class AddPartyScreen extends StatelessWidget {
                             PanaraInfoDialog.show(
                               context,
                               title: 'সফল',
-                              buttonText: 'Okey',
+                              buttonText: 'ঠিক আছে',
                               message: 'পার্টি সফলভাবে যুক্ত হয়েছে',
                               panaraDialogType: PanaraDialogType.success,
                               barrierDismissible: false,
@@ -174,7 +174,7 @@ class AddPartyScreen extends StatelessWidget {
                             PanaraInfoDialog.show(
                               context,
                               title: 'ত্রুটি',
-                              buttonText: 'Okey',
+                              buttonText: 'ঠিক আছে',
                               message: 'পার্টি যোগ করতে ব্যর্থ হয়েছে',
                               panaraDialogType: PanaraDialogType.error,
                               barrierDismissible: false,

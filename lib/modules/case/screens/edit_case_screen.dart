@@ -100,50 +100,50 @@ class EditCaseScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Case')),
+      appBar: AppBar(title: const Text('কেস সম্পাদনা')),
       body: Obx(() => DynamicMultiStepForm(
             steps: [
               FormStep(
-                title: const Text('Case Info'),
+                title: const Text('কেস তথ্য'),
                 content: Column(
                   spacing: 10,
                   children: [
                     caseTypeChips(),
                     AppTextFromField(
                       controller: controller.caseTitle,
-                      label: 'Case Title',
-                      hintText: 'Enter case title',
+                      label: 'কেসের শিরোনাম',
+                      hintText: 'কেসের শিরোনাম লিখুন',
                       prefixIcon: Icons.title,
                     ),
                     AppTypeAheadField(
                       controller: controller.courtName,
-                      label: 'Court Name',
-                      hintText: 'Enter court name',
+                      label: 'আদালতের নাম',
+                      hintText: 'আদালতের নাম লিখুন',
                       prefixIcon: Icons.account_balance,
                       suggestions: controller.allCourtNames,
                     ),
                     AppTextFromField(
                       controller: controller.caseNumber,
-                      label: 'Case Number',
-                      hintText: 'Enter case number',
+                      label: 'কেস নম্বর',
+                      hintText: 'কেস নম্বর লিখুন',
                       prefixIcon: Icons.numbers,
                     ),
                     AppTextFromField(
                       controller: controller.caseStatus,
-                      label: 'Case Status',
-                      hintText: 'Enter case status',
+                      label: 'কেসের অবস্থা',
+                      hintText: 'কেসের অবস্থা লিখুন',
                       prefixIcon: Icons.flag_outlined,
                     ),
                     AppTextFromField(
                       controller: controller.caseSummary,
-                      label: 'Summary',
-                      hintText: 'Enter summary',
+                      label: 'সারাংশ',
+                      hintText: 'সারাংশ লিখুন',
                       prefixIcon: Icons.description_outlined,
                       isMaxLines: 3,
                     ),
                     Obx(() => ListTile(
                           title: Text(controller.filedDate.value?.formattedDate ??
-                              'Filed Date'),
+                              'দাখিলের তারিখ'),
                           trailing:
                               const Icon(HugeIcons.strokeRoundedCalendar01),
                           onTap: () async {
@@ -161,33 +161,33 @@ class EditCaseScreen extends StatelessWidget {
                 ),
               ),
               FormStep(
-                title: const Text('Parties'),
+                title: const Text('পক্ষসমূহ'),
                 content: Column(
                   children: [
                     partyDropdown(
                       selected: controller.selectedPlaintiff,
-                      label: 'Plaintiff',
-                      hint: 'Select plaintiff',
+                      label: 'বাদী',
+                      hint: 'বাদী নির্বাচন করুন',
                       icon: Icons.person_outline,
                     ),
                     const SizedBox(height: 16),
                     partyDropdown(
                       selected: controller.selectedDefendant,
-                      label: 'Defendant',
-                      hint: 'Select defendant',
+                      label: 'বিবাদী',
+                      hint: 'বিবাদী নির্বাচন করুন',
                       icon: Icons.person_outline,
                     ),
                   ],
                 ),
               ),
               FormStep(
-                title: const Text('More'),
+                title: const Text('আরও'),
                 content: Column(
                   spacing: 10,
                   children: [
                     Obx(() => ListTile(
                           title: Text(controller.hearingDate.value?.formattedDate ??
-                              'Hearing Date'),
+                              'শুনানির তারিখ'),
                           trailing:
                               const Icon(HugeIcons.strokeRoundedCalendar01),
                           onTap: () async {
@@ -203,15 +203,15 @@ class EditCaseScreen extends StatelessWidget {
                         )),
                     AppTypeAheadField(
                       controller: controller.judgeName,
-                      label: 'Judge Name',
-                      hintText: 'Enter judge name',
+                      label: 'বিচারকের নাম',
+                      hintText: 'বিচারকের নাম লিখুন',
                       prefixIcon: Icons.gavel,
                       suggestions: controller.allJudgeNames,
                     ),
                     AppTextFromField(
                       controller: controller.courtOrder,
-                      label: 'Court Order',
-                      hintText: 'Enter court order',
+                      label: 'আদালতের আদেশ',
+                      hintText: 'আদালতের আদেশ লিখুন',
                       prefixIcon: Icons.article_outlined,
                     ),
                   ],
@@ -236,8 +236,8 @@ class EditCaseScreen extends StatelessWidget {
                   if (success) {
                     PanaraInfoDialog.show(
                       context,
-                      title: 'সফল হয়েছে',
-                      buttonText: 'Okey',
+                      title: 'সফল হয়েছে',
+                      buttonText: 'ঠিক আছে',
                       message: 'কেস আপডেট করা হয়েছে',
                       panaraDialogType: PanaraDialogType.success,
                       barrierDismissible: false,
@@ -250,8 +250,8 @@ class EditCaseScreen extends StatelessWidget {
                     PanaraInfoDialog.show(
                       context,
                       title: 'ত্রুটি',
-                      buttonText: 'Okey',
-                      message: 'কেস আপডেট করতে ব্যর্থ হয়েছে',
+                      buttonText: 'ঠিক আছে',
+                      message: 'কেস আপডেট করতে ব্যর্থ হয়েছে',
                       panaraDialogType: PanaraDialogType.error,
                       barrierDismissible: false,
                       onTapDismiss: () {
