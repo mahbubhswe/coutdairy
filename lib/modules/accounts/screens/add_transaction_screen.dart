@@ -144,40 +144,28 @@ class AddTransactionScreen extends StatelessWidget {
                           onTapCancel: () {
                             Navigator.of(context).pop();
                           },
-                          onTapConfirm: () async {
-                            Navigator.of(context).pop();
-                            final success = await controller.addTransaction();
-                            if (success) {
-                              PanaraInfoDialog.show(
-                                context,
-                                title: 'সফল হয়েছে',
-                                buttonText: 'ঠিক আছে',
-                                message: 'লেনদেন যুক্ত করা হয়েছে',
-                                panaraDialogType: PanaraDialogType.success,
-                                barrierDismissible: false,
-                                onTapDismiss: () {
-                                  Navigator.of(context).pop();
-                                  Get.back();
-                                },
-                              );
-                            } else {
-                              PanaraInfoDialog.show(
-                                context,
-                                title: 'ত্রুটি',
-                                buttonText: 'ঠিক আছে',
-                                message: 'লেনদেন যুক্ত করতে ব্যর্থ হয়েছে',
-                                panaraDialogType: PanaraDialogType.error,
-                                barrierDismissible: false,
-                                onTapDismiss: () {
-                                  Navigator.of(context).pop();
-                                },
-                              );
-                            }
-                          },
-                          panaraDialogType: PanaraDialogType.normal,
-                        );
-                      }
-                    : null,
+                            onTapConfirm: () async {
+                              Navigator.of(context).pop();
+                              final success = await controller.addTransaction();
+                              if (success) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('লেনদেন যুক্ত করা হয়েছে'),
+                                  ),
+                                );
+                                Get.back();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('লেনদেন যুক্ত করতে ব্যর্থ হয়েছে'),
+                                  ),
+                                );
+                              }
+                            },
+                            panaraDialogType: PanaraDialogType.normal,
+                          );
+                        }
+                      : null,
               ),
             ),
           )),

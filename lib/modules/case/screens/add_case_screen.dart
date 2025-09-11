@@ -322,29 +322,17 @@ class AddCaseScreen extends StatelessWidget {
                 Navigator.of(context).pop();
                 final success = await controller.addCase();
                 if (success) {
-                  PanaraInfoDialog.show(
-                    context,
-                    title: 'সফল হয়েছে',
-                    buttonText: 'ঠিক আছে',
-                    message: 'কেস যুক্ত করা হয়েছে',
-                    panaraDialogType: PanaraDialogType.success,
-                    barrierDismissible: false,
-                    onTapDismiss: () {
-                      Navigator.of(context).pop();
-                      Get.back();
-                    },
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('কেস যুক্ত করা হয়েছে'),
+                    ),
                   );
+                  Get.back();
                 } else {
-                  PanaraInfoDialog.show(
-                    context,
-                    title: 'ত্রুটি',
-                    buttonText: 'ঠিক আছে',
-                    message: 'কেস যুক্ত করতে ব্যর্থ হয়েছে',
-                    panaraDialogType: PanaraDialogType.error,
-                    barrierDismissible: false,
-                    onTapDismiss: () {
-                      Navigator.of(context).pop();
-                    },
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('কেস যুক্ত করতে ব্যর্থ হয়েছে'),
+                    ),
                   );
                 }
               },
