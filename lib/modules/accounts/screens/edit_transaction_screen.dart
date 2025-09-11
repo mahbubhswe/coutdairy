@@ -145,29 +145,17 @@ class EditTransactionScreen extends StatelessWidget {
                             final success =
                                 await controller.updateTransaction();
                             if (success) {
-                              PanaraInfoDialog.show(
-                                context,
-                                title: 'সফল হয়েছে',
-                                buttonText: 'ঠিক আছে',
-                                message: 'লেনদেন আপডেট করা হয়েছে',
-                                panaraDialogType: PanaraDialogType.success,
-                                barrierDismissible: false,
-                                onTapDismiss: () {
-                                  Navigator.of(context).pop();
-                                  Get.back();
-                                },
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('লেনদেন আপডেট করা হয়েছে'),
+                                ),
                               );
+                              Get.back();
                             } else {
-                              PanaraInfoDialog.show(
-                                context,
-                                title: 'ত্রুটি',
-                                buttonText: 'ঠিক আছে',
-                                message: 'লেনদেন আপডেট করতে ব্যর্থ হয়েছে',
-                                panaraDialogType: PanaraDialogType.error,
-                                barrierDismissible: false,
-                                onTapDismiss: () {
-                                  Navigator.of(context).pop();
-                                },
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('লেনদেন আপডেট করতে ব্যর্থ হয়েছে'),
+                                ),
                               );
                             }
                           },

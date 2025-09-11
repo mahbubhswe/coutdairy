@@ -241,21 +241,13 @@ class CaseDetailScreen extends StatelessWidget {
                                                 ok = true;
                                               }
                                             } catch (_) {}
-                                            PanaraInfoDialog.show(
-                                              context,
-                                              title: ok
-                                                  ? 'সফল হয়েছে'
-                                                  : 'ত্রুটি',
-                                              message: ok
-                                                  ? 'নেক্সট হিয়ারিং ডেট আপডেট হয়েছে'
-                                                  : 'আপডেট করতে ব্যর্থ',
-                                              buttonText: 'ঠিক আছে',
-                                              panaraDialogType: ok
-                                                  ? PanaraDialogType.success
-                                                  : PanaraDialogType.error,
-                                              barrierDismissible: false,
-                                              onTapDismiss: () =>
-                                                  Navigator.of(context).pop(),
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(ok
+                                                    ? 'নেক্সট হিয়ারিং ডেট আপডেট হয়েছে'
+                                                    : 'আপডেট করতে ব্যর্থ'),
+                                              ),
                                             );
                                           },
                                           panaraDialogType:
@@ -372,19 +364,13 @@ class CaseDetailScreen extends StatelessWidget {
                                               ok = true;
                                             }
                                           } catch (_) {}
-                                          PanaraInfoDialog.show(
-                                            context,
-                                            title: ok ? 'সফল হয়েছে' : 'ত্রুটি',
-                                            message: ok
-                                                ? 'নেক্সট অর্ডার আপডেট হয়েছে'
-                                                : 'আপডেট করতে ব্যর্থ',
-                                            buttonText: 'ঠিক আছে',
-                                            panaraDialogType: ok
-                                                ? PanaraDialogType.success
-                                                : PanaraDialogType.error,
-                                            barrierDismissible: false,
-                                            onTapDismiss: () =>
-                                                Navigator.of(context).pop(),
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(ok
+                                                  ? 'নেক্সট অর্ডার আপডেট হয়েছে'
+                                                  : 'আপডেট করতে ব্যর্থ'),
+                                            ),
                                           );
                                         },
                                         panaraDialogType:
@@ -640,18 +626,12 @@ class CaseDetailScreen extends StatelessWidget {
                               if (!ok) {
                                 controller.cases.refresh();
                               }
-                              PanaraInfoDialog.show(
-                                context,
-                                title: ok ? 'সফল হয়েছে' : 'ত্রুটি',
-                                message: ok
-                                    ? 'স্ট্যাটাস আপডেট হয়েছে'
-                                    : 'স্ট্যাটাস আপডেট ব্যর্থ',
-                                buttonText: 'ঠিক আছে',
-                                panaraDialogType: ok
-                                    ? PanaraDialogType.success
-                                    : PanaraDialogType.error,
-                                barrierDismissible: false,
-                                onTapDismiss: () => Navigator.of(context).pop(),
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(ok
+                                      ? 'স্ট্যাটাস আপডেট হয়েছে'
+                                      : 'স্ট্যাটাস আপডেট ব্যর্থ'),
+                                ),
                               );
                             },
                             panaraDialogType: PanaraDialogType.normal,

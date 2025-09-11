@@ -158,29 +158,17 @@ class AddPartyScreen extends StatelessWidget {
                           Navigator.of(context).pop();
                           final success = await controller.addParty();
                           if (success) {
-                            PanaraInfoDialog.show(
-                              context,
-                              title: 'সফল',
-                              buttonText: 'ঠিক আছে',
-                              message: 'পার্টি সফলভাবে যুক্ত হয়েছে',
-                              panaraDialogType: PanaraDialogType.success,
-                              barrierDismissible: false,
-                              onTapDismiss: () {
-                                Navigator.of(context).pop();
-                                Get.back();
-                              },
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('পার্টি সফলভাবে যুক্ত হয়েছে'),
+                              ),
                             );
+                            Get.back();
                           } else {
-                            PanaraInfoDialog.show(
-                              context,
-                              title: 'ত্রুটি',
-                              buttonText: 'ঠিক আছে',
-                              message: 'পার্টি যোগ করতে ব্যর্থ হয়েছে',
-                              panaraDialogType: PanaraDialogType.error,
-                              barrierDismissible: false,
-                              onTapDismiss: () {
-                                Navigator.of(context).pop();
-                              },
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('পার্টি যোগ করতে ব্যর্থ হয়েছে'),
+                              ),
                             );
                           }
                         },
