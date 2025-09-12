@@ -22,7 +22,6 @@ class AddCaseController extends GetxController {
 
   final RxnString selectedCaseType = RxnString();
   final RxnString selectedCourtType = RxnString();
-  final RxnString selectedCaseStatus = RxnString();
   final Rx<DateTime?> filedDate = Rx<DateTime?>(null);
   final Rx<DateTime?> hearingDate = Rx<DateTime?>(null);
 
@@ -32,7 +31,6 @@ class AddCaseController extends GetxController {
   final parties = <Party>[].obs;
   final caseTypes = ['Civil', 'Criminal', 'Family', 'Other'];
   final courtTypes = ['District', 'Appeal', 'High Court'];
-  final caseStatuses = ['Ongoing', 'Disposed', 'Completed'];
 
   final documents = <String>[].obs;
 
@@ -44,9 +42,6 @@ class AddCaseController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Set default case status to the first option
-    selectedCaseStatus.value = caseStatuses.first;
-
     final user = AppFirebase().currentUser;
     if (user != null) {
       PartyService.getParties(user.uid).listen((list) {
@@ -117,7 +112,7 @@ class AddCaseController extends GetxController {
         courtName: courtName.text.trim(),
         caseNumber: caseNumber.text.trim(),
         filedDate: Timestamp.fromDate(filedDate.value ?? DateTime.now()),
-        caseStatus: selectedCaseStatus.value ?? '',
+        caseStatus: 'Ongoing',
         plaintiff: selectedPlaintiff.value!,
         defendant: selectedDefendant.value!,
         nextHearingDate:

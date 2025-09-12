@@ -10,7 +10,6 @@ import 'package:panara_dialogs/panara_dialogs.dart';
 import '../../../utils/app_date_formatter.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../../local_library/text_from_field_wraper.dart';
-import '../../../widgets/app_dropdown.dart';
 
 import '../controllers/add_case_controller.dart';
 import '../../../models/party.dart';
@@ -62,57 +61,7 @@ class AddCaseScreen extends StatelessWidget {
       );
     }
 
-    Widget caseStatusDropdown() {
-      return Obx(
-        () => DropdownButtonFormField<String>(
-          value: controller.selectedCaseStatus.value,
-          isExpanded: true,
-          borderRadius: BorderRadius.circular(12),
-          menuMaxHeight: 320,
-          icon: const Icon(Icons.keyboard_arrow_down_rounded),
-          decoration: InputDecoration(
-            labelText: 'কেসের অবস্থা',
-            hintText: 'কেসের অবস্থা নির্বাচন করুন',
-            prefixIcon: const Icon(Icons.flag_outlined),
-            filled: true,
-            fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 8,
-            ),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.outlineVariant,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.primary,
-                width: 1.4,
-              ),
-            ),
-          ),
-          items: controller.caseStatuses
-              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-              .toList(),
-          onChanged: (v) => controller.selectedCaseStatus.value = v,
-        ),
-      );
-    }
-
-    Widget appCaseStatusDropdown() {
-      return Obx(() => AppDropdown(
-            value: controller.selectedCaseStatus.value,
-            label: 'Case Status',
-            hintText: 'Select current case status',
-            items: controller.caseStatuses,
-            prefixIcon: Icons.flag_outlined,
-            onChanged: (v) => controller.selectedCaseStatus.value = v,
-          ));
-    }
+    // Case status dropdown removed as case status defaults to 'Ongoing'
 
     Widget partyDropdown({
       required Rx<Party?> selected,
@@ -211,7 +160,6 @@ class AddCaseScreen extends StatelessWidget {
                       prefixIcon: Icons.numbers,
                       keyboardType: TextInputType.text,
                     ),
-                  appCaseStatusDropdown(),
                     AppTextFromField(
                       controller: controller.caseSummary,
                       label: 'সারাংশ',
