@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'modules/auth/controllers/auth_controller.dart';
 import 'modules/auth/controllers/local_auth_controller.dart';
 import 'modules/auth/screens/auth_view.dart';
+import 'modules/auth/screens/lock_screen.dart';
 import 'modules/layout/screens/layout_screen.dart';
 import 'navigation/app_transitions.dart';
 import 'services/app_initializer.dart';
@@ -102,9 +103,7 @@ class _AuthGate extends StatelessWidget {
     return Obx(() {
       if (auth.user.value != null) {
         if (localAuth.isEnabled.value && !localAuth.isAuthenticated.value) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+          return const LockScreen();
         }
         return LayoutScreen();
       } else {
