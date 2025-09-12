@@ -25,6 +25,7 @@ class DynamicMultiStepForm extends StatefulWidget {
     this.stepperType = StepperType.horizontal,
     this.controlsInBottom = false,
     this.stepIconColor,
+    this.headerColor,
     this.controlsPadding = const EdgeInsets.all(16),
     this.tightHorizontal = false,
     this.completedColor,
@@ -48,6 +49,9 @@ class DynamicMultiStepForm extends StatefulWidget {
 
   /// Custom color for the step index icons and connectors.
   final Color? stepIconColor;
+
+  /// Background color for the custom header when [tightHorizontal] is true.
+  final Color? headerColor;
 
   /// Padding for the fixed bottom controls area when [controlsInBottom] is true.
   final EdgeInsetsGeometry controlsPadding;
@@ -92,23 +96,25 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
       final Color inactive = cs.outlineVariant;
       final Color completed = widget.completedColor ?? Colors.teal;
 
-      Widget header = SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: widget.steps.asMap().entries.map((entry) {
-            final int idx = entry.key;
-            final bool isActive = idx <= _currentStep;
-            final bool isCurrent = idx == _currentStep;
-            final bool isCompleted = idx < _currentStep;
-            return GestureDetector(
-              onTap: () => setState(() => _currentStep = idx),
-              behavior: HitTestBehavior.opaque,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                child: Row(
-                  children: [
-                    // Step indicator
-                    Container(
+      Widget header = Container(
+        color: widget.headerColor,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: widget.steps.asMap().entries.map((entry) {
+              final int idx = entry.key;
+              final bool isActive = idx <= _currentStep;
+              final bool isCurrent = idx == _currentStep;
+              final bool isCompleted = idx < _currentStep;
+              return GestureDetector(
+                onTap: () => setState(() => _currentStep = idx),
+                behavior: HitTestBehavior.opaque,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                  child: Row(
+                    children: [
+                      // Step indicator
+                      Container(
                       width: 26,
                       height: 26,
                       decoration: BoxDecoration(

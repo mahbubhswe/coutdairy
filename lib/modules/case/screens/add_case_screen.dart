@@ -168,18 +168,18 @@ class AddCaseScreen extends StatelessWidget {
                       isMaxLines: 3,
                     ),
                     Obx(
-                      () => ListTile(
-                        dense: true,
-                        visualDensity: VisualDensity.compact,
-                        contentPadding: const EdgeInsets.symmetric(
+                      () => InputChip(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 12,
+                          vertical: 8,
                         ),
-                        title: Text(
+                        label: Text(
                           controller.filedDate.value?.formattedDate ??
                               'দাখিলের তারিখ',
                         ),
-                        trailing: const Icon(HugeIcons.strokeRoundedCalendar01),
-                        onTap: () async {
+                        avatar:
+                            const Icon(HugeIcons.strokeRoundedCalendar01),
+                        onPressed: () async {
                           final picked = await showDatePicker(
                             context: context,
                             initialDate:
@@ -187,8 +187,9 @@ class AddCaseScreen extends StatelessWidget {
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2100),
                           );
-                          if (picked != null)
+                          if (picked != null) {
                             controller.filedDate.value = picked;
+                          }
                         },
                       ),
                     ),
@@ -234,18 +235,18 @@ class AddCaseScreen extends StatelessWidget {
                       prefixIcon: Icons.article_outlined,
                     ),
                     Obx(
-                      () => ListTile(
-                        dense: true,
-                        visualDensity: VisualDensity.compact,
-                        contentPadding: const EdgeInsets.symmetric(
+                      () => InputChip(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 12,
+                          vertical: 8,
                         ),
-                        title: Text(
+                        label: Text(
                           controller.hearingDate.value?.formattedDate ??
                               'শুনানির তারিখ',
                         ),
-                        trailing: const Icon(HugeIcons.strokeRoundedCalendar01),
-                        onTap: () async {
+                        avatar:
+                            const Icon(HugeIcons.strokeRoundedCalendar01),
+                        onPressed: () async {
                           final picked = await showDatePicker(
                             context: context,
                             initialDate:
@@ -270,6 +271,7 @@ class AddCaseScreen extends StatelessWidget {
               vertical: 4,
             ),
             stepIconColor: AppColors.fixedPrimary,
+            headerColor: Theme.of(context).colorScheme.secondary,
             tightHorizontal: true,
             onSubmit: () {
               PanaraConfirmDialog.show(
