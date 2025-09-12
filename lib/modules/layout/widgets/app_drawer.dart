@@ -205,6 +205,7 @@ class AppDrawer extends StatelessWidget {
                       icon: Icons.fingerprint,
                       title: 'লোকাল অথেন্টিকেশন',
                       subtitle: enabled ? 'চালু' : 'বন্ধ',
+                      onTap: () => localAuthController.toggle(!enabled),
                       trailing: Switch.adaptive(
                         value: enabled,
                         onChanged: (v) => localAuthController.toggle(v),

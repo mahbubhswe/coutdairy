@@ -1,11 +1,11 @@
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../services/local_auth_service.dart';
 
 class LocalAuthController extends GetxController with WidgetsBindingObserver {
   final isEnabled = false.obs;
   final isAuthenticated = true.obs;
+  final isAuthenticating = false.obs;
 
   @override
   void onInit() {
@@ -33,7 +33,16 @@ class LocalAuthController extends GetxController with WidgetsBindingObserver {
   Future<void> toggle(bool value) async {
     if (value) {
       final success = await LocalAuthService.authenticate();
-      if (!success) return;
+      if (!success) {
+        Get.snackbar(
+          "ত্রুটি",
+          "অথেন্টিকেশন ব্যর্থ হয়েছে।",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.shade100,
+          colorText: Colors.black,
+        );
+        return;
+      }
     }
     isEnabled.value = value;
     await LocalAuthService.setEnabled(value);
@@ -48,10 +57,18 @@ class LocalAuthController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> authenticate() async {
+    isAuthenticating.value = true;
     final didAuth = await LocalAuthService.authenticate();
     isAuthenticated.value = didAuth;
+    isAuthenticating.value = false;
     if (!didAuth) {
-      SystemNavigator.pop();
+      Get.snackbar(
+        "ত্রুটি",
+        "অথেন্টিকেশন ব্যর্থ হয়েছে।",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.black,
+      );
     }
   }
 }
