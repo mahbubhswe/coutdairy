@@ -97,6 +97,8 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
       final Color completed = widget.completedColor ?? Colors.teal;
 
       Widget header = Container(
+        // Ensure the header background spans the full available width
+        width: double.infinity,
         color: widget.headerColor,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -110,68 +112,72 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
                 onTap: () => setState(() => _currentStep = idx),
                 behavior: HitTestBehavior.opaque,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 8,
+                  ),
                   child: Row(
                     children: [
                       // Step indicator
                       Container(
-                      width: 26,
-                      height: 26,
-                      decoration: BoxDecoration(
-                        // Fill the current step with the active color for strong contrast
-                        color: isCurrent ? active : Colors.transparent,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: isCompleted
-                              ? completed
-                              : (isActive ? active : inactive),
+                        width: 26,
+                        height: 26,
+                        decoration: BoxDecoration(
+                          // Fill the current step with the active color for strong contrast
+                          color: isCurrent ? active : Colors.transparent,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: isCompleted
+                                ? completed
+                                : (isActive ? active : inactive),
+                          ),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${idx + 1}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: isCurrent
+                                ? FontWeight.w600
+                                : FontWeight.w500,
+                            // Ensure the current number contrasts against its background
+                            color: isCurrent
+                                ? ((active.computeLuminance() < 0.5)
+                                      ? Colors.white
+                                      : Colors.black)
+                                : (isCompleted
+                                      ? completed
+                                      : (isActive ? active : inactive)),
+                          ),
                         ),
                       ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '${idx + 1}',
+                      const SizedBox(width: 6),
+                      DefaultTextStyle(
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 13,
+                          color: isActive ? cs.onSurface : cs.onSurfaceVariant,
                           fontWeight: isCurrent
                               ? FontWeight.w600
                               : FontWeight.w500,
-                          // Ensure the current number contrasts against its background
-                          color: isCurrent
-                              ? ((active.computeLuminance() < 0.5)
-                                  ? Colors.white
-                                  : Colors.black)
-                              : (isCompleted
-                                  ? completed
-                                  : (isActive ? active : inactive)),
                         ),
+                        child: entry.value.title,
                       ),
-                    ),
-                    const SizedBox(width: 6),
-                    DefaultTextStyle(
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: isActive ? cs.onSurface : cs.onSurfaceVariant,
-                        fontWeight: isCurrent
-                            ? FontWeight.w600
-                            : FontWeight.w500,
-                      ),
-                      child: entry.value.title,
-                    ),
-                    // connector
-                    if (idx != widget.steps.length - 1) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        width: 12,
-                        height: 2,
-                        color: (idx < _currentStep) ? completed : inactive,
-                      ),
-                      const SizedBox(width: 8),
+                      // connector
+                      if (idx != widget.steps.length - 1) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          width: 12,
+                          height: 2,
+                          color: (idx < _currentStep) ? completed : inactive,
+                        ),
+                        const SizedBox(width: 8),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
-              ),
-            );
-          }).toList(),
+              );
+            }).toList(),
+          ),
         ),
       );
 

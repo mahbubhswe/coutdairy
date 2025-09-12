@@ -130,6 +130,8 @@ class AddCaseScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 5),
+
                     titledChipRow(
                       title: 'কেসের ধরন',
                       options: controller.caseTypes,
@@ -177,8 +179,7 @@ class AddCaseScreen extends StatelessWidget {
                           controller.filedDate.value?.formattedDate ??
                               'দাখিলের তারিখ',
                         ),
-                        avatar:
-                            const Icon(HugeIcons.strokeRoundedCalendar01),
+                        avatar: const Icon(HugeIcons.strokeRoundedCalendar01),
                         onPressed: () async {
                           final picked = await showDatePicker(
                             context: context,
@@ -201,6 +202,7 @@ class AddCaseScreen extends StatelessWidget {
                 content: Column(
                   spacing: 10,
                   children: [
+                    SizedBox(height: 5),
                     partyDropdown(
                       selected: controller.selectedPlaintiff,
                       label: 'বাদী',
@@ -220,7 +222,10 @@ class AddCaseScreen extends StatelessWidget {
                 title: const Text('আরও'),
                 content: Column(
                   spacing: 10,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    SizedBox(height: 5),
+
                     AppTypeAheadField(
                       controller: controller.judgeName,
                       label: 'বিচারকের নাম',
@@ -244,8 +249,7 @@ class AddCaseScreen extends StatelessWidget {
                           controller.hearingDate.value?.formattedDate ??
                               'শুনানির তারিখ',
                         ),
-                        avatar:
-                            const Icon(HugeIcons.strokeRoundedCalendar01),
+                        avatar: const Icon(HugeIcons.strokeRoundedCalendar01),
                         onPressed: () async {
                           final picked = await showDatePicker(
                             context: context,
@@ -297,9 +301,14 @@ class AddCaseScreen extends StatelessWidget {
                         SnackBar(
                           content: Row(
                             children: const [
-                              Icon(Icons.check_circle_outline, color: Colors.white),
+                              Icon(
+                                Icons.check_circle_outline,
+                                color: Colors.white,
+                              ),
                               SizedBox(width: 10),
-                              Expanded(child: Text('Success')), // customize message if needed
+                              Expanded(
+                                child: Text('Success'),
+                              ), // customize message if needed
                             ],
                           ),
                         ),
@@ -320,7 +329,9 @@ class AddCaseScreen extends StatelessWidget {
                             children: const [
                               Icon(Icons.error_outline, color: Colors.white),
                               SizedBox(width: 10),
-                              Expanded(child: Text('Failed')), // customize message if needed
+                              Expanded(
+                                child: Text('Failed'),
+                              ), // customize message if needed
                             ],
                           ),
                         ),
