@@ -188,7 +188,7 @@ class Themes {
       ),
     ),
     textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(foregroundColor: _darkSecondary),
+      style: TextButton.styleFrom(foregroundColor: _darkPrimary),
     ),
 
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
