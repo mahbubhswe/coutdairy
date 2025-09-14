@@ -1,5 +1,6 @@
 package com.appseba.court_dairy
 
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity : FlutterActivity()
+// Mirror the primary Activity to avoid build issues if this package is referenced.
+class MainActivity : FlutterFragmentActivity()

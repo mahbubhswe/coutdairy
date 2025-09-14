@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../services/local_auth_service.dart';
+import '../services/pin_lock_service.dart';
+import '../screens/app_lock_screen.dart';
 
 class LocalAuthController extends GetxController with WidgetsBindingObserver {
   final isEnabled = false.obs;
@@ -32,11 +35,17 @@ class LocalAuthController extends GetxController with WidgetsBindingObserver {
 
   Future<void> toggle(bool value) async {
     if (value) {
-      final success = await LocalAuthService.authenticate();
-      if (!success) {
+      // PIN-only mode: ensure a PIN exists or create one
+      final pinSet = await PinLockService.isPinSet();
+      bool ok = pinSet;
+      if (!pinSet) {
+        final created = await Get.to(() => const AppLockScreen(setupMode: true));
+        ok = created == true;
+      }
+      if (!ok) {
         Get.snackbar(
-          "ত্রুটি",
-          "অথেন্টিকেশন ব্যর্থ হয়েছে।",
+          'অথেন্টিকেশন ব্যর্থ হয়েছে',
+          'লক চালু করতে একটি অ্যাপ পিন সেট করুন।',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red.shade100,
           colorText: Colors.black,
@@ -58,13 +67,18 @@ class LocalAuthController extends GetxController with WidgetsBindingObserver {
 
   Future<void> authenticate() async {
     isAuthenticating.value = true;
-    final didAuth = await LocalAuthService.authenticate();
+    bool didAuth = false;
+    final pinSet = await PinLockService.isPinSet();
+    if (pinSet) {
+      final unlocked = await Get.to(() => const AppLockScreen());
+      didAuth = unlocked == true;
+    }
     isAuthenticated.value = didAuth;
     isAuthenticating.value = false;
     if (!didAuth) {
       Get.snackbar(
-        "ত্রুটি",
-        "অথেন্টিকেশন ব্যর্থ হয়েছে।",
+        'অথেন্টিকেশন ব্যর্থ হয়েছে',
+        'আনলক করতে সেটিংস থেকে অ্যাপ পিন সেট করুন।',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red.shade100,
         colorText: Colors.black,

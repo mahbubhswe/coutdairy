@@ -217,8 +217,8 @@ class AppDrawer extends StatelessWidget {
                   _infoTile(
                     context,
                     icon: Icons.password,
-                    title: 'পিন পরিবর্তন করুন',
-                    subtitle: 'অ্যাপ লকের পিন আপডেট করুন',
+                    title: 'Change PIN',
+                    subtitle: 'Update your app lock PIN',
                     hasArrow: true,
                     onTap: () async {
                       final hasPin = await PinLockService.isPinSet();
@@ -228,32 +228,29 @@ class AppDrawer extends StatelessWidget {
                       }
                       final created = await Get.to(() => const AppLockScreen(setupMode: true));
                       if (created == true) {
-                        Get.snackbar('সফল হয়েছে', 'পিন সফলভাবে আপডেট হয়েছে', snackPosition: SnackPosition.BOTTOM);
+                        Get.snackbar('Success', 'PIN updated successfully', snackPosition: SnackPosition.BOTTOM);
                       }
                     },
                   ),
                   _infoTile(
                     context,
                     icon: Icons.lock_reset,
-                    title: 'পিন রিসেট করুন',
-                    subtitle: 'অ্যাপ লকের পিন মুছে ফেলুন',
+                    title: 'Reset PIN',
+                    subtitle: 'Remove your app lock PIN',
                     onTap: () async {
-                      // Require current PIN before allowing reset
-                      final verified = await Get.to(() => const AppLockScreen());
-                      if (verified != true) return;
                       final confirm = await showCupertinoDialog<bool>(
                         context: context,
                         builder: (ctx) => CupertinoAlertDialog(
-                          title: const Text('পিন রিসেট করবেন?'),
-                          content: const Text('এতে আপনার অ্যাপের পিন মুছে যাবে। পরে নতুন পিন সেট করতে পারবেন।'),
+                          title: const Text('Reset PIN?'),
+                          content: const Text('This will remove your app PIN. You can set a new one later.'),
                           actions: [
                             CupertinoDialogAction(
-                              child: const Text('বাতিল'),
+                              child: const Text('Cancel'),
                               onPressed: () => Navigator.of(ctx).pop(false),
                             ),
                             CupertinoDialogAction(
                               isDestructiveAction: true,
-                              child: const Text('রিসেট'),
+                              child: const Text('Reset'),
                               onPressed: () => Navigator.of(ctx).pop(true),
                             ),
                           ],
@@ -264,7 +261,7 @@ class AppDrawer extends StatelessWidget {
                         if (localAuthController.isEnabled.value) {
                           await localAuthController.toggle(false);
                         }
-                        Get.snackbar('পিন মুছে ফেলা হয়েছে', 'যেকোনো সময় নতুন পিন সেট করতে পারেন', snackPosition: SnackPosition.BOTTOM);
+                        Get.snackbar('PIN removed', 'You can set a new PIN anytime', snackPosition: SnackPosition.BOTTOM);
                       }
                     },
                   ),
@@ -454,3 +451,4 @@ class AppDrawer extends StatelessWidget {
     );
   }
 }
+
