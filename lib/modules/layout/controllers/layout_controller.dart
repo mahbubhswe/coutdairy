@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+import '../../auth/controllers/local_auth_controller.dart';
 import '../../case/controllers/case_controller.dart';
 import '../../case/screens/overdue_cases_screen.dart';
 import '../services/layout_service.dart';
@@ -14,6 +15,7 @@ class LayoutController extends GetxController {
   final ScrollController scrollController = ScrollController();
   final isDashboardVisible = true.obs;
   final caseController = Get.put(CaseController());
+  final localAuthController = Get.find<LocalAuthController>();
 
   final _isShowingOverdueSheet = false.obs;
   final _hasShownOverdueSheetOnce = false.obs;
@@ -31,6 +33,9 @@ class LayoutController extends GetxController {
     ever(caseController.cases, (_) => _maybeShowOverdueSheet());
     ever<bool>(caseController.isLoading, (loading) {
       if (loading == false) _maybeShowOverdueSheet();
+    });
+    ever<bool>(localAuthController.isAuthenticated, (isAuthenticated) {
+      if (isAuthenticated) _maybeShowOverdueSheet();
     });
     // Start a 5s delay window before we are allowed to show the sheet
     _overdueDelayTimer?.cancel();
@@ -68,6 +73,7 @@ class LayoutController extends GetxController {
     if (_isShowingOverdueSheet.value || _hasShownOverdueSheetOnce.value) return;
 
     if (caseController.isLoading.value) return;
+    if (!localAuthController.isAuthenticated.value) return;
 
     final overdue = caseController.overdueCases;
     if (overdue.isEmpty) return;
