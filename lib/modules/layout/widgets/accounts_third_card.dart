@@ -47,7 +47,7 @@ class AccountsThirdCard extends StatelessWidget {
         spacing: 5,
         children: [
           Row(
-            spacing: 5,
+            spacing: 10,
             children: [
               Expanded(
                 child: AccountsCard(
@@ -66,7 +66,7 @@ class AccountsThirdCard extends StatelessWidget {
             ],
           ),
           Row(
-            spacing: 5,
+            spacing: 10,
             children: [
               Expanded(
                 child: AccountsCard(

@@ -60,7 +60,7 @@ class Themes {
       unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
       indicatorSize: TabBarIndicatorSize.tab,
       indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(color: Colors.black, width: 3.0),
+        borderSide: BorderSide(color: Colors.black, width: 1.0),
       ),
 
       dividerColor: Colors.transparent,
@@ -100,7 +100,6 @@ class Themes {
 
     // Note: Flutter ThemeData does not have `dropdownButtonTheme`.
     // Per-widget styling handled via wrappers and InputDecoration.
-
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
       elevation: 8,
@@ -111,9 +110,7 @@ class Themes {
       ),
       showCloseIcon: true,
       closeIconColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
 
     pageTransitionsTheme: const PageTransitionsTheme(
@@ -205,7 +202,6 @@ class Themes {
 
     // Note: Flutter ThemeData does not have `dropdownButtonTheme`.
     // Per-widget styling handled via wrappers and InputDecoration.
-
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
       elevation: 8,
@@ -216,9 +212,7 @@ class Themes {
       ),
       showCloseIcon: true,
       closeIconColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
 
     pageTransitionsTheme: const PageTransitionsTheme(

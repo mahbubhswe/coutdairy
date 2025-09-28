@@ -1,3 +1,4 @@
+import 'package:court_dairy/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -17,7 +18,7 @@ class AccountsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final accent = theme.colorScheme.primary;
+    final accent = isDark ? Colors.tealAccent : AppColors.fixedPrimary;
     final numberFormatter = NumberFormat.currency(
       locale: 'bn_BD',
       symbol: '',

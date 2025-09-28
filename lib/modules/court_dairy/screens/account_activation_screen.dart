@@ -108,7 +108,6 @@ class _ActivationPlanCard extends StatelessWidget {
     final payableActivationCharge = controller.payableActivationCharge;
     final hasDiscount = controller.hasDiscount;
     final discountPercentage = controller.discountPercentage;
-    final discountAmount = controller.discountAmount;
     final discountLabel = discountPercentage % 1 == 0
         ? discountPercentage.toStringAsFixed(0)
         : discountPercentage.toStringAsFixed(2);
@@ -160,137 +159,147 @@ class _ActivationPlanCard extends StatelessWidget {
       );
     }
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            cs.primary.withOpacity(0.12),
-            cs.primaryContainer.withOpacity(0.08),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          planTitle,
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w800,
+          ),
         ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: cs.primary.withOpacity(0.18)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 28,
-            offset: const Offset(0, 18),
+        const SizedBox(height: 12),
+
+        // Stack ব্যবহার করে ডিসকাউন্ট ব্যাজ ও কন্টেন্ট
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
+          decoration: BoxDecoration(
+            color: cs.surface,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: cs.primary.withOpacity(0.24)),
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            planTitle,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
-            decoration: BoxDecoration(
-              color: cs.surface,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: cs.primary.withOpacity(0.24)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  feeLabel,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: cs.primary,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.2,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                if (hasDiscount)
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    _formatAmount(activationCharge),
+                    feeLabel,
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: cs.onSurfaceVariant,
-                      decoration: TextDecoration.lineThrough,
-                    ),
-                  ),
-                Text(
-                  _formatAmount(payableActivationCharge),
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: cs.onSurface,
-                  ),
-                ),
-                if (hasDiscount) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    '${_toBanglaDigits(discountLabel)}% ডিসকাউন্ট এর পর মূল্য',
-                    style: theme.textTheme.bodyMedium?.copyWith(
                       color: cs.primary,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 8),
+                  if (hasDiscount)
+                    Text(
+                      _formatAmount(activationCharge),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: Colors.red, // কাটা দামের রঙ লাল
+                        decoration: TextDecoration.lineThrough,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   Text(
-                    'মোট ডিসকাউন্ট: ${_formatAmount(discountAmount)}',
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    _formatAmount(payableActivationCharge),
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: cs.onSurface,
+                    ),
+                  ),
+                  if (hasDiscount) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      '${_toBanglaDigits(discountLabel)}% ডিসকাউন্ট এর পর মূল্য',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: cs.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 6),
+                  Text(
+                    durationSummary,
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       color: cs.onSurfaceVariant,
                     ),
                   ),
                 ],
-                const SizedBox(height: 6),
-                Text(
-                  durationSummary,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: cs.onSurfaceVariant,
+              ),
+
+              // ডিসকাউন্ট ব্যাজ (টপ রাইট)
+              if (hasDiscount)
+                Positioned(
+                  right: -6,
+                  top: -12,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(14),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      '${_toBanglaDigits(discountLabel)}% OFF',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              _FeaturePoint(
-                text:
-                    'পেমেন্ট করার সাথে সাথেই অটোমেটিক একাউন্ট একটিভ হয়ে যাবে।',
-              ),
-              SizedBox(height: 10),
-              _FeaturePoint(
-                text: 'প্রফেশনাল সাপোর্ট টিম থেকে অগ্রাধিকার সহায়তা।',
-              ),
-              SizedBox(height: 10),
-              _FeaturePoint(text: 'চেম্বারের ডাটা ও তথ্য নিরাপদে সংরক্ষণ।'),
             ],
           ),
-          const SizedBox(height: 28),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: controller.activatePlan,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                backgroundColor: cs.primary,
-                foregroundColor: cs.onPrimary,
-                elevation: 0,
+        ),
+
+        const SizedBox(height: 24),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            _FeaturePoint(
+              text: 'পেমেন্ট করার সাথে সাথেই অটোমেটিক একাউন্ট একটিভ হয়ে যাবে।',
+            ),
+            SizedBox(height: 10),
+            _FeaturePoint(
+              text: 'প্রফেশনাল সাপোর্ট টিম থেকে অগ্রাধিকার সহায়তা।',
+            ),
+            SizedBox(height: 10),
+            _FeaturePoint(text: 'চেম্বারের ডাটা ও তথ্য নিরাপদে সংরক্ষণ।'),
+          ],
+        ),
+        const SizedBox(height: 28),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: controller.activatePlan,
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
               ),
-              child: const Text(
-                'এখনই পেমেন্ট করে অ্যাক্টিভ করুন',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
+              backgroundColor: cs.primary,
+              foregroundColor: cs.onPrimary,
+              elevation: 0,
+            ),
+            child: const Text(
+              'এখনই পেমেন্ট করে অ্যাক্টিভ করুন',
+              style: TextStyle(fontWeight: FontWeight.w700),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

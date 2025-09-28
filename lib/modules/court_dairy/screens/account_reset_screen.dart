@@ -40,13 +40,19 @@ class AccountResetController extends GetxController {
     try {
       HapticFeedback.heavyImpact();
       await _resetAllData();
-      Get.snackbar('সম্পন্ন', 'সব কেস, পক্ষ এবং লেনদেন মুছে ফেলা হয়েছে।',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(
+        'সম্পন্ন',
+        'সব কেস, পক্ষ এবং লেনদেন মুছে ফেলা হয়েছে।',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } catch (e) {
-      Get.snackbar('ত্রুটি', e.toString(),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red.shade100,
-          colorText: Colors.black);
+      Get.snackbar(
+        'ত্রুটি',
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.black,
+      );
     } finally {
       isResetting.value = false;
       holdProgress.value = 0.0;
@@ -92,10 +98,7 @@ class AccountResetScreen extends StatelessWidget {
     final dangerTextColor = Colors.red.shade700;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('অ্যাকাউন্ট রিসেট'),
-        iconTheme: IconThemeData(color: cs.onPrimary),
-      ),
+      appBar: AppBar(title: const Text('অ্যাকাউন্ট রিসেট')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -161,7 +164,7 @@ class AccountResetScreen extends StatelessWidget {
                             color: dangerColor.withOpacity(0.08),
                             blurRadius: 18,
                             offset: const Offset(0, 8),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -187,17 +190,18 @@ class AccountResetScreen extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.delete_forever,
-                                size: 22,
-                                color:
-                                    p > 0.5 ? Colors.white : dangerTextColor),
+                            Icon(
+                              Icons.delete_forever,
+                              size: 22,
+                              color: p > 0.5 ? Colors.white : dangerTextColor,
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               resetting
                                   ? 'রিসেট হচ্ছে...'
                                   : (p <= 0
-                                      ? 'অ্যাকাউন্ট রিসেট করতে ধরে রাখুন (৩.০ সেকেন্ড)'
-                                      : 'ধরে থাকুন... (${timeLeft.toStringAsFixed(1)}সেকেন্ড)'),
+                                        ? 'অ্যাকাউন্ট রিসেট করতে ধরে রাখুন (৩.০ সেকেন্ড)'
+                                        : 'ধরে থাকুন... (${timeLeft.toStringAsFixed(1)}সেকেন্ড)'),
                               style: TextStyle(
                                 fontWeight: FontWeight.w800,
                                 color: p > 0.5 ? Colors.white : dangerTextColor,
@@ -248,14 +252,10 @@ class _DangerChip extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             label,
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(color: color, fontWeight: FontWeight.w600),
           ),
         ],
       ),
     );
   }
 }
-
