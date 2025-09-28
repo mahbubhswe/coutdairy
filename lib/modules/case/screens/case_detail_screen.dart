@@ -37,9 +37,20 @@ class CaseDetailScreen extends StatelessWidget {
     }
 
     Widget section(String title, Widget child) {
+      final isDark = theme.brightness == Brightness.dark;
+      final cardColor = isDark
+          ? theme.colorScheme.surface
+          : theme.colorScheme.surfaceVariant.withOpacity(0.7);
+      final borderColor = theme.colorScheme.outline.withOpacity(isDark ? 0.2 : 0.4);
+
       return SizedBox(
         width: double.infinity,
         child: Card(
+          color: cardColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: borderColor),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
