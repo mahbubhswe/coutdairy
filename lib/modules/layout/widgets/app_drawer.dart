@@ -1,3 +1,4 @@
+import 'package:court_dairy/themes/theme_controller.dart';
 import 'package:court_dairy/utils/app_date_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ class AppDrawer extends StatelessWidget {
   final layoutController = Get.find<LayoutController>();
   final authController = Get.find<AuthController>();
   final localAuthController = Get.find<LocalAuthController>();
+  final themeController = Get.find<ThemeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -209,6 +211,23 @@ class AppDrawer extends StatelessWidget {
                       trailing: Switch.adaptive(
                         value: enabled,
                         onChanged: (v) => localAuthController.toggle(v),
+                      ),
+                    );
+                  }),
+                  Obx(() {
+                    final isDarkMode = themeController.isDarkMode;
+                    return _infoTile(
+                      context,
+                      icon: isDarkMode
+                          ? Icons.dark_mode_outlined
+                          : Icons.light_mode_outlined,
+                      title: 'থিম মোড',
+                      subtitle:
+                          isDarkMode ? 'ডার্ক মোড সক্রিয়' : 'লাইট মোড সক্রিয়',
+                      onTap: themeController.toggleTheme,
+                      trailing: Switch.adaptive(
+                        value: isDarkMode,
+                        onChanged: (_) => themeController.toggleTheme(),
                       ),
                     );
                   }),
