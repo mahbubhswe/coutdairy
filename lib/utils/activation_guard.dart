@@ -1,7 +1,6 @@
-import 'package:get/get.dart';
-
-import '../modules/layout/controllers/layout_controller.dart';
-import '../modules/court_dairy/screens/account_activation_screen.dart';
+﻿import 'package:get/get.dart';
+import 'package:court_dairy/modules/court_dairy/screens/screens.dart';
+import 'package:court_dairy/modules/layout/controllers/layout_controller.dart';
 
 class ActivationGuard {
   /// Returns true if the current lawyer account is active.
@@ -14,7 +13,6 @@ class ActivationGuard {
     }
   }
 
-  /// Ensures the account is active before performing an action.
   /// Navigates to [AccountActivationScreen] and returns false if inactive.
   static bool check() {
     if (isActive()) return true;

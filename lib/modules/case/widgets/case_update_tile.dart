@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 
 import '../../../models/court_case.dart';
 import '../../../utils/app_date_formatter.dart';
+import '../../../utils/activation_guard.dart';
 import '../controllers/case_controller.dart';
 
 class CaseUpdateTile extends StatelessWidget {
@@ -28,6 +29,7 @@ class CaseUpdateTile extends StatelessWidget {
         trailing: IconButton(
           icon: const Icon(HugeIcons.strokeRoundedCalendar01),
           onPressed: () async {
+            if (!ActivationGuard.check()) return;
             final picked = await showDatePicker(
               context: context,
               initialDate: DateTime.now(),

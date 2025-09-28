@@ -111,7 +111,7 @@ class LayoutService {
       smsBalance: parseInt(map['smsBalance']),
       balance: parseDouble(map['balance']),
       isActive: map['isActive'] == true,
-      subFor: parseInt(map['subFor']),
+      subEndsAt: parseDate(map['subEndsAt']),
       subStartsAt: parseDate(map['subStartsAt']),
       courts: parseStringList(map['courts']),
       judges: parseStringList(map['judges']),

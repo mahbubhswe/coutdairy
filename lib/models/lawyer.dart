@@ -9,9 +9,9 @@ class Lawyer {
   final int smsBalance;
   final double balance;
   final bool isActive;
-  final int subFor;
   final DateTime subStartsAt;
-  final List<String> courts; // ✅ New field
+  final DateTime subEndsAt;
+  final List<String> courts;
   final List<String> judges;
 
   Lawyer({
@@ -22,7 +22,7 @@ class Lawyer {
     required this.smsBalance,
     required this.balance,
     required this.isActive,
-    required this.subFor,
+    required this.subEndsAt,
     required this.subStartsAt,
     this.courts = const [],
     this.judges = const [],
@@ -37,7 +37,7 @@ class Lawyer {
       'smsBalance': smsBalance,
       'balance': balance,
       'isActive': isActive,
-      'subFor': subFor,
+      'subEndsAt': subEndsAt,
       'subStartsAt': subStartsAt,
       'courts': courts, // ✅ Save courts list
       'judges': judges,
@@ -54,13 +54,11 @@ class Lawyer {
       smsBalance: map['smsBalance'] ?? 0,
       balance: (map['balance'] ?? 0).toDouble(),
       isActive: map['isActive'] ?? false,
-      subFor: map['subFor'] ?? 0,
       subStartsAt: (map['subStartsAt'] as Timestamp).toDate(),
-      courts: List<String>.from(map['courts'] ?? []), // ✅ Load courts safely
+      subEndsAt: (map['subEndsAt'] as Timestamp).toDate(),
+      courts: List<String>.from(map['courts'] ?? []), 
       judges: List<String>.from(map['judges'] ?? []),
     );
   }
 
-  /// Get subscription end date
-  DateTime get subscriptionEndsAt => subStartsAt.add(Duration(days: subFor));
 }

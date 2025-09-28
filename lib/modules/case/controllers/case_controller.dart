@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../models/court_case.dart';
 import '../../../services/app_firebase.dart';
 import '../services/case_service.dart';
+import '../../../utils/activation_guard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CaseController extends GetxController {
@@ -118,6 +119,7 @@ class CaseController extends GetxController {
   }
 
   Future<void> updateNextHearingDate(CourtCase c, DateTime date) async {
+    if (!ActivationGuard.check()) return;
     final user = AppFirebase().currentUser;
     if (user == null || c.docId == null) return;
     final ts = Timestamp.fromDate(date);

@@ -1,8 +1,5 @@
 import 'dart:io' show Platform;
-
 import 'package:android_intent_plus/android_intent.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../services/local_notification.dart';

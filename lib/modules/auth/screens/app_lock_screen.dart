@@ -131,7 +131,8 @@ class _AppLockScreenState extends State<AppLockScreen> {
     } else {
       background = colors.surfaceVariant.withOpacity(0.7);
       foreground =
-          theme.textTheme.bodyMedium?.color?.withOpacity(0.7) ?? colors.onSurfaceVariant;
+          theme.textTheme.bodyMedium?.color?.withOpacity(0.7) ??
+          colors.onSurfaceVariant;
       borderColor = colors.outline.withOpacity(0.3);
     }
 
@@ -141,7 +142,10 @@ class _AppLockScreenState extends State<AppLockScreen> {
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: borderColor, width: active || complete ? 1.4 : 1),
+        border: Border.all(
+          color: borderColor,
+          width: active || complete ? 1.4 : 1,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -188,8 +192,9 @@ class _AppLockScreenState extends State<AppLockScreen> {
         hintText: 'শুধু সংখ্যা লিখুন',
         counterText: '',
         filled: true,
-        fillColor:
-            enabled ? colors.surfaceVariant.withOpacity(0.5) : colors.surfaceVariant.withOpacity(0.25),
+        fillColor: enabled
+            ? colors.surfaceVariant.withOpacity(0.5)
+            : colors.surfaceVariant.withOpacity(0.25),
         prefixIcon: Icon(icon, color: colors.primary),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -204,7 +209,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
           borderSide: BorderSide(color: colors.outline.withOpacity(0.35)),
         ),
       ),
-      inputFormatters: const [FilteringTextInputFormatter.digitsOnly],
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       textInputAction: TextInputAction.done,
       onSubmitted: (_) => onSubmitted(),
     );
@@ -215,29 +220,19 @@ class _AppLockScreenState extends State<AppLockScreen> {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
     final instruction = widget.setupMode
-        ? (_confirmPhase ? 'নতুন পিনটি নিশ্চিত করুন' : '৪ বা ততোধিক ডিজিটের পিন দিন')
+        ? (_confirmPhase
+              ? 'নতুন পিনটি নিশ্চিত করুন'
+              : '৪ বা ততোধিক ডিজিটের পিন দিন')
         : 'আপনার পিন লিখুন';
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
+       extendBodyBehindAppBar: true,
       backgroundColor: colors.surface,
-      appBar: AppBar(
-        title: Text(widget.setupMode ? 'অ্যাপ পিন সেট করুন' : 'অ্যাপ আনলক করুন'),
-        centerTitle: true,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        systemOverlayStyle:
-            theme.brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
-      ),
+
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              colors.primaryContainer.withOpacity(0.75),
-              colors.surface,
-            ],
+            colors: [colors.primaryContainer.withOpacity(0.75), colors.surface],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -250,9 +245,14 @@ class _AppLockScreenState extends State<AppLockScreen> {
               child: Card(
                 elevation: 12,
                 clipBehavior: Clip.antiAlias,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 36),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 28,
+                    vertical: 36,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -273,7 +273,9 @@ class _AppLockScreenState extends State<AppLockScreen> {
                             ),
                           ),
                           child: Icon(
-                            widget.setupMode ? Icons.lock_reset_rounded : Icons.lock_open_rounded,
+                            widget.setupMode
+                                ? Icons.lock_reset_rounded
+                                : Icons.lock_open_rounded,
                             size: 36,
                             color: colors.onPrimary,
                           ),
@@ -283,14 +285,18 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       Text(
                         widget.setupMode ? 'নিরাপদ পিন সেট করুন' : 'স্বাগতম!',
                         textAlign: TextAlign.center,
-                        style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w600),
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         instruction,
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.textTheme.bodyMedium?.color?.withOpacity(0.75),
+                          color: theme.textTheme.bodyMedium?.color?.withOpacity(
+                            0.75,
+                          ),
                         ),
                       ),
                       if (widget.setupMode) ...[
@@ -326,24 +332,33 @@ class _AppLockScreenState extends State<AppLockScreen> {
                             ? const SizedBox.shrink(key: ValueKey('no-error'))
                             : Container(
                                 key: const ValueKey('error'),
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
                                 decoration: BoxDecoration(
                                   color: colors.error.withOpacity(0.08),
                                   borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(color: colors.error.withOpacity(0.4)),
+                                  border: Border.all(
+                                    color: colors.error.withOpacity(0.4),
+                                  ),
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Icon(Icons.error_outline_rounded, color: colors.error),
+                                    Icon(
+                                      Icons.error_outline_rounded,
+                                      color: colors.error,
+                                    ),
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
                                         _error!,
-                                        style: theme.textTheme.bodyMedium?.copyWith(
-                                          color: colors.error,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
+                                              color: colors.error,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                       ),
                                     ),
                                   ],
@@ -387,14 +402,18 @@ class _AppLockScreenState extends State<AppLockScreen> {
                                   ),
                                 ],
                               )
-                            : const SizedBox.shrink(key: ValueKey('empty-confirm')),
+                            : const SizedBox.shrink(
+                                key: ValueKey('empty-confirm'),
+                              ),
                       ),
                       const SizedBox(height: 24),
                       FilledButton.icon(
                         onPressed: _onSubmit,
                         icon: Icon(
                           widget.setupMode
-                              ? (_confirmPhase ? Icons.check_circle_outline : Icons.arrow_forward_rounded)
+                              ? (_confirmPhase
+                                    ? Icons.check_circle_outline
+                                    : Icons.arrow_forward_rounded)
                               : Icons.lock_open_rounded,
                         ),
                         label: Text(
@@ -404,7 +423,9 @@ class _AppLockScreenState extends State<AppLockScreen> {
                         ),
                         style: FilledButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          textStyle: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                          textStyle: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -412,7 +433,9 @@ class _AppLockScreenState extends State<AppLockScreen> {
                         'ব্যক্তিগত নিরাপত্তা নিশ্চিত করতে পিন কাউকে জানাবেন না।',
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                          color: theme.textTheme.bodySmall?.color?.withOpacity(
+                            0.7,
+                          ),
                         ),
                       ),
                     ],

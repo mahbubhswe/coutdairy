@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'modules/auth/controllers/auth_controller.dart';
 import 'modules/auth/controllers/local_auth_controller.dart';
 import 'modules/auth/screens/auth_view.dart';
-import 'modules/auth/screens/lock_screen.dart';
 import 'modules/layout/screens/layout_screen.dart';
 import 'navigation/app_transitions.dart';
 import 'services/app_initializer.dart';
@@ -103,12 +102,47 @@ class _AuthGate extends StatelessWidget {
     return Obx(() {
       if (auth.user.value != null) {
         if (localAuth.isEnabled.value && !localAuth.isAuthenticated.value) {
-          return const LockScreen();
+          return const _LockedView();
         }
         return LayoutScreen();
       } else {
         return const AuthScreen();
       }
     });
+  }
+}
+
+class _LockedView extends StatelessWidget {
+  const _LockedView();
+
+  @override
+  Widget build(BuildContext context) {
+    final localAuth = Get.find<LocalAuthController>();
+
+    return Scaffold(
+      body: Center(
+        child: Obx(() {
+          if (localAuth.isAuthenticating.value) {
+            return const CircularProgressIndicator();
+          }
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.lock_outline, size: 64),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: localAuth.authenticate,
+                child: const Text('Unlock app'),
+              ),
+              const SizedBox(height: 12),
+              TextButton(
+                onPressed: () => SystemNavigator.pop(),
+                child: const Text('Exit app'),
+              ),
+            ],
+          );
+        }),
+      ),
+    );
   }
 }

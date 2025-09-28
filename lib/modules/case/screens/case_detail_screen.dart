@@ -194,6 +194,7 @@ class CaseDetailScreen extends StatelessWidget {
                                   ),
                                   IconButton(
                                     onPressed: () async {
+                                      if (!ActivationGuard.check()) return;
                                       final picked = await showDatePicker(
                                         context: context,
                                         initialDate: DateTime.now(),
@@ -294,6 +295,7 @@ class CaseDetailScreen extends StatelessWidget {
                                   ),
                                   IconButton(
                                     onPressed: () async {
+                                      if (!ActivationGuard.check()) return;
                                       final controllerText =
                                           TextEditingController();
                                       final result = await showDialog<String>(

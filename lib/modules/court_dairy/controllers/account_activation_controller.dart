@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../services/account_activation_service.dart';
 import '../services/payment_service.dart';
 import '../../../utils/app_config.dart';

@@ -23,7 +23,6 @@ void showNewUserDialog() {
                 ),
                 const SizedBox(height: 12),
                 const Text(
-                  'আপনি ৩০ দিনের ফ্রি ট্রায়েল পেয়েছেন।\n'
                   'Court Diary এর সকল ফিচার ব্যবহার করে দেখুন।',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, height: 1.4),
@@ -33,6 +32,7 @@ void showNewUserDialog() {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
+                      Get.back();
                       Get.to(
                         () => const AddPartyScreen(),
                         fullscreenDialog: true,

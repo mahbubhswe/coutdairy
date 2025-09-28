@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import '../../auth/controllers/auth_controller.dart';
 import '../../auth/controllers/local_auth_controller.dart';
 import '../../auth/screens/app_lock_screen.dart';
@@ -98,10 +99,7 @@ class AppDrawer extends StatelessWidget {
             );
           }
 
-          // Compute subscription info only when lawyer doc is available
-          final now = DateTime.now();
-          final subscriptionEnd = lawyer.subscriptionEndsAt;
-          final daysLeft = subscriptionEnd.difference(now).inDays;
+
 
           final lastSignIn = user.metadata.lastSignInTime;
           final formattedSignIn = lastSignIn != null
@@ -275,32 +273,28 @@ class AppDrawer extends StatelessWidget {
                   _sectionHeader(context, 'সাবস্ক্রিপশন বিস্তারিত'),
 
                   const SizedBox(height: 8),
+              
                   _infoTile(
                     context,
                     icon: CupertinoIcons.calendar,
                     title: 'মেয়াদ',
-                    subtitle: '${lawyer.subFor} দিন',
+                    subtitle:
+                        '${lawyer.subEndsAt.difference(lawyer.subStartsAt).inDays} দিন',
                   ),
+
                   _infoTile(
                     context,
                     icon: CupertinoIcons.clock_fill,
                     title: 'শুরু তারিখ',
-                    subtitle: lawyer.subStartsAt.formattedDate,
+                    subtitle: DateFormat().format(lawyer.subStartsAt),
                   ),
                   _infoTile(
                     context,
                     icon: CupertinoIcons.timer,
                     title: 'শেষ তারিখ',
-                    subtitle: subscriptionEnd.formattedDate,
+                    subtitle: DateFormat().format(lawyer.subEndsAt),
                   ),
-                  _infoTile(
-                    context,
-                    icon: CupertinoIcons.hourglass,
-                    title: 'বাকি দিন',
-                    subtitle: daysLeft > 0
-                        ? '$daysLeft দিন বাকি'
-                        : 'মেয়াদ শেষ',
-                  ),
+           
 
                   const SizedBox(height: 36),
 

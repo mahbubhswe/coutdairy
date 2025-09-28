@@ -11,6 +11,7 @@ import '../../../services/app_firebase.dart';
 import '../../party/services/party_service.dart';
 import '../services/case_service.dart';
 import '../../../constants/app_collections.dart';
+import '../../../utils/activation_guard.dart';
 
 class AddCaseController extends GetxController {
   final caseTitle = TextEditingController();
@@ -101,8 +102,11 @@ class AddCaseController extends GetxController {
   }
 
   Future<bool> addCase() async {
+    if (isLoading.value) return false;
+    if (!ActivationGuard.check()) return false;
+
     final user = AppFirebase().currentUser;
-    if (user == null || isLoading.value) return false;
+    if (user == null) return false;
     try {
       isLoading.value = true;
       final caseModel = CourtCase(
