@@ -65,7 +65,7 @@ class CaseService {
         .doc(docId);
     await _firestore.runTransaction((tx) async {
       final snap = await tx.get(docRef);
-      final data = snap.data() as Map<String, dynamic>?;
+      final data = snap.data();
       final next = data?['nextHearingDate'];
       if (next == date) {
         tx.update(docRef, {'nextHearingDate': null});
@@ -89,7 +89,7 @@ class CaseService {
         .doc(docId);
     await _firestore.runTransaction((tx) async {
       final snap = await tx.get(docRef);
-      final data = snap.data() as Map<String, dynamic>?;
+      final data = snap.data();
       final next = data?['courtNextOrder'];
       if (next == order) {
         tx.update(docRef, {'courtNextOrder': null});
@@ -121,7 +121,7 @@ class CaseService {
         .doc(docId);
     await _firestore.runTransaction((tx) async {
       final snap = await tx.get(docRef);
-      final data = snap.data() as Map<String, dynamic>?;
+      final data = snap.data();
       final currentNext = data?['nextHearingDate'];
       final updates = <String, dynamic>{
         'nextHearingDate': newDate,
@@ -142,7 +142,7 @@ class CaseService {
         .doc(docId);
     await _firestore.runTransaction((tx) async {
       final snap = await tx.get(docRef);
-      final data = snap.data() as Map<String, dynamic>?;
+      final data = snap.data();
       final currentNext = data?['courtNextOrder'];
       final updates = <String, dynamic>{
         'courtNextOrder': order,

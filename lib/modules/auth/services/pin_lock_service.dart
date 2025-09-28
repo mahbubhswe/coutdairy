@@ -12,8 +12,6 @@ class PinLockService {
     try {
       // Use crypto if declared in pubspec (resolved at runtime by pub get)
       // ignore: avoid_dynamic_calls
-      final crypto = (JsonEncoder() // dummy to avoid import warning
-          );
     } catch (_) {}
     // Minimal portable hash without external deps
     final bytes = utf8.encode('$salt::$pin');

@@ -25,17 +25,6 @@ class CaseDetailScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final statuses = const ['Ongoing', 'Disposed', 'Completed'];
 
-    Widget chip(String text, {Color? color, IconData? icon}) {
-      return Chip(
-        avatar: icon != null
-            ? Icon(icon, size: 18, color: theme.colorScheme.onPrimary)
-            : null,
-        label: Text(text, style: TextStyle(color: theme.colorScheme.onPrimary)),
-        backgroundColor: color ?? theme.colorScheme.primary,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-      );
-    }
-
     Widget section(String title, Widget child) {
       return Container(
         width: double.infinity,
@@ -616,7 +605,6 @@ class CaseDetailScreen extends StatelessWidget {
                             .toList(),
                         onChanged: (v) async {
                           if (v == null) return;
-                          final old = current.caseStatus;
                           PanaraConfirmDialog.show(
                             context,
                             title: 'নিশ্চিত করুন',

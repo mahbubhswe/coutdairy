@@ -123,8 +123,6 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final Color shadowColor = widget.shadowColor ?? theme.shadowColor;
-    final Color borderColorUnFocused = widget.borderColor ?? cs.outlineVariant;
-    final Color borderColorFocused = widget.borderFocusedColor ?? cs.primary;
     final Color fillColor = cs.surface;
     // Remove outline border entirely
     Color borderColor = Colors.transparent;

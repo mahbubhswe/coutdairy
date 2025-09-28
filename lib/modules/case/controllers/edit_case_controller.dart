@@ -76,13 +76,9 @@ class EditCaseController extends GetxController {
     }
 
     // Ensure Dropdown `value` matches one of the `items` references
-    if (caseModel.plaintiff != null) {
-      selectedPlaintiff.value = _matchFromList(caseModel.plaintiff) ?? null;
+    selectedPlaintiff.value = _matchFromList(caseModel.plaintiff);
+    selectedDefendant.value = _matchFromList(caseModel.defendant);
     }
-    if (caseModel.defendant != null) {
-      selectedDefendant.value = _matchFromList(caseModel.defendant) ?? null;
-    }
-  }
 
   Future<void> _loadSuggestions(String uid) async {
     final doc = await AppFirebase()
