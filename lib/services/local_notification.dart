@@ -13,6 +13,8 @@ class LocalNotificationService {
   final notificationsPlugin = FlutterLocalNotificationsPlugin();
   bool isInit = false;
   bool get isInited => isInit;
+  bool? _canScheduleExactAlarms;
+  bool get canScheduleExactAlarms => _canScheduleExactAlarms ?? false;
 
   Future<void> initialize({Function(String?)? onTap}) async {
     if (isInit) return;
@@ -53,11 +55,7 @@ class LocalNotificationService {
       // Do NOT proactively request exact alarm permission; many devices show a
       // disabled toggle causing a confusing loop. We'll fallback to inexact.
       // We'll still query capability to help decide behavior at schedule time.
-      try {
-        await androidPlugin?.canScheduleExactNotifications();
-      } catch (_) {
-        // Ignore if not supported
-      }
+      await _refreshExactAlarmCapability(androidPlugin);
     }
     // iOS permissions
     if (Platform.isIOS) {
@@ -138,6 +136,7 @@ class LocalNotificationService {
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
+    final scheduleMode = await _resolveAndroidScheduleMode();
     try {
       await notificationsPlugin.zonedSchedule(
         id,
@@ -145,22 +144,96 @@ class LocalNotificationService {
         body,
         scheduledDate,
         notificationDetails(),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: scheduleMode,
         matchDateTimeComponents: DateTimeComponents.time,
         payload: payload,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime,
       );
     } on PlatformException catch (_) {
-      // Fallback to inexact schedule at roughly the same time
-      await notificationsPlugin.zonedSchedule(
-        id,
-        title,
-        body,
-        scheduledDate,
-        notificationDetails(),
-        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-        matchDateTimeComponents: DateTimeComponents.time,
-        payload: payload,
-      );
+      if (scheduleMode == AndroidScheduleMode.exactAllowWhileIdle) {
+        // Retry immediately with an inexact schedule if exact scheduling is
+        // not permitted (e.g. the user denied exact alarm permission).
+        await notificationsPlugin.zonedSchedule(
+          id,
+          title,
+          body,
+          scheduledDate,
+          notificationDetails(),
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          matchDateTimeComponents: DateTimeComponents.time,
+          payload: payload,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.wallClockTime,
+        );
+        _canScheduleExactAlarms = false;
+      } else {
+        rethrow;
+      }
     }
+  }
+
+  Future<AndroidScheduleMode> _resolveAndroidScheduleMode() async {
+    if (!Platform.isAndroid) {
+      return AndroidScheduleMode.exactAllowWhileIdle;
+    }
+    final canExact = await _ensureExactCapability();
+    return canExact
+        ? AndroidScheduleMode.exactAllowWhileIdle
+        : AndroidScheduleMode.inexactAllowWhileIdle;
+  }
+
+  Future<bool> _ensureExactCapability() async {
+    if (!Platform.isAndroid) return true;
+    if (_canScheduleExactAlarms != null) {
+      return _canScheduleExactAlarms!;
+    }
+    final androidPlugin = notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    await _refreshExactAlarmCapability(androidPlugin);
+    return _canScheduleExactAlarms ?? false;
+  }
+
+  Future<void> _refreshExactAlarmCapability(
+    AndroidFlutterLocalNotificationsPlugin? androidPlugin,
+  ) async {
+    if (!Platform.isAndroid) {
+      _canScheduleExactAlarms = true;
+      return;
+    }
+    try {
+      final result = await androidPlugin?.canScheduleExactNotifications();
+      _canScheduleExactAlarms = result ?? false;
+    } catch (_) {
+      _canScheduleExactAlarms = false;
+    }
+  }
+
+  Future<void> refreshAndroidExactAlarmCapability() async {
+    final androidPlugin = notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    await _refreshExactAlarmCapability(androidPlugin);
+  }
+
+  Future<void> scheduleGlobalDailyReminders() async {
+    await scheduleDailyAtTime(
+      id: 2,
+      title: 'আগামীকালের কেস',
+      body: 'আগামীকালের কেস দেখতে ট্যাপ করুন।',
+      hour: 16,
+      minute: 0,
+      payload: 'tomorrow_cases',
+    );
+
+    await scheduleDailyAtTime(
+      id: 310,
+      title: 'অপারেটিং কেস আপডেট করুন',
+      body: 'অপারেটিং কেস আপডেট করতে ট্যাপ করুন।',
+      hour: 0,
+      minute: 0,
+      payload: 'overdue_cases',
+    );
   }
 }

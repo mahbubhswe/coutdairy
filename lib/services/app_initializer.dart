@@ -64,30 +64,9 @@ class AppInitializer {
       );
     } catch (_) {}
     // Daily reminders via alarm-based scheduling
-    unawaited(
-      localNoti
-          .scheduleDailyAtTime(
-            id: 2,
-            title: 'আগামীকালের কেস',
-            body: 'আগামীকালের কেস দেখতে ট্যাপ করুন।',
-            hour: 16,
-            minute: 0,
-            payload: 'tomorrow_cases',
-          )
-          .catchError((_) {}),
-    );
-    unawaited(
-      localNoti
-          .scheduleDailyAtTime(
-            id: 310,
-            title: 'অপারেটিং কেস আপডেট করুন',
-            body: 'অপারেটিং কেস আপডেট করতে ট্যাপ করুন।',
-            hour: 0,
-            minute: 0,
-            payload: 'overdue_cases',
-          )
-          .catchError((_) {}),
-    );
+    try {
+      await localNoti.scheduleGlobalDailyReminders();
+    } catch (_) {}
 
     // Exact-alarm prompt moved to MyApp builder (after UI mounts)
 

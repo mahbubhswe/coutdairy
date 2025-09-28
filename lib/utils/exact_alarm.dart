@@ -1,6 +1,6 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 import 'package:android_intent_plus/android_intent.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../services/local_notification.dart';
 
@@ -9,20 +9,12 @@ import '../services/local_notification.dart';
 Future<void> askForExactAlarmPermissionIfNeeded() async {
   if (!Platform.isAndroid) return;
 
-  final androidPlugin = LocalNotificationService()
-      .notificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
-
-  bool canExact = false;
-  try {
-    canExact = (await (androidPlugin?.canScheduleExactNotifications() ??
-        Future.value(false)))!;
-  } catch (_) {
-    canExact = false;
+  final service = LocalNotificationService();
+  await service.refreshAndroidExactAlarmCapability();
+  if (service.canScheduleExactAlarms) {
+    await service.scheduleGlobalDailyReminders();
+    return;
   }
-
-  if (canExact) return;
 
   // Directly open the native settings screen without an in-app dialog
   const packageName = 'com.appseba.courtdiary';
@@ -39,5 +31,13 @@ Future<void> askForExactAlarmPermissionIfNeeded() async {
       data: 'package:$packageName',
     );
     await fallback.launch();
+  }
+
+  // Give the system a moment after returning from settings before checking
+  // the permission state again, then reschedule the reminders if allowed.
+  await Future.delayed(const Duration(seconds: 1));
+  await service.refreshAndroidExactAlarmCapability();
+  if (service.canScheduleExactAlarms) {
+    await service.scheduleGlobalDailyReminders();
   }
 }
