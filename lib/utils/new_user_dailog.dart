@@ -76,14 +76,17 @@ void showNewUserDialog() {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'আপনি ৩০ দিনের ফ্রি ট্রায়াল চালু করেছেন। Court Diary এর সকল প্রিমিয়াম ফিচার নির্দ্বিধায় ব্যবহার করে দেখুন।',
+                  'আপনি ৩০ দিনের ফ্রি ট্রায়াল পেয়েছেন। Court Diary এর সকল প্রিমিয়াম ফিচার নির্দ্বিধায় ব্যবহার করে দেখুন।',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
                 ),
                 if (pricingMessage != null) ...[
                   const SizedBox(height: 18),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       color: cs.primaryContainer.withOpacity(0.18),
@@ -96,7 +99,9 @@ void showNewUserDialog() {
                         Expanded(
                           child: Text(
                             pricingMessage,
-                            style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              height: 1.6,
+                            ),
                           ),
                         ),
                       ],
@@ -132,9 +137,7 @@ void showNewUserDialog() {
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: () => Get.back(),
-                  style: TextButton.styleFrom(
-                    foregroundColor: cs.primary,
-                  ),
+                  style: TextButton.styleFrom(foregroundColor: cs.primary),
                   child: const Text('পরে মনে করিয়ে দিন'),
                 ),
               ],

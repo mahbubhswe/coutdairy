@@ -30,6 +30,7 @@ class LayoutScreen extends GetView<LayoutController> {
             appBar: AppBar(
               leadingWidth: 40,
               titleSpacing: 0,
+              elevation: 0,
               title: const Text('Court Diary'),
               actions: [
                 IconButton(
@@ -77,6 +78,7 @@ class LayoutScreen extends GetView<LayoutController> {
                   curve: Curves.easeInOut,
                   child: FloatingActionButton(
                     onPressed: () {
+                      
                       if (!ActivationGuard.check()) return;
                       final index = DefaultTabController.of(context).index;
                       if (index == 0) {

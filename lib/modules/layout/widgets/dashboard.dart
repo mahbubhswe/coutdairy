@@ -10,30 +10,32 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 125,
-          child: Swiper(
-            itemCount: 3,
-            loop: true,
-            autoplay: true,
-            viewportFraction: 0.94,
-            scale: 0.98,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 125,
+            child: Swiper(
+              itemCount: 3,
+              loop: true,
+              autoplay: true,
+              scale: 0.98,
 
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return AccountsFirstCard();
-              }
-              if (index == 1) {
-                return AccountsSecondCard();
-              }
-              return AccountsThirdCard();
-            },
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return AccountsFirstCard();
+                }
+                if (index == 1) {
+                  return AccountsSecondCard();
+                }
+                return AccountsThirdCard();
+              },
+            ),
           ),
-        ),
-        const AppText(),
-      ],
+          const AppText(),
+        ],
+      ),
     );
   }
 }
