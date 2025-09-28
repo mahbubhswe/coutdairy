@@ -90,8 +90,7 @@ class CaseScreen extends StatelessWidget {
 
 Widget filterChip(
     BuildContext context, String key, String label, CaseController controller) {
-  final appBarColor = Theme.of(context).appBarTheme.backgroundColor ??
-      Theme.of(context).colorScheme.primary;
+  final outlineColor = Theme.of(context).colorScheme.outline;
   final selected = controller.selectedFilter.value == key;
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -102,7 +101,7 @@ Widget filterChip(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(
-          color: selected ? Colors.transparent : appBarColor,
+          color: selected ? Colors.transparent : outlineColor,
         ),
       ),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
