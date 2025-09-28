@@ -6,8 +6,39 @@ import '../services/payment_service.dart';
 import '../../../utils/app_config.dart';
 
 class AccountActivationController extends GetxController {
-  int get activationCharge => AppConfigService.config?.activationCharge ?? 0;
-  int get activationValidity => AppConfigService.config?.activationValidity ?? 0;
+  static const int _targetValidityDays = 365;
+
+  int get _configuredActivationCharge =>
+      AppConfigService.config?.activationCharge ?? 0;
+  int get _configuredActivationValidity =>
+      AppConfigService.config?.activationValidity ?? 0;
+
+  /// Returns the activation charge normalised to a one year plan.
+  ///
+  /// The backend stores the base charge and validity (for example a monthly
+  /// subscription). To make sure the user only activates the account for a
+  /// full year, we convert that configuration to a yearly payment by
+  /// multiplying the base charge with the number of periods that fit into a
+  /// year. The multiplier is rounded to the nearest whole number so that
+  /// monthly (≈30 days) configurations map cleanly to twelve months.
+  int get activationCharge {
+    final charge = _configuredActivationCharge;
+    final validity = _configuredActivationValidity;
+
+    if (charge <= 0) return 0;
+    if (validity <= 0) return charge;
+
+    final multiplier = (_targetValidityDays / validity).round();
+    final safeMultiplier = multiplier < 1 ? 1 : multiplier;
+
+    return charge * safeMultiplier;
+  }
+
+  /// Users can only activate their account for exactly one year at a time.
+  int get activationValidity => _targetValidityDays;
+
+  int get baseActivationCharge => _configuredActivationCharge;
+  int get baseActivationValidity => _configuredActivationValidity;
 
   final ScrollController scrollController = ScrollController();
   Timer? _scrollTimer;
