@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../services/local_storage.dart';
 
 class ThemeController extends GetxController {
-  final _isDarkMode = true.obs; // default to dark mode
+  final _isDarkMode = false.obs; // default to light mode
 
   /// Getter for current theme mode.
   bool get isDarkMode => _isDarkMode.value;
@@ -27,6 +27,6 @@ class ThemeController extends GetxController {
   /// Load theme from storage.
   void _loadTheme() {
     bool? storedTheme = LocalStorageService.read("isDarkMode");
-    _isDarkMode.value = storedTheme ?? true; // default to dark if unset
+    _isDarkMode.value = storedTheme ?? false; // default to light if unset
   }
 }
