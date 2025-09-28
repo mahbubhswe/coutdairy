@@ -146,27 +146,56 @@ class CaseDetailScreen extends StatelessWidget {
                 spacing: 5,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header summary - gradient container
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  // Header summary - gradient container (same as profile screen)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      gradient: LinearGradient(
+                        colors: [
+                          theme.colorScheme.primary.withOpacity(0.15),
+                          theme.colorScheme.primary.withOpacity(0.05),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 8,
                       children: [
                         Text(
                           caseItem.caseTitle,
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w700,
-                            color: theme.colorScheme.onSurface,
                           ),
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          'কেস নং: ${caseItem.caseNumber}',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.textTheme.bodyMedium?.color
-                                ?.withOpacity(0.9),
-                          ),
+                        Row(
+                          children: [
+                            const Icon(Icons.gavel_outlined, size: 18),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'কেস নং: ${caseItem.caseNumber}',
+                                style: theme.textTheme.bodyMedium,
+                              ),
+                            ),
+                          ],
                         ),
+                        if (caseItem.caseType.isNotEmpty)
+                          Row(
+                            children: [
+                              const Icon(Icons.category_outlined, size: 18),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'কেস টাইপ: ${caseItem.caseType}',
+                                  style: theme.textTheme.bodyMedium,
+                                ),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ),
