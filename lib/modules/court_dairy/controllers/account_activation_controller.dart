@@ -6,7 +6,7 @@ import '../services/payment_service.dart';
 import '../../../utils/app_config.dart';
 
 class AccountActivationController extends GetxController {
-  int get monthlyCharge => AppConfigService.config?.activationCharge ?? 0;
+  int get activationCharge => AppConfigService.config?.activationCharge ?? 0;
 
   final ScrollController scrollController = ScrollController();
   Timer? _scrollTimer;
@@ -39,27 +39,17 @@ class AccountActivationController extends GetxController {
     });
   }
 
-  Future<void> activateForMonths({required int months}) async {
-    final double total;
-    if (months == 6) {
-      total = monthlyCharge * 6 * 0.90; // 10% off
-    } else if (months == 12) {
-      total = monthlyCharge * 12 * 0.75; // 25% off
-    } else {
-      total = monthlyCharge * months.toDouble();
-    }
-
-    // bKash typically operates in whole BDT; ensure integer amount
-    final amountForPayment = double.parse(total.toStringAsFixed(0));
-    final success = await PaymentService.payNow(amount: amountForPayment);
+  Future<void> activateYearly() async {
+    final amount = activationCharge.toDouble();
+    final success = await PaymentService.payNow(amount: amount);
 
     if (success) {
       try {
-        await AccountActivationService.markAccountActivated(days: months * 30);
+        await AccountActivationService.markAccountActivated(days: 365);
         Get.back();
         Get.snackbar(
           'সফল হয়েছে',
-          '$months মাসের জন্য আপনার অ্যাকাউন্ট সক্রিয় হয়েছে।',
+          'এক বছরের জন্য আপনার অ্যাকাউন্ট সক্রিয় হয়েছে।',
           backgroundColor: Colors.white,
           colorText: Colors.green,
         );
