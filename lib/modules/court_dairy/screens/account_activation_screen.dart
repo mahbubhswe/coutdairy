@@ -35,7 +35,7 @@ class AccountActivationScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _YearlyPlanCard(controller: controller),
+                    _ActivationPlanCard(controller: controller),
                     const SizedBox(height: 24),
                     const AppFooter(),
                   ],
@@ -49,8 +49,8 @@ class AccountActivationScreen extends StatelessWidget {
   }
 }
 
-class _YearlyPlanCard extends StatelessWidget {
-  const _YearlyPlanCard({required this.controller});
+class _ActivationPlanCard extends StatelessWidget {
+  const _ActivationPlanCard({required this.controller});
   final AccountActivationController controller;
 
   String _formatAmount(int amount) {
@@ -92,6 +92,36 @@ class _YearlyPlanCard extends StatelessWidget {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final activationCharge = controller.activationCharge;
+    final validityDays = controller.activationValidity;
+
+    String planTitle;
+    String feeLabel;
+    String durationSummary;
+    String accessDescription;
+
+    if (validityDays >= 365) {
+      planTitle = 'বার্ষিক অ্যাক্টিভেশন প্যাকেজ';
+      feeLabel = 'বার্ষিক ফি';
+      durationSummary = 'এক বছর মেয়াদী সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।';
+      accessDescription = 'পুরো বছরের';
+    } else if (validityDays >= 30) {
+      planTitle = 'মাসিক অ্যাক্টিভেশন প্যাকেজ';
+      feeLabel = 'মাসিক ফি';
+      durationSummary = 'এক মাস মেয়াদি সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।';
+      accessDescription = 'পুরো মাসের';
+    } else if (validityDays > 0) {
+      planTitle = 'অ্যাক্টিভেশন প্যাকেজ';
+      feeLabel = 'সাবস্ক্রিপশন ফি';
+      durationSummary =
+          '${_toBanglaDigits(validityDays.toString())} দিনের সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।';
+      accessDescription =
+          '${_toBanglaDigits(validityDays.toString())} দিনের সীমিত সময়ের';
+    } else {
+      planTitle = 'অ্যাক্টিভেশন প্যাকেজ';
+      feeLabel = 'সাবস্ক্রিপশন ফি';
+      durationSummary = 'সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।';
+      accessDescription = 'সীমিত সময়ের';
+    }
 
     if (activationCharge <= 0) {
       return Container(
@@ -159,14 +189,14 @@ class _YearlyPlanCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'বার্ষিক অ্যাক্টিভেশন প্যাকেজ',
+                      planTitle,
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w800,
                       ),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'চেম্বারের জন্য পুরো বছরের অ্যাক্সেস আনলক করুন এবং সব ফিচার সীমাহীনভাবে ব্যবহার করুন। পেমেন্ট সম্পূর্ণ নিরাপদ ও ডাটাবেসে সংরক্ষিত হারে সম্পন্ন হবে।',
+                      'চেম্বারের জন্য $accessDescription অ্যাক্সেস আনলক করুন এবং সব ফিচার সীমাহীনভাবে ব্যবহার করুন। পেমেন্ট সম্পূর্ণ নিরাপদ ও ডাটাবেসে সংরক্ষিত হারে সম্পন্ন হবে।',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: cs.onSurfaceVariant,
                         height: 1.5,
@@ -190,7 +220,7 @@ class _YearlyPlanCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'বার্ষিক ফি',
+                  feeLabel,
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: cs.primary,
                     fontWeight: FontWeight.w700,
@@ -207,7 +237,7 @@ class _YearlyPlanCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'একটি বছর মেয়াদী সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।',
+                  durationSummary,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: cs.onSurfaceVariant,
                   ),
@@ -230,7 +260,7 @@ class _YearlyPlanCard extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: controller.activateYearly,
+              onPressed: controller.activatePlan,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(

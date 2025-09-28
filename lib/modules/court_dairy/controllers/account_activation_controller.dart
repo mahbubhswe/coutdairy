@@ -7,6 +7,7 @@ import '../../../utils/app_config.dart';
 
 class AccountActivationController extends GetxController {
   int get activationCharge => AppConfigService.config?.activationCharge ?? 0;
+  int get activationValidity => AppConfigService.config?.activationValidity ?? 0;
 
   final ScrollController scrollController = ScrollController();
   Timer? _scrollTimer;
@@ -39,17 +40,18 @@ class AccountActivationController extends GetxController {
     });
   }
 
-  Future<void> activateYearly() async {
+  Future<void> activatePlan() async {
     final amount = activationCharge.toDouble();
+    final validity = activationValidity > 0 ? activationValidity : 30;
     final success = await PaymentService.payNow(amount: amount);
 
     if (success) {
       try {
-        await AccountActivationService.markAccountActivated(days: 365);
+        await AccountActivationService.markAccountActivated(days: validity);
         Get.back();
         Get.snackbar(
           'সফল হয়েছে',
-          'এক বছরের জন্য আপনার অ্যাকাউন্ট সক্রিয় হয়েছে।',
+          '${_durationLabel(validity)} জন্য আপনার অ্যাকাউন্ট সক্রিয় হয়েছে।',
           backgroundColor: Colors.white,
           colorText: Colors.green,
         );
@@ -69,6 +71,38 @@ class AccountActivationController extends GetxController {
         colorText: Colors.red,
       );
     }
+  }
+
+  String _durationLabel(int days) {
+    if (days >= 365) {
+      return 'এক বছরের';
+    } else if (days >= 30) {
+      return 'এক মাসের';
+    } else if (days > 0) {
+      return '${_toBanglaDigits(days.toString())} দিনের';
+    }
+
+    return 'সীমিত সময়ের';
+  }
+
+  String _toBanglaDigits(String value) {
+    const englishToBangla = {
+      '0': '০',
+      '1': '১',
+      '2': '২',
+      '3': '৩',
+      '4': '৪',
+      '5': '৫',
+      '6': '৬',
+      '7': '৭',
+      '8': '৮',
+      '9': '৯',
+    };
+
+    return value
+        .split('')
+        .map((char) => englishToBangla[char] ?? char)
+        .join();
   }
 
   @override
