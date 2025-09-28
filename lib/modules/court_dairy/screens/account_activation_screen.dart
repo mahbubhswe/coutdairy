@@ -63,7 +63,28 @@ class _YearlyPlanCard extends StatelessWidget {
         buffer.write(',');
       }
     }
-    return 'BDT ${buffer.toString()}';
+    return '৳ ${_toBanglaDigits(buffer.toString())}';
+  }
+
+  String _toBanglaDigits(String value) {
+    const englishToBangla = {
+      '0': '০',
+      '1': '১',
+      '2': '২',
+      '3': '৩',
+      '4': '৪',
+      '5': '৫',
+      '6': '৬',
+      '7': '৭',
+      '8': '৮',
+      '9': '৯',
+      ',': ',',
+    };
+
+    return value
+        .split('')
+        .map((char) => englishToBangla[char] ?? char)
+        .join();
   }
 
   @override
@@ -97,15 +118,22 @@ class _YearlyPlanCard extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.all(26),
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: cs.surface,
+        gradient: LinearGradient(
+          colors: [
+            cs.primary.withOpacity(0.12),
+            cs.primaryContainer.withOpacity(0.08),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: cs.outlineVariant.withOpacity(0.6)),
+        border: Border.all(color: cs.primary.withOpacity(0.18)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 32,
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 28,
             offset: const Offset(0, 18),
           ),
         ],
@@ -113,49 +141,146 @@ class _YearlyPlanCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Yearly activation',
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'চেম্বারের জন্য এক বছরের অ্যাক্সেস আনলক করুন। ডাটাবেসে নির্ধারিত পরিমাণেই পেমেন্ট সম্পন্ন হবে।',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: cs.onSurfaceVariant,
-              height: 1.4,
-            ),
-          ),
-          const SizedBox(height: 24),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.workspace_premium_outlined, color: cs.primary),
-              const SizedBox(width: 12),
-              Text(
-                _formatAmount(activationCharge),
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
+              CircleAvatar(
+                radius: 24,
+                backgroundColor: cs.primary.withOpacity(0.12),
+                child: Icon(
+                  Icons.workspace_premium_outlined,
+                  color: cs.primary,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'বার্ষিক অ্যাক্টিভেশন প্যাকেজ',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'চেম্বারের জন্য পুরো বছরের অ্যাক্সেস আনলক করুন এবং সব ফিচার সীমাহীনভাবে ব্যবহার করুন। পেমেন্ট সম্পূর্ণ নিরাপদ ও ডাটাবেসে সংরক্ষিত হারে সম্পন্ন হবে।',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: cs.onSurfaceVariant,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 28),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
+            decoration: BoxDecoration(
+              color: cs.surface,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: cs.primary.withOpacity(0.24)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'বার্ষিক ফি',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: cs.primary,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  _formatAmount(activationCharge),
+                  style: theme.textTheme.displaySmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: cs.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'একটি বছর মেয়াদী সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: cs.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: 24),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              _FeaturePoint(text: 'অ্যাপের সব প্রিমিয়াম সুবিধা তৎক্ষণাৎ চালু হবে।'),
+              SizedBox(height: 10),
+              _FeaturePoint(text: 'প্রফেশনাল সাপোর্ট টিম থেকে অগ্রাধিকার সহায়তা।'),
+              SizedBox(height: 10),
+              _FeaturePoint(text: 'চেম্বারের ডাটা ও তথ্য নিরাপদে সংরক্ষণ।'),
+            ],
+          ),
+          const SizedBox(height: 28),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: controller.activateYearly,
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(18),
                 ),
+                backgroundColor: cs.primary,
+                foregroundColor: cs.onPrimary,
+                elevation: 0,
               ),
-              child: const Text('Pay & activate'),
+              child: const Text(
+                'এখনই পেমেন্ট করে অ্যাক্টিভ করুন',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _FeaturePoint extends StatelessWidget {
+  const _FeaturePoint({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          Icons.check_circle_rounded,
+          size: 20,
+          color: cs.primary,
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: cs.onSurfaceVariant,
+              height: 1.5,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
