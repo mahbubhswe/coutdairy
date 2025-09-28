@@ -14,8 +14,10 @@ class AllCaseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBarColor = Theme.of(context).appBarTheme.backgroundColor ??
-        Theme.of(context).colorScheme.primary;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final appBarColor =
+        theme.appBarTheme.backgroundColor ?? colorScheme.primary;
     return Scaffold(
       appBar: AppBar(title: const Text('সমস্ত কেস')),
       body: Column(
@@ -45,15 +47,24 @@ class AllCaseScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 8),
                           child: ChoiceChip(
                             label: Text(
-                                t == 'All' ? 'সব' : t,
-                                style: const TextStyle(fontSize: 12)),
+                              t == 'All' ? 'সব' : t,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: selected
+                                    ? colorScheme.onPrimary
+                                    : colorScheme.onSurface,
+                              ),
+                            ),
                             selected: selected,
                             onSelected: (_) => typeFilter.value = t,
+                            selectedColor: colorScheme.primary,
+                            backgroundColor: colorScheme.surfaceVariant,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                               side: BorderSide(
-                                color:
-                                    selected ? Colors.transparent : appBarColor,
+                                color: selected
+                                    ? Colors.transparent
+                                    : colorScheme.outline,
                               ),
                             ),
                             materialTapTargetSize:
@@ -77,15 +88,24 @@ class AllCaseScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 8),
                           child: ChoiceChip(
                             label: Text(
-                                t == 'All' ? 'সব' : t,
-                                style: const TextStyle(fontSize: 12)),
+                              t == 'All' ? 'সব' : t,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: selected
+                                    ? colorScheme.onPrimary
+                                    : colorScheme.onSurface,
+                              ),
+                            ),
                             selected: selected,
                             onSelected: (_) => courtFilter.value = t,
+                            selectedColor: colorScheme.primary,
+                            backgroundColor: colorScheme.surfaceVariant,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                               side: BorderSide(
-                                color:
-                                    selected ? Colors.transparent : appBarColor,
+                                color: selected
+                                    ? Colors.transparent
+                                    : colorScheme.outline,
                               ),
                             ),
                             materialTapTargetSize:
