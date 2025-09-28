@@ -1,6 +1,7 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../themes/theme_controller.dart';
 import '../../case/controllers/case_controller.dart';
 import 'accounts_card.dart';
 
@@ -9,7 +10,7 @@ class AccountsFirstCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final themeController = Get.find<ThemeController>();
     final caseController = Get.find<CaseController>();
 
     return Obx(() {
@@ -39,7 +40,9 @@ class AccountsFirstCard extends StatelessWidget {
           .toDouble();
 
       return Material(
-        color: cs.surface,
+        color: themeController.isDarkMode
+            ? Colors.black
+            : const Color.fromARGB(255, 241, 238, 238),
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(

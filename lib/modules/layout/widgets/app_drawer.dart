@@ -101,8 +101,6 @@ class AppDrawer extends StatelessWidget {
             );
           }
 
-
-
           final lastSignIn = user.metadata.lastSignInTime;
           final formattedSignIn = lastSignIn != null
               ? lastSignIn.formattedDateTime
@@ -201,6 +199,24 @@ class AppDrawer extends StatelessWidget {
                   _sectionHeader(context, 'অ্যাপ সেটিংস'),
                   const SizedBox(height: 8),
                   Obx(() {
+                    final isDarkMode = themeController.isDarkMode;
+                    return _infoTile(
+                      context,
+                      icon: isDarkMode
+                          ? Icons.dark_mode_outlined
+                          : Icons.light_mode_outlined,
+                      title: 'থিম মোড',
+                      subtitle: isDarkMode
+                          ? 'ডার্ক মোড সক্রিয়'
+                          : 'লাইট মোড সক্রিয়',
+                      onTap: themeController.toggleTheme,
+                      trailing: Switch.adaptive(
+                        value: isDarkMode,
+                        onChanged: (_) => themeController.toggleTheme(),
+                      ),
+                    );
+                  }),
+                  Obx(() {
                     final enabled = localAuthController.isEnabled.value;
                     return _infoTile(
                       context,
@@ -214,23 +230,7 @@ class AppDrawer extends StatelessWidget {
                       ),
                     );
                   }),
-                  Obx(() {
-                    final isDarkMode = themeController.isDarkMode;
-                    return _infoTile(
-                      context,
-                      icon: isDarkMode
-                          ? Icons.dark_mode_outlined
-                          : Icons.light_mode_outlined,
-                      title: 'থিম মোড',
-                      subtitle:
-                          isDarkMode ? 'ডার্ক মোড সক্রিয়' : 'লাইট মোড সক্রিয়',
-                      onTap: themeController.toggleTheme,
-                      trailing: Switch.adaptive(
-                        value: isDarkMode,
-                        onChanged: (_) => themeController.toggleTheme(),
-                      ),
-                    );
-                  }),
+
                   _infoTile(
                     context,
                     icon: Icons.password,
@@ -240,12 +240,20 @@ class AppDrawer extends StatelessWidget {
                     onTap: () async {
                       final hasPin = await PinLockService.isPinSet();
                       if (hasPin) {
-                        final verified = await Get.to(() => const AppLockScreen());
+                        final verified = await Get.to(
+                          () => const AppLockScreen(),
+                        );
                         if (verified != true) return;
                       }
-                      final created = await Get.to(() => const AppLockScreen(setupMode: true));
+                      final created = await Get.to(
+                        () => const AppLockScreen(setupMode: true),
+                      );
                       if (created == true) {
-                        Get.snackbar('সফল হয়েছে', 'পিন সফলভাবে আপডেট হয়েছে', snackPosition: SnackPosition.BOTTOM);
+                        Get.snackbar(
+                          'সফল হয়েছে',
+                          'পিন সফলভাবে আপডেট হয়েছে',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
                       }
                     },
                   ),
@@ -256,13 +264,17 @@ class AppDrawer extends StatelessWidget {
                     subtitle: 'অ্যাপ লকের পিন মুছে ফেলুন',
                     onTap: () async {
                       // Require current PIN before allowing reset
-                      final verified = await Get.to(() => const AppLockScreen());
+                      final verified = await Get.to(
+                        () => const AppLockScreen(),
+                      );
                       if (verified != true) return;
                       final confirm = await showCupertinoDialog<bool>(
                         context: context,
                         builder: (ctx) => CupertinoAlertDialog(
                           title: const Text('পিন রিসেট করবেন?'),
-                          content: const Text('এতে আপনার অ্যাপের পিন মুছে যাবে। পরে নতুন পিন সেট করতে পারবেন।'),
+                          content: const Text(
+                            'এতে আপনার অ্যাপের পিন মুছে যাবে। পরে নতুন পিন সেট করতে পারবেন।',
+                          ),
                           actions: [
                             CupertinoDialogAction(
                               child: const Text('বাতিল'),
@@ -281,7 +293,11 @@ class AppDrawer extends StatelessWidget {
                         if (localAuthController.isEnabled.value) {
                           await localAuthController.toggle(false);
                         }
-                        Get.snackbar('পিন মুছে ফেলা হয়েছে', 'যেকোনো সময় নতুন পিন সেট করতে পারেন', snackPosition: SnackPosition.BOTTOM);
+                        Get.snackbar(
+                          'পিন মুছে ফেলা হয়েছে',
+                          'যেকোনো সময় নতুন পিন সেট করতে পারেন',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
                       }
                     },
                   ),
@@ -292,7 +308,7 @@ class AppDrawer extends StatelessWidget {
                   _sectionHeader(context, 'সাবস্ক্রিপশন বিস্তারিত'),
 
                   const SizedBox(height: 8),
-              
+
                   _infoTile(
                     context,
                     icon: CupertinoIcons.calendar,
@@ -313,7 +329,6 @@ class AppDrawer extends StatelessWidget {
                     title: 'শেষ তারিখ',
                     subtitle: DateFormat().format(lawyer.subEndsAt),
                   ),
-           
 
                   const SizedBox(height: 36),
 
