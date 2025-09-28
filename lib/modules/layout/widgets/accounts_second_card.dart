@@ -25,23 +25,8 @@ class AccountsSecondCard extends StatelessWidget {
           .fold<double>(0, (p, e) => p + e.amount);
     }
 
-    double sumWhereMonth(String type) {
-      final now = DateTime.now();
-      return transactionController.transactions
-          .where(
-            (t) =>
-                t.type == type &&
-                t.createdAt.year == now.year &&
-                t.createdAt.month == now.month,
-          )
-          .fold<double>(0, (p, e) => p + e.amount);
-    }
-
     return Obx(() {
       final totalParties = partyController.parties.length.toDouble();
-      final depositThisMonth = sumWhereMonth('Deposit');
-      final expenseThisMonth =
-          sumWhereMonth('Expense') + sumWhereMonth('Withdrawal');
       final totalDeposit = sumWhere('Deposit');
       final totalExpense = sumWhere('Expense') + sumWhere('Withdrawal');
       final balance = totalDeposit - totalExpense;
@@ -52,25 +37,15 @@ class AccountsSecondCard extends StatelessWidget {
             : const Color.fromARGB(255, 241, 238, 238),
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: Column(
-            spacing: 5,
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AccountsCard(title: 'মোট পার্টি', amount: totalParties),
-                  AccountsCard(title: 'এই মাসে জমা', amount: depositThisMonth),
-                  AccountsCard(title: 'এই মাসে খরচ', amount: expenseThisMonth),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AccountsCard(title: 'মোট জমা', amount: totalDeposit),
-                  AccountsCard(title: 'মোট খরচ', amount: totalExpense),
-                  AccountsCard(title: 'বর্তমান ব্যালেন্স', amount: balance),
-                ],
-              ),
+              AccountsCard(title: 'মোট পার্টি', amount: totalParties),
+              AccountsCard(title: 'মোট জমা', amount: totalDeposit),
+              AccountsCard(title: 'মোট খরচ', amount: totalExpense),
+              AccountsCard(title: 'বর্তমান ব্যালেন্স', amount: balance),
             ],
           ),
         ),

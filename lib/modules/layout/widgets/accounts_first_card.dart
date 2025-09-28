@@ -28,16 +28,6 @@ class AccountsFirstCard extends StatelessWidget {
           .length
           .toDouble();
       final totalCases = cases.length.toDouble();
-      final threeMonthsAgo = DateTime.now().subtract(const Duration(days: 90));
-      final newCases = cases
-          .where((c) => c.filedDate.toDate().isAfter(threeMonthsAgo))
-          .length
-          .toDouble();
-      final totalCourts = cases
-          .map((c) => c.courtName)
-          .toSet()
-          .length
-          .toDouble();
 
       return Material(
         color: themeController.isDarkMode
@@ -45,25 +35,15 @@ class AccountsFirstCard extends StatelessWidget {
             : const Color.fromARGB(255, 241, 238, 238),
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: Column(
-            spacing: 5,
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AccountsCard(title: 'চলমান কেস', amount: running),
-                  AccountsCard(title: 'বন্ধ কেস', amount: closed),
-                  AccountsCard(title: 'কমপ্লিট কেস', amount: complicated),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AccountsCard(title: 'মোট কেস', amount: totalCases),
-                  AccountsCard(title: 'নতুন কেস', amount: newCases),
-                  AccountsCard(title: 'মোট কোর্ট', amount: totalCourts),
-                ],
-              ),
+              AccountsCard(title: 'চলমান কেস', amount: running),
+              AccountsCard(title: 'বন্ধ কেস', amount: closed),
+              AccountsCard(title: 'কমপ্লিট কেস', amount: complicated),
+              AccountsCard(title: 'মোট কেস', amount: totalCases),
             ],
           ),
         ),
