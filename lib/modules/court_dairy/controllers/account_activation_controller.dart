@@ -6,8 +6,37 @@ import '../services/payment_service.dart';
 import '../../../utils/app_config.dart';
 
 class AccountActivationController extends GetxController {
-  int get activationCharge => AppConfigService.config?.activationCharge ?? 0;
-  int get activationValidity => AppConfigService.config?.activationValidity ?? 0;
+  int get _configuredCharge => AppConfigService.config?.activationCharge ?? 0;
+  int get _configuredValidity =>
+      AppConfigService.config?.activationValidity ?? 0;
+
+  /// Returns the yearly payable amount derived from the configured charge.
+  ///
+  /// If the backend provides a monthly charge (e.g. ৩০ দিনের জন্য ৯৯ টাকা),
+  /// we convert it to a one-year equivalent so that the UI and payment flow
+  /// always reflect a yearly plan as requested by the product requirements.
+  int get annualActivationCharge {
+    final charge = _configuredCharge;
+    final validity = _configuredValidity;
+
+    if (charge <= 0) return 0;
+    if (validity <= 0) return charge;
+
+    final perDayRate = charge / validity;
+    final yearlyAmount = perDayRate * annualActivationValidity;
+    return yearlyAmount.ceil();
+  }
+
+  /// The user can activate the account only for one year at a time.
+  int get annualActivationValidity => 365;
+
+  /// Backwards compatible aliases used by the UI layer.
+  int get activationCharge => annualActivationCharge;
+  int get activationValidity => annualActivationValidity;
+
+  /// Raw configuration fetched from the backend, useful for audit labels.
+  int get configuredCharge => _configuredCharge;
+  int get configuredValidity => _configuredValidity;
 
   final ScrollController scrollController = ScrollController();
   Timer? _scrollTimer;
@@ -41,8 +70,18 @@ class AccountActivationController extends GetxController {
   }
 
   Future<void> activatePlan() async {
-    final amount = activationCharge.toDouble();
-    final validity = activationValidity > 0 ? activationValidity : 30;
+    if (annualActivationCharge <= 0) {
+      Get.snackbar(
+        'ত্রুটি',
+        'অ্যাক্টিভেশন চার্জ কনফিগার করা হয়নি।',
+        backgroundColor: Colors.white,
+        colorText: Colors.red,
+      );
+      return;
+    }
+
+    final amount = annualActivationCharge.toDouble();
+    final validity = annualActivationValidity;
     final success = await PaymentService.payNow(amount: amount);
 
     if (success) {

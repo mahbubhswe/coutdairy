@@ -93,6 +93,8 @@ class _ActivationPlanCard extends StatelessWidget {
     final cs = theme.colorScheme;
     final activationCharge = controller.activationCharge;
     final validityDays = controller.activationValidity;
+    final baseCharge = controller.configuredCharge;
+    final baseValidity = controller.configuredValidity;
 
     String planTitle;
     String feeLabel;
@@ -121,6 +123,12 @@ class _ActivationPlanCard extends StatelessWidget {
       feeLabel = 'সাবস্ক্রিপশন ফি';
       durationSummary = 'সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।';
       accessDescription = 'সীমিত সময়ের';
+    }
+
+    String calculationNote = '';
+    if (baseCharge > 0 && baseValidity > 0) {
+      calculationNote =
+          'ডাটাবেসে সংরক্ষিত ${_toBanglaDigits(baseValidity.toString())} দিনের ${_formatAmount(baseCharge)} ফি থেকে বার্ষিক হিসাব নির্ধারণ করা হয়েছে।';
     }
 
     if (activationCharge <= 0) {
@@ -242,6 +250,16 @@ class _ActivationPlanCard extends StatelessWidget {
                     color: cs.onSurfaceVariant,
                   ),
                 ),
+                if (calculationNote.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    calculationNote,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: cs.onSurfaceVariant,
+                      height: 1.45,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
