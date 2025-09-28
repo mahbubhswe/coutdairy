@@ -95,6 +95,8 @@ class _ActivationPlanCard extends StatelessWidget {
     final validityDays = controller.activationValidity;
     final baseCharge = controller.baseActivationCharge;
     final baseValidity = controller.baseActivationValidity;
+    final baseValidityMonths = controller.baseActivationValidityMonths;
+    final isBaseValidityMonthly = controller.baseValidityRepresentsMonths;
 
     String planTitle;
     String feeLabel;
@@ -109,8 +111,11 @@ class _ActivationPlanCard extends StatelessWidget {
       accessDescription = 'পুরো বছরের';
       if (baseCharge > 0 && baseValidity > 0 &&
           (baseValidity != validityDays || baseCharge != activationCharge)) {
+        final durationLabel = isBaseValidityMonthly && baseValidityMonths > 0
+            ? '${_toBanglaDigits(baseValidityMonths.toString())} মাসের'
+            : '${_toBanglaDigits(baseValidity.toString())} দিনের';
         calculationSummary =
-            'ডাটাবেসে নির্ধারিত ${_toBanglaDigits(baseValidity.toString())} দিনের ${_formatAmount(baseCharge)} ফি অনুসারে এক বছরের চার্জ নির্ণয় করা হয়েছে।';
+            'ডাটাবেসে নির্ধারিত $durationLabel ${_formatAmount(baseCharge)} ফি অনুসারে এক বছরের চার্জ নির্ণয় করা হয়েছে।';
       }
     } else if (validityDays >= 30) {
       planTitle = 'মাসিক অ্যাক্টিভেশন প্যাকেজ';

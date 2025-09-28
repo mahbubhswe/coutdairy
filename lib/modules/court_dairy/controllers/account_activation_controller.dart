@@ -13,17 +13,30 @@ class AccountActivationController extends GetxController {
   int get _configuredActivationValidity =>
       AppConfigService.config?.activationValidity ?? 0;
 
+  int get _normalisedBaseValidityDays {
+    final validity = _configuredActivationValidity;
+
+    if (validity <= 0) return 0;
+
+    if (validity <= 12) {
+      return validity * 30;
+    }
+
+    return validity;
+  }
+
   /// Returns the activation charge normalised to a one year plan.
   ///
   /// The backend stores the base charge and validity (for example a monthly
-  /// subscription). To make sure the user only activates the account for a
-  /// full year, we convert that configuration to a yearly payment by
-  /// multiplying the base charge with the number of periods that fit into a
-  /// year. The multiplier is rounded to the nearest whole number so that
+  /// subscription). Validity values of 12 or less are treated as months while
+  /// larger values are considered days. To make sure the user only activates
+  /// the account for a full year, we convert that configuration to a yearly
+  /// payment by multiplying the base charge with the number of periods that fit
+  /// into a year. The multiplier is rounded to the nearest whole number so that
   /// monthly (≈30 days) configurations map cleanly to twelve months.
   int get activationCharge {
     final charge = _configuredActivationCharge;
-    final validity = _configuredActivationValidity;
+    final validity = _normalisedBaseValidityDays;
 
     if (charge <= 0) return 0;
     if (validity <= 0) return charge;
@@ -38,7 +51,13 @@ class AccountActivationController extends GetxController {
   int get activationValidity => _targetValidityDays;
 
   int get baseActivationCharge => _configuredActivationCharge;
-  int get baseActivationValidity => _configuredActivationValidity;
+  int get baseActivationValidity => _normalisedBaseValidityDays;
+
+  bool get baseValidityRepresentsMonths =>
+      _configuredActivationValidity > 0 && _configuredActivationValidity <= 12;
+
+  int get baseActivationValidityMonths =>
+      baseValidityRepresentsMonths ? _configuredActivationValidity : 0;
 
   final ScrollController scrollController = ScrollController();
   Timer? _scrollTimer;
