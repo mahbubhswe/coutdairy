@@ -31,7 +31,7 @@ class PinLockService {
   }
 
   static Future<bool> setPin(String pin) async {
-    if (pin.length < 4) return false;
+    if (pin.length != 4) return false;
     final salt = DateTime.now().microsecondsSinceEpoch.toString();
     final hash = _hash(pin, salt);
     LocalStorageService.write(_pinSaltKey, salt);
@@ -40,6 +40,7 @@ class PinLockService {
   }
 
   static Future<bool> verifyPin(String pin) async {
+    if (pin.length != 4) return false;
     final salt = LocalStorageService.read(_pinSaltKey);
     final savedHash = LocalStorageService.read(_pinHashKey);
     if (salt is! String || savedHash is! String) return false;
