@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../themes/theme_controller.dart';
 import '../../accounts/controllers/transaction_controller.dart';
 import '../../case/controllers/case_controller.dart';
 import 'accounts_card.dart';
@@ -11,7 +10,6 @@ class AccountsThirdCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Get.find<ThemeController>();
     final caseController = Get.find<CaseController>();
     final transactionController = Get.isRegistered<TransactionController>()
         ? Get.find<TransactionController>()
@@ -45,24 +43,29 @@ class AccountsThirdCard extends StatelessWidget {
       final expenseThisMonth =
           sumWhereMonth('Expense') + sumWhereMonth('Withdrawal');
 
-      return Material(
-        color: themeController.isDarkMode
-            ? Colors.black
-            : const Color.fromARGB(255, 241, 238, 238),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            alignment: WrapAlignment.spaceBetween,
-            children: [
-              AccountsCard(title: 'নতুন কেস', amount: newCases),
-              AccountsCard(title: 'মোট কোর্ট', amount: totalCourts),
-              AccountsCard(title: 'এই মাসে জমা', amount: depositThisMonth),
-              AccountsCard(title: 'এই মাসে খরচ', amount: expenseThisMonth),
-            ],
+      return DashboardMetricsGrid(
+        metrics: [
+          DashboardMetric(
+            title: 'নতুন কেস',
+            amount: newCases,
+            icon: Icons.new_releases,
           ),
-        ),
+          DashboardMetric(
+            title: 'মোট কোর্ট',
+            amount: totalCourts,
+            icon: Icons.account_balance,
+          ),
+          DashboardMetric(
+            title: 'এই মাসে জমা',
+            amount: depositThisMonth,
+            icon: Icons.attach_money,
+          ),
+          DashboardMetric(
+            title: 'এই মাসে খরচ',
+            amount: expenseThisMonth,
+            icon: Icons.money_off,
+          ),
+        ],
       );
     });
   }
