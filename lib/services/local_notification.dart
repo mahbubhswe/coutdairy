@@ -147,8 +147,6 @@ class LocalNotificationService {
         androidScheduleMode: scheduleMode,
         matchDateTimeComponents: DateTimeComponents.time,
         payload: payload,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.wallClockTime,
       );
     } on PlatformException catch (_) {
       if (scheduleMode == AndroidScheduleMode.exactAllowWhileIdle) {
@@ -163,8 +161,6 @@ class LocalNotificationService {
           androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
           matchDateTimeComponents: DateTimeComponents.time,
           payload: payload,
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.wallClockTime,
         );
         _canScheduleExactAlarms = false;
       } else {
