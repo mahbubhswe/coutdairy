@@ -43,27 +43,46 @@ class AccountsThirdCard extends StatelessWidget {
       final expenseThisMonth =
           sumWhereMonth('Expense') + sumWhereMonth('Withdrawal');
 
-      return DashboardMetricsGrid(
-        metrics: [
-          DashboardMetric(
-            title: 'নতুন কেস',
-            amount: newCases,
-            icon: Icons.new_releases,
+      return Column(
+        spacing: 5,
+        children: [
+          Row(
+            spacing: 5,
+            children: [
+              Expanded(
+                child: AccountsCard(
+                  title: 'নতুন কেস',
+                  amount: newCases,
+                  icon: Icons.new_releases,
+                ),
+              ),
+              Expanded(
+                child: AccountsCard(
+                  title: 'মোট কোর্ট',
+                  amount: totalCourts,
+                  icon: Icons.account_balance,
+                ),
+              ),
+            ],
           ),
-          DashboardMetric(
-            title: 'মোট কোর্ট',
-            amount: totalCourts,
-            icon: Icons.account_balance,
-          ),
-          DashboardMetric(
-            title: 'এই মাসে জমা',
-            amount: depositThisMonth,
-            icon: Icons.attach_money,
-          ),
-          DashboardMetric(
-            title: 'এই মাসে খরচ',
-            amount: expenseThisMonth,
-            icon: Icons.money_off,
+          Row(
+            spacing: 5,
+            children: [
+              Expanded(
+                child: AccountsCard(
+                  title: 'এই মাসে জমা',
+                  amount: depositThisMonth,
+                  icon: Icons.attach_money,
+                ),
+              ),
+              Expanded(
+                child: AccountsCard(
+                  title: 'এই মাসে খরচ',
+                  amount: expenseThisMonth,
+                  icon: Icons.money_off,
+                ),
+              ),
+            ],
           ),
         ],
       );

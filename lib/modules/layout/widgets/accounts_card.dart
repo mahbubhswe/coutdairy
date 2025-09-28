@@ -1,69 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DashboardMetric {
-  final String title;
-  final double amount;
-  final IconData icon;
-
-  const DashboardMetric({
-    required this.title,
-    required this.amount,
-    required this.icon,
-  });
-}
-
-class DashboardMetricsGrid extends StatelessWidget {
-  final List<DashboardMetric> metrics;
-
-  const DashboardMetricsGrid({super.key, required this.metrics});
-
-  @override
-  Widget build(BuildContext context) {
-    const horizontalPadding = 16.0;
-    const spacing = 16.0;
-    final width = MediaQuery.of(context).size.width;
-    final availableWidth = width - (horizontalPadding * 2);
-    final canShowTwoColumns = availableWidth >= 500;
-    final cardWidth = canShowTwoColumns
-        ? (availableWidth - spacing) / 2
-        : availableWidth;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: 12,
-      ),
-      child: Wrap(
-        spacing: spacing,
-        runSpacing: spacing,
-        children: metrics
-            .map(
-              (metric) => AccountsCard(
-                title: metric.title,
-                amount: metric.amount,
-                icon: metric.icon,
-                cardWidth: cardWidth,
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-}
-
 class AccountsCard extends StatelessWidget {
   final String title;
   final double amount;
   final IconData icon;
-  final double cardWidth;
 
   const AccountsCard({
     super.key,
     required this.title,
     required this.amount,
     required this.icon,
-    required this.cardWidth,
   });
 
   @override
@@ -77,65 +24,67 @@ class AccountsCard extends StatelessWidget {
       decimalDigits: 0,
     );
 
-    return SizedBox(
-      width: cardWidth,
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1D2331) : Colors.white,
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: accent.withOpacity(0.08)),
-          boxShadow: [
-            BoxShadow(
-              color: isDark
-                  ? Colors.black.withOpacity(0.35)
-                  : Colors.black.withOpacity(0.08),
-              blurRadius: 24,
-              offset: const Offset(0, 12),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E2433) : Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        // border: Border.all(color: accent.withOpacity(0.05)),
+        boxShadow: [
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withOpacity(0.25)
+                : Colors.black.withOpacity(0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Small Icon container
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: accent.withOpacity(0.15),
+              shape: BoxShape.circle,
             ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: accent.withOpacity(isDark ? 0.18 : 0.12),
-                borderRadius: BorderRadius.circular(16),
+            child: Icon(icon, color: accent, size: 20),
+          ),
+          const SizedBox(width: 10),
+
+          // Texts
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: isDark ? Colors.white70 : Colors.black87,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12,
+                ),
               ),
-              padding: const EdgeInsets.all(12),
-              child: Icon(
-                icon,
-                color: accent,
-                size: 28,
+              const SizedBox(height: 2),
+              TweenAnimationBuilder<double>(
+                tween: Tween<double>(begin: 0, end: amount),
+                duration: const Duration(milliseconds: 700),
+                curve: Curves.easeOutCubic,
+                builder: (context, value, child) {
+                  return Text(
+                    numberFormatter.format(value).trim(),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: accent,
+                      fontSize: 14,
+                    ),
+                  );
+                },
               ),
-            ),
-            const SizedBox(height: 18),
-            Text(
-              title,
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 10),
-            TweenAnimationBuilder<double>(
-              tween: Tween<double>(
-                begin: 0,
-                end: amount,
-              ),
-              duration: const Duration(milliseconds: 600),
-              curve: Curves.easeOutCubic,
-              builder: (context, value, child) {
-                return Text(
-                  numberFormatter.format(value).trim(),
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }

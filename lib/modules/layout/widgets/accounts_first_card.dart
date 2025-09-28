@@ -27,27 +27,47 @@ class AccountsFirstCard extends StatelessWidget {
           .toDouble();
       final totalCases = cases.length.toDouble();
 
-      return DashboardMetricsGrid(
-        metrics: [
-          DashboardMetric(
-            title: 'চলমান কেস',
-            amount: running,
-            icon: Icons.play_circle_fill,
+      return Column(
+        spacing: 5,
+        children: [
+          Row(
+            spacing: 5,
+            children: [
+              Expanded(
+                child: AccountsCard(
+                  title: 'চলমান কেস',
+                  amount: running,
+                  icon: Icons.play_circle_fill,
+                ),
+              ),
+              Expanded(
+                child: AccountsCard(
+                  title: 'বন্ধ কেস',
+                  amount: closed,
+                  icon: Icons.lock_outline,
+                ),
+              ),
+            ],
           ),
-          DashboardMetric(
-            title: 'বন্ধ কেস',
-            amount: closed,
-            icon: Icons.lock_outline,
-          ),
-          DashboardMetric(
-            title: 'কমপ্লিট কেস',
-            amount: complicated,
-            icon: Icons.task_alt,
-          ),
-          DashboardMetric(
-            title: 'মোট কেস',
-            amount: totalCases,
-            icon: Icons.library_books,
+          Row(
+            spacing: 5,
+
+            children: [
+              Expanded(
+                child: AccountsCard(
+                  title: 'কমপ্লিট কেস',
+                  amount: complicated,
+                  icon: Icons.task_alt,
+                ),
+              ),
+              Expanded(
+                child: AccountsCard(
+                  title: 'মোট কেস',
+                  amount: totalCases,
+                  icon: Icons.library_books,
+                ),
+              ),
+            ],
           ),
         ],
       );

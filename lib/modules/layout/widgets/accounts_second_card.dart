@@ -29,27 +29,46 @@ class AccountsSecondCard extends StatelessWidget {
       final totalExpense = sumWhere('Expense') + sumWhere('Withdrawal');
       final balance = totalDeposit - totalExpense;
 
-      return DashboardMetricsGrid(
-        metrics: [
-          DashboardMetric(
-            title: 'মোট পার্টি',
-            amount: totalParties,
-            icon: Icons.people_alt,
+      return Column(
+        spacing: 5,
+        children: [
+          Row(
+            spacing: 5,
+            children: [
+              Expanded(
+                child: AccountsCard(
+                  title: 'মোট পার্টি',
+                  amount: totalParties,
+                  icon: Icons.people_alt,
+                ),
+              ),
+              Expanded(
+                child: AccountsCard(
+                  title: 'মোট জমা',
+                  amount: totalDeposit,
+                  icon: Icons.savings,
+                ),
+              ),
+            ],
           ),
-          DashboardMetric(
-            title: 'মোট জমা',
-            amount: totalDeposit,
-            icon: Icons.savings,
-          ),
-          DashboardMetric(
-            title: 'মোট খরচ',
-            amount: totalExpense,
-            icon: Icons.trending_down,
-          ),
-          DashboardMetric(
-            title: 'বর্তমান ব্যালেন্স',
-            amount: balance,
-            icon: Icons.account_balance_wallet,
+          Row(
+            spacing: 5,
+            children: [
+              Expanded(
+                child: AccountsCard(
+                  title: 'মোট খরচ',
+                  amount: totalExpense,
+                  icon: Icons.trending_down,
+                ),
+              ),
+              Expanded(
+                child: AccountsCard(
+                  title: 'বর্তমান ব্যালেন্স',
+                  amount: balance,
+                  icon: Icons.account_balance_wallet,
+                ),
+              ),
+            ],
           ),
         ],
       );
