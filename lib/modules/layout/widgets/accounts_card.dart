@@ -13,7 +13,7 @@ class AccountsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: Get.width * 0.3,
+      width: Get.width * 0.45,
       child: Material(
         elevation: 0.1,
         borderRadius: BorderRadius.circular(7),

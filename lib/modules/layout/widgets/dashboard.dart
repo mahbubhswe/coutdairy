@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'accounts_first_card.dart';
 import 'accounts_second_card.dart';
+import 'accounts_third_card.dart';
 import 'app_text.dart';
 
 class Dashboard extends StatelessWidget {
@@ -12,14 +13,15 @@ class Dashboard extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 116,
+          height: 170,
           child: Swiper(
-            itemCount: 2,
+            itemCount: 3,
             loop: true,
             autoplay: true,
             itemBuilder: (context, index) {
               if (index == 0) return AccountsFirstCard();
-              return AccountsSecondCard();
+              if (index == 1) return AccountsSecondCard();
+              return AccountsThirdCard();
             },
           ),
         ),
