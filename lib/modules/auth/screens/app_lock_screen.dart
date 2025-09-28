@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../services/pin_lock_service.dart';
@@ -14,98 +13,130 @@ class AppLockScreen extends StatefulWidget {
 }
 
 class _AppLockScreenState extends State<AppLockScreen> {
-  final _controller = TextEditingController();
-  final _confirmController = TextEditingController();
-  final _pinFocusNode = FocusNode();
-  final _confirmFocusNode = FocusNode();
+  String _pinInput = '';
+  String _confirmInput = '';
   bool _confirmPhase = false;
   String? _error;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _confirmController.dispose();
-    _pinFocusNode.dispose();
-    _confirmFocusNode.dispose();
-    super.dispose();
-  }
-
-  Future<void> _onSubmit() async {
-    if (widget.setupMode) {
-      if (!_confirmPhase) {
-        if (_controller.text.length < 4) {
-          setState(() => _error = 'কমপক্ষে ৪টি সংখ্যা দিন');
-          _pinFocusNode.requestFocus();
-          return;
-        }
-        setState(() {
-          _confirmPhase = true;
-          _error = null;
-        });
-        Future.delayed(const Duration(milliseconds: 180), () {
-          if (!mounted) return;
-          _confirmController.clear();
-          _confirmFocusNode.requestFocus();
-        });
-        return;
-      } else {
-        if (_controller.text != _confirmController.text) {
-          setState(() => _error = 'দুটি পিন মেলেনি');
-          _confirmController.clear();
-          Future.delayed(const Duration(milliseconds: 120), () {
-            if (mounted) {
-              _confirmFocusNode.requestFocus();
-            }
-          });
-          return;
-        }
-        setState(() => _error = null);
-        final ok = await PinLockService.setPin(_controller.text);
-        if (!mounted) return;
-        if (ok) {
-          Get.back(result: true);
-        } else {
-          setState(() => _error = 'পিন সেভ করা যায়নি');
-        }
-      }
-    } else {
-      if (_controller.text.isEmpty) {
-        setState(() => _error = 'পিন লিখুন');
-        Future.delayed(const Duration(milliseconds: 120), () {
-          if (mounted) {
-            _pinFocusNode.requestFocus();
-          }
-        });
-        return;
-      }
-      setState(() => _error = null);
-      final ok = await PinLockService.verifyPin(_controller.text);
-      if (!mounted) return;
-      if (ok) {
-        Get.back(result: true);
-      } else {
-        setState(() => _error = 'ভুল পিন');
-        _controller.clear();
-        Future.delayed(const Duration(milliseconds: 120), () {
-          if (mounted) {
-            _pinFocusNode.requestFocus();
-          }
-        });
-      }
-    }
-  }
+  bool _isProcessing = false;
 
   void _resetSetupFlow() {
     setState(() {
       _confirmPhase = false;
       _error = null;
-      _confirmController.clear();
-      _controller.clear();
+      _confirmInput = '';
+      _pinInput = '';
     });
-    Future.delayed(const Duration(milliseconds: 120), () {
-      if (!mounted) return;
-      _pinFocusNode.requestFocus();
+  }
+
+  void _onDigitPressed(String digit) {
+    if (_isProcessing) return;
+
+    setState(() {
+      if (widget.setupMode && _confirmPhase) {
+        if (_confirmInput.length < 4) {
+          _confirmInput += digit;
+        }
+      } else {
+        if (_pinInput.length < 4) {
+          _pinInput += digit;
+        }
+      }
+      _error = null;
     });
+
+    final currentLength = widget.setupMode && _confirmPhase
+        ? _confirmInput.length
+        : _pinInput.length;
+
+    if (currentLength == 4) {
+      if (widget.setupMode) {
+        if (_confirmPhase) {
+          _completeSetup();
+        } else {
+          _beginConfirmPhase();
+        }
+      } else {
+        _verifyExistingPin();
+      }
+    }
+  }
+
+  void _onBackspace() {
+    if (_isProcessing) return;
+
+    setState(() {
+      _error = null;
+      if (widget.setupMode && _confirmPhase) {
+        if (_confirmInput.isNotEmpty) {
+          _confirmInput =
+              _confirmInput.substring(0, _confirmInput.length - 1);
+        } else {
+          _confirmPhase = false;
+          if (_pinInput.isNotEmpty) {
+            _pinInput = _pinInput.substring(0, _pinInput.length - 1);
+          }
+        }
+      } else {
+        if (_pinInput.isNotEmpty) {
+          _pinInput = _pinInput.substring(0, _pinInput.length - 1);
+        }
+      }
+    });
+  }
+
+  void _beginConfirmPhase() {
+    setState(() {
+      _confirmPhase = true;
+      _confirmInput = '';
+      _error = null;
+    });
+  }
+
+  Future<void> _completeSetup() async {
+    if (_confirmInput != _pinInput) {
+      setState(() {
+        _error = 'দুটি পিন মেলেনি';
+        _confirmInput = '';
+      });
+      return;
+    }
+
+    setState(() {
+      _isProcessing = true;
+      _error = null;
+    });
+
+    final ok = await PinLockService.setPin(_pinInput);
+    if (!mounted) return;
+
+    if (ok) {
+      Get.back(result: true);
+    } else {
+      setState(() {
+        _error = 'পিন সেভ করা যায়নি';
+        _isProcessing = false;
+      });
+    }
+  }
+
+  Future<void> _verifyExistingPin() async {
+    setState(() {
+      _isProcessing = true;
+      _error = null;
+    });
+
+    final ok = await PinLockService.verifyPin(_pinInput);
+    if (!mounted) return;
+
+    if (ok) {
+      Get.back(result: true);
+    } else {
+      setState(() {
+        _error = 'ভুল পিন';
+        _pinInput = '';
+        _isProcessing = false;
+      });
+    }
   }
 
   Widget _buildStepPill({
@@ -166,52 +197,157 @@ class _AppLockScreenState extends State<AppLockScreen> {
   }
 
   Widget _buildPinField({
-    required TextEditingController controller,
-    required FocusNode focusNode,
     required String label,
     required IconData icon,
-    required VoidCallback onSubmitted,
-    bool autoFocus = false,
-    bool enabled = true,
+    required String value,
+    required bool active,
   }) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
-    return TextField(
-      controller: controller,
-      focusNode: focusNode,
-      enabled: enabled,
-      autofocus: autoFocus,
-      keyboardType: TextInputType.number,
-      obscureText: true,
-      obscuringCharacter: '●',
-      maxLength: 12,
-      style: theme.textTheme.titleMedium,
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: 'শুধু সংখ্যা লিখুন',
-        counterText: '',
-        filled: true,
-        fillColor: enabled
-            ? colors.surfaceVariant.withOpacity(0.5)
-            : colors.surfaceVariant.withOpacity(0.25),
-        prefixIcon: Icon(icon, color: colors.primary),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: colors.outline.withOpacity(0.4)),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, color: active ? colors.primary : colors.outline),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: colors.primary, width: 2),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(4, (index) {
+            final filled = index < value.length;
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 160),
+              height: 54,
+              width: 54,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: active
+                    ? colors.primaryContainer.withOpacity(0.45)
+                    : colors.surfaceVariant.withOpacity(0.4),
+                border: Border.all(
+                  color: active
+                      ? colors.primary
+                      : colors.outline.withOpacity(0.5),
+                  width: active ? 1.8 : 1.2,
+                ),
+              ),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 160),
+                child: filled
+                    ? Text(
+                        '●',
+                        key: ValueKey('filled-$index'),
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: colors.onPrimaryContainer,
+                          fontSize: 28,
+                        ),
+                      )
+                    : Text(
+                        '–',
+                        key: ValueKey('empty-$index'),
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          color: colors.outline.withOpacity(0.5),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+              ),
+            );
+          }),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: colors.outline.withOpacity(0.35)),
+      ],
+    );
+  }
+
+  Widget _buildKeyButton({
+    String? digit,
+    IconData? icon,
+    VoidCallback? onTap,
+  }) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
+    final bool isDisabled = onTap == null;
+
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        child: Material(
+          color: isDisabled
+              ? colors.surfaceVariant.withOpacity(0.2)
+              : colors.surfaceVariant.withOpacity(0.45),
+          borderRadius: BorderRadius.circular(20),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: isDisabled ? null : onTap,
+            child: SizedBox(
+              height: 70,
+              child: Center(
+                child: digit != null
+                    ? Text(
+                        digit,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    : icon != null
+                        ? Icon(
+                            icon,
+                            size: 28,
+                            color: colors.primary,
+                          )
+                        : const SizedBox.shrink(),
+              ),
+            ),
+          ),
         ),
       ),
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      textInputAction: TextInputAction.done,
-      onSubmitted: (_) => onSubmitted(),
+    );
+  }
+
+  Widget _buildKeypad() {
+    return Column(
+      children: [
+        for (final row in const [
+          ['1', '2', '3'],
+          ['4', '5', '6'],
+          ['7', '8', '9'],
+        ])
+          Row(
+            children: row
+                .map(
+                  (digit) => _buildKeyButton(
+                    digit: digit,
+                    onTap: () => _onDigitPressed(digit),
+                  ),
+                )
+                .toList(),
+          ),
+        Row(
+          children: [
+            _buildKeyButton(onTap: null),
+            _buildKeyButton(
+              digit: '0',
+              onTap: () => _onDigitPressed('0'),
+            ),
+            _buildKeyButton(
+              icon: Icons.backspace_rounded,
+              onTap: () => _onBackspace(),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -221,12 +357,12 @@ class _AppLockScreenState extends State<AppLockScreen> {
     final colors = theme.colorScheme;
     final instruction = widget.setupMode
         ? (_confirmPhase
-              ? 'নতুন পিনটি নিশ্চিত করুন'
-              : '৪ বা ততোধিক ডিজিটের পিন দিন')
-        : 'আপনার পিন লিখুন';
+            ? 'নতুন পিনটি পুনরায় লিখুন'
+            : 'চার সংখ্যার একটি নতুন পিন বাছাই করুন')
+        : 'চার ডিজিটের পিন লিখুন';
 
     return Scaffold(
-       extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: true,
       backgroundColor: colors.surface,
 
       body: Container(
@@ -321,7 +457,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                                 active: _confirmPhase,
                                 complete: false,
                               ),
-                            ),
+                              ),
                           ],
                         ),
                       ],
@@ -367,15 +503,12 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       ),
                       const SizedBox(height: 20),
                       _buildPinField(
-                        controller: _controller,
-                        focusNode: _pinFocusNode,
                         label: widget.setupMode ? 'নতুন পিন' : 'পিন',
                         icon: Icons.lock_outline,
-                        autoFocus: !_confirmPhase,
-                        enabled: !widget.setupMode || !_confirmPhase,
-                        onSubmitted: _onSubmit,
+                        value: _pinInput,
+                        active: !widget.setupMode || !_confirmPhase,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 20),
                       AnimatedSwitcher(
                         duration: const Duration(milliseconds: 260),
                         child: widget.setupMode && _confirmPhase
@@ -384,21 +517,10 @@ class _AppLockScreenState extends State<AppLockScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   _buildPinField(
-                                    controller: _confirmController,
-                                    focusNode: _confirmFocusNode,
                                     label: 'পিন নিশ্চিত করুন',
                                     icon: Icons.verified_user_outlined,
-                                    autoFocus: true,
-                                    onSubmitted: _onSubmit,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: TextButton.icon(
-                                      onPressed: _resetSetupFlow,
-                                      icon: const Icon(Icons.refresh_rounded),
-                                      label: const Text('পিন আবার লিখুন'),
-                                    ),
+                                    value: _confirmInput,
+                                    active: true,
                                   ),
                                 ],
                               )
@@ -406,29 +528,29 @@ class _AppLockScreenState extends State<AppLockScreen> {
                                 key: ValueKey('empty-confirm'),
                               ),
                       ),
-                      const SizedBox(height: 24),
-                      FilledButton.icon(
-                        onPressed: _onSubmit,
-                        icon: Icon(
-                          widget.setupMode
-                              ? (_confirmPhase
-                                    ? Icons.check_circle_outline
-                                    : Icons.arrow_forward_rounded)
-                              : Icons.lock_open_rounded,
-                        ),
-                        label: Text(
-                          widget.setupMode
-                              ? (_confirmPhase ? 'পিন সেভ করুন' : 'পরবর্তী ধাপ')
-                              : 'আনলক করুন',
-                        ),
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          textStyle: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                      if (widget.setupMode && _confirmPhase) ...[
+                        const SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton.icon(
+                            onPressed: _resetSetupFlow,
+                            icon: const Icon(Icons.refresh_rounded),
+                            label: const Text('পিন আবার লিখুন'),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
+                        const SizedBox(height: 8),
+                      ],
+                      const SizedBox(height: 20),
+                      _buildKeypad(),
+                      const SizedBox(height: 12),
+                      if (_isProcessing)
+                        const Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 4),
+                            child: CircularProgressIndicator(strokeWidth: 2.6),
+                          ),
+                        ),
+                      const SizedBox(height: 12),
                       Text(
                         'ব্যক্তিগত নিরাপত্তা নিশ্চিত করতে পিন কাউকে জানাবেন না।',
                         textAlign: TextAlign.center,
