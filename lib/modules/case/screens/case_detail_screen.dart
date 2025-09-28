@@ -37,35 +37,34 @@ class CaseDetailScreen extends StatelessWidget {
     }
 
     Widget section(String title, Widget child) {
-      final isDark = theme.brightness == Brightness.dark;
-      final cardColor = isDark
-          ? theme.colorScheme.surface
-          : theme.colorScheme.surfaceVariant.withOpacity(0.7);
-      final borderColor = theme.colorScheme.outline.withOpacity(isDark ? 0.2 : 0.4);
-
-      return SizedBox(
+      return Container(
         width: double.infinity,
-        child: Card(
-          color: cardColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: borderColor),
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            colors: [
+              theme.colorScheme.primary.withOpacity(0.15),
+              theme.colorScheme.primary.withOpacity(0.05),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
                 ),
-                const SizedBox(height: 12),
-                child,
-              ],
-            ),
+              ),
+              const SizedBox(height: 12),
+              child,
+            ],
           ),
         ),
       );

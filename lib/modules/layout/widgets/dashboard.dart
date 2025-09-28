@@ -13,7 +13,7 @@ class Dashboard extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 170,
+          height: 115,
           child: Swiper(
             itemCount: 3,
             loop: true,
