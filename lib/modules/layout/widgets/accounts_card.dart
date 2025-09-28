@@ -1,46 +1,140 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../../themes/theme_controller.dart';
+
+class DashboardMetric {
+  final String title;
+  final double amount;
+  final IconData icon;
+
+  const DashboardMetric({
+    required this.title,
+    required this.amount,
+    required this.icon,
+  });
+}
+
+class DashboardMetricsGrid extends StatelessWidget {
+  final List<DashboardMetric> metrics;
+
+  const DashboardMetricsGrid({super.key, required this.metrics});
+
+  @override
+  Widget build(BuildContext context) {
+    const horizontalPadding = 16.0;
+    const spacing = 16.0;
+    final width = MediaQuery.of(context).size.width;
+    final availableWidth = width - (horizontalPadding * 2);
+    final canShowTwoColumns = availableWidth >= 500;
+    final cardWidth = canShowTwoColumns
+        ? (availableWidth - spacing) / 2
+        : availableWidth;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: 12,
+      ),
+      child: Wrap(
+        spacing: spacing,
+        runSpacing: spacing,
+        children: metrics
+            .map(
+              (metric) => AccountsCard(
+                title: metric.title,
+                amount: metric.amount,
+                icon: metric.icon,
+                cardWidth: cardWidth,
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+}
 
 class AccountsCard extends StatelessWidget {
   final String title;
   final double amount;
+  final IconData icon;
+  final double cardWidth;
 
-  AccountsCard({super.key, required this.title, required this.amount});
-  final themeController = Get.find<ThemeController>();
+  const AccountsCard({
+    super.key,
+    required this.title,
+    required this.amount,
+    required this.icon,
+    required this.cardWidth,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final accent = theme.colorScheme.primary;
+    final numberFormatter = NumberFormat.currency(
+      locale: 'bn_BD',
+      symbol: '',
+      decimalDigits: 0,
+    );
+
     return SizedBox(
-      width: Get.width * 0.45,
-      child: Material(
-        elevation: 0.1,
-        borderRadius: BorderRadius.circular(7),
-        color: Theme.of(context).scaffoldBackgroundColor,
-        child: Padding(
-          padding: const EdgeInsets.all(3.0),
-          child: Column(
-            children: [
-              Text(title),
-              TweenAnimationBuilder<int>(
-                tween: IntTween(
-                  begin: 0,
-                  end: amount.floor(),
-                ), // Count up to endValue
-                duration: const Duration(seconds: 1),
-                builder: (context, value, child) {
-                  return Text(
-                    NumberFormat.currency(
-                      locale: 'bn_BD',
-                      symbol: '',
-                      decimalDigits: 0,
-                    ).format(value).trim(), // Format the number as currency
-                  );
-                },
+      width: cardWidth,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF1D2331) : Colors.white,
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(color: accent.withOpacity(0.08)),
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withOpacity(0.35)
+                  : Colors.black.withOpacity(0.08),
+              blurRadius: 24,
+              offset: const Offset(0, 12),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: accent.withOpacity(isDark ? 0.18 : 0.12),
+                borderRadius: BorderRadius.circular(16),
               ),
-            ],
-          ),
+              padding: const EdgeInsets.all(12),
+              child: Icon(
+                icon,
+                color: accent,
+                size: 28,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Text(
+              title,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 10),
+            TweenAnimationBuilder<double>(
+              tween: Tween<double>(
+                begin: 0,
+                end: amount,
+              ),
+              duration: const Duration(milliseconds: 600),
+              curve: Curves.easeOutCubic,
+              builder: (context, value, child) {
+                return Text(
+                  numberFormatter.format(value).trim(),
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

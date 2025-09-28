@@ -1,7 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../themes/theme_controller.dart';
 import '../../case/controllers/case_controller.dart';
 import 'accounts_card.dart';
 
@@ -10,7 +9,6 @@ class AccountsFirstCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Get.find<ThemeController>();
     final caseController = Get.find<CaseController>();
 
     return Obx(() {
@@ -29,24 +27,29 @@ class AccountsFirstCard extends StatelessWidget {
           .toDouble();
       final totalCases = cases.length.toDouble();
 
-      return Material(
-        color: themeController.isDarkMode
-            ? Colors.black
-            : const Color.fromARGB(255, 241, 238, 238),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            alignment: WrapAlignment.spaceBetween,
-            children: [
-              AccountsCard(title: 'চলমান কেস', amount: running),
-              AccountsCard(title: 'বন্ধ কেস', amount: closed),
-              AccountsCard(title: 'কমপ্লিট কেস', amount: complicated),
-              AccountsCard(title: 'মোট কেস', amount: totalCases),
-            ],
+      return DashboardMetricsGrid(
+        metrics: [
+          DashboardMetric(
+            title: 'চলমান কেস',
+            amount: running,
+            icon: Icons.play_circle_fill,
           ),
-        ),
+          DashboardMetric(
+            title: 'বন্ধ কেস',
+            amount: closed,
+            icon: Icons.lock_outline,
+          ),
+          DashboardMetric(
+            title: 'কমপ্লিট কেস',
+            amount: complicated,
+            icon: Icons.task_alt,
+          ),
+          DashboardMetric(
+            title: 'মোট কেস',
+            amount: totalCases,
+            icon: Icons.library_books,
+          ),
+        ],
       );
     });
   }

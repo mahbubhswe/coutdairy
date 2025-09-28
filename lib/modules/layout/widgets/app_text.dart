@@ -14,59 +14,76 @@ class AppText extends StatelessWidget {
   }
 
   final TextStyle colorizeTextStyle = const TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
   );
 
   @override
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
 
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: SizedBox(
-        width: double.infinity,
-        child: Material(
-          color: themeController.isDarkMode
-              ? Colors.black
-              : const Color.fromARGB(255, 241, 238, 238),
-          borderRadius: BorderRadius.circular(8),
+    final isDark = themeController.isDarkMode;
+    final borderColor = Theme.of(context).colorScheme.primary.withOpacity(0.16);
 
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: AnimatedTextKit(
-                animatedTexts: [
-                  ColorizeAnimatedText(
-                    'কোর্ট ডাইরি অ্যাপ ব্যবহার খুব সহজ ও নিরাপদ',
-                    textStyle: colorizeTextStyle,
-                    colors: _colors(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  ColorizeAnimatedText(
-                    'অটমেটিক ডাটা বেকাপ থাকে Google সার্ভারে',
-                    textStyle: colorizeTextStyle,
-                    colors: _colors(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  ColorizeAnimatedText(
-                    'ইন্টারনেট ছাড়াও ব্যবহার করুন নিশ্চিন্তে',
-                    textStyle: colorizeTextStyle,
-                    colors: _colors(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  ColorizeAnimatedText(
-                    'কোন ধরণের এড বা বিজ্ঞাপন দেখার ঝামেলা নেই',
-                    textStyle: colorizeTextStyle,
-                    colors: _colors(context),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-                isRepeatingAnimation: true,
-                repeatForever: true,
-                stopPauseOnTap: true,
-              ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28),
+          gradient: LinearGradient(
+            colors: isDark
+                ? const [Color(0xFF161B2C), Color(0xFF101320)]
+                : [
+                    Theme.of(context).colorScheme.primary.withOpacity(0.18),
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.12),
+                  ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          border: Border.all(color: borderColor),
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withOpacity(0.35)
+                  : Theme.of(context).colorScheme.primary.withOpacity(0.12),
+              blurRadius: 28,
+              offset: const Offset(0, 18),
             ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
+          child: AnimatedTextKit(
+            animatedTexts: [
+              ColorizeAnimatedText(
+                'কোর্ট ডাইরি অ্যাপ ব্যবহার খুব সহজ ও নিরাপদ',
+                textStyle: colorizeTextStyle,
+                colors: _colors(context),
+                textAlign: TextAlign.center,
+              ),
+              ColorizeAnimatedText(
+                'অটমেটিক ডাটা বেকাপ থাকে Google সার্ভারে',
+                textStyle: colorizeTextStyle,
+                colors: _colors(context),
+                textAlign: TextAlign.center,
+              ),
+              ColorizeAnimatedText(
+                'ইন্টারনেট ছাড়াও ব্যবহার করুন নিশ্চিন্তে',
+                textStyle: colorizeTextStyle,
+                colors: _colors(context),
+                textAlign: TextAlign.center,
+              ),
+              ColorizeAnimatedText(
+                'কোন ধরণের এড বা বিজ্ঞাপন দেখার ঝামেলা নেই',
+                textStyle: colorizeTextStyle,
+                colors: _colors(context),
+                textAlign: TextAlign.center,
+              ),
+            ],
+            pause: const Duration(milliseconds: 800),
+            isRepeatingAnimation: true,
+            repeatForever: true,
+            stopPauseOnTap: true,
           ),
         ),
       ),

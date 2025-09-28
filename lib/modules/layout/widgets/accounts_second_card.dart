@@ -1,7 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../themes/theme_controller.dart';
 import '../../accounts/controllers/transaction_controller.dart';
 import '../../party/controllers/party_controller.dart';
 import 'accounts_card.dart';
@@ -11,7 +10,6 @@ class AccountsSecondCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Get.find<ThemeController>();
     final partyController = Get.isRegistered<PartyController>()
         ? Get.find<PartyController>()
         : Get.put(PartyController());
@@ -31,24 +29,29 @@ class AccountsSecondCard extends StatelessWidget {
       final totalExpense = sumWhere('Expense') + sumWhere('Withdrawal');
       final balance = totalDeposit - totalExpense;
 
-      return Material(
-        color: themeController.isDarkMode
-            ? Colors.black
-            : const Color.fromARGB(255, 241, 238, 238),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            alignment: WrapAlignment.spaceBetween,
-            children: [
-              AccountsCard(title: 'মোট পার্টি', amount: totalParties),
-              AccountsCard(title: 'মোট জমা', amount: totalDeposit),
-              AccountsCard(title: 'মোট খরচ', amount: totalExpense),
-              AccountsCard(title: 'বর্তমান ব্যালেন্স', amount: balance),
-            ],
+      return DashboardMetricsGrid(
+        metrics: [
+          DashboardMetric(
+            title: 'মোট পার্টি',
+            amount: totalParties,
+            icon: Icons.people_alt,
           ),
-        ),
+          DashboardMetric(
+            title: 'মোট জমা',
+            amount: totalDeposit,
+            icon: Icons.savings,
+          ),
+          DashboardMetric(
+            title: 'মোট খরচ',
+            amount: totalExpense,
+            icon: Icons.trending_down,
+          ),
+          DashboardMetric(
+            title: 'বর্তমান ব্যালেন্স',
+            amount: balance,
+            icon: Icons.account_balance_wallet,
+          ),
+        ],
       );
     });
   }
