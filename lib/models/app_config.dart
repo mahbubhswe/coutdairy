@@ -4,6 +4,7 @@ class AppConfig {
   final String smsApiKey;
   final double smsCharge;
   final String smsSenderId;
+  final double discount;
 
   AppConfig({
     required this.activationCharge,
@@ -11,6 +12,7 @@ class AppConfig {
     required this.smsApiKey,
     required this.smsCharge,
     required this.smsSenderId,
+    required this.discount,
   });
 
   factory AppConfig.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class AppConfig {
       smsApiKey: json['smsApiKey'] ?? '',
       smsCharge: (json['smsCharge'] ?? 0).toDouble(),
       smsSenderId: json['smsSenderId'] ?? '',
+      discount: (json['discount'] ?? 0).toDouble(),
     );
   }
 
@@ -30,6 +33,7 @@ class AppConfig {
       'smsApiKey': smsApiKey,
       'smsCharge': smsCharge,
       'smsSenderId': smsSenderId,
+      'discount': discount,
     };
   }
 }

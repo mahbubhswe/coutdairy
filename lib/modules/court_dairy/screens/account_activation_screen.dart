@@ -54,16 +54,30 @@ class _ActivationPlanCard extends StatelessWidget {
   const _ActivationPlanCard({required this.controller});
   final AccountActivationController controller;
 
-  String _formatAmount(int amount) {
-    final value = amount.toString();
+  String _formatAmount(num amount) {
+    final bool hasFraction = amount is double && amount % 1 != 0;
+    final value = hasFraction
+        ? amount.toStringAsFixed(2)
+        : amount.round().toString();
+    final parts = value.split('.');
+    final integerPart = parts.first;
     final buffer = StringBuffer();
-    for (int i = 0; i < value.length; i++) {
-      buffer.write(value[i]);
-      final remaining = value.length - i - 1;
+
+    for (int i = 0; i < integerPart.length; i++) {
+      buffer.write(integerPart[i]);
+      final remaining = integerPart.length - i - 1;
       if (remaining > 0 && remaining % 3 == 0) {
         buffer.write(',');
       }
     }
+
+    if (parts.length > 1) {
+      final fraction = parts[1];
+      if (fraction != '00') {
+        buffer.write('.$fraction');
+      }
+    }
+
     return '৳ ${_toBanglaDigits(buffer.toString())}';
   }
 
@@ -80,6 +94,7 @@ class _ActivationPlanCard extends StatelessWidget {
       '8': '৮',
       '9': '৯',
       ',': ',',
+      '.': '.',
     };
     return value.split('').map((char) => englishToBangla[char] ?? char).join();
   }
@@ -90,6 +105,13 @@ class _ActivationPlanCard extends StatelessWidget {
     final cs = theme.colorScheme;
     final activationCharge = controller.activationCharge;
     final validityDays = controller.activationValidity;
+    final payableActivationCharge = controller.payableActivationCharge;
+    final hasDiscount = controller.hasDiscount;
+    final discountPercentage = controller.discountPercentage;
+    final discountAmount = controller.discountAmount;
+    final discountLabel = discountPercentage % 1 == 0
+        ? discountPercentage.toStringAsFixed(0)
+        : discountPercentage.toStringAsFixed(2);
 
     String planTitle;
     String feeLabel;
@@ -189,13 +211,38 @@ class _ActivationPlanCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
+                if (hasDiscount)
+                  Text(
+                    _formatAmount(activationCharge),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: cs.onSurfaceVariant,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                  ),
                 Text(
-                  _formatAmount(activationCharge),
+                  _formatAmount(payableActivationCharge),
                   style: theme.textTheme.displaySmall?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: cs.onSurface,
                   ),
                 ),
+                if (hasDiscount) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    '${_toBanglaDigits(discountLabel)}% ডিসকাউন্ট এর পর মূল্য',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: cs.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'মোট ডিসকাউন্ট: ${_formatAmount(discountAmount)}',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: cs.onSurfaceVariant,
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 6),
                 Text(
                   durationSummary,

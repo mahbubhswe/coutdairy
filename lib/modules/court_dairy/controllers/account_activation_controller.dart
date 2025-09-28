@@ -12,6 +12,7 @@ class AccountActivationController extends GetxController {
       AppConfigService.config?.activationCharge ?? 0;
   int get _configuredActivationValidity =>
       AppConfigService.config?.activationValidity ?? 0;
+  double get _configuredDiscount => AppConfigService.config?.discount ?? 0;
 
   int get _normalisedBaseValidityDays {
     final validity = _configuredActivationValidity;
@@ -53,6 +54,39 @@ class AccountActivationController extends GetxController {
   int get baseActivationCharge => _configuredActivationCharge;
   int get baseActivationValidity => _normalisedBaseValidityDays;
 
+  double get discountPercentage {
+    final discount = _configuredDiscount;
+    if (discount.isNaN || discount.isInfinite) {
+      return 0;
+    }
+    return discount;
+  }
+
+  bool get hasDiscount => discountPercentage > 0;
+
+  double get discountAmount {
+    if (!hasDiscount) return 0;
+
+    final baseCharge = activationCharge.toDouble();
+    if (baseCharge <= 0) return 0;
+
+    final safeDiscount = discountPercentage.clamp(0, 100);
+    final amount = baseCharge * (safeDiscount / 100);
+    return amount > baseCharge ? baseCharge : amount;
+  }
+
+  double get payableActivationCharge {
+    final baseCharge = activationCharge.toDouble();
+    if (baseCharge <= 0) return 0;
+
+    final payable = baseCharge - discountAmount;
+    if (payable <= 0) {
+      return 0;
+    }
+
+    return double.parse(payable.toStringAsFixed(2));
+  }
+
   bool get baseValidityRepresentsMonths =>
       _configuredActivationValidity > 0 && _configuredActivationValidity <= 12;
 
@@ -91,7 +125,7 @@ class AccountActivationController extends GetxController {
   }
 
   Future<void> activatePlan() async {
-    final amount = activationCharge.toDouble();
+    final amount = payableActivationCharge;
     final validity = activationValidity > 0 ? activationValidity : 30;
     final success = await PaymentService.payNow(amount: amount);
 
