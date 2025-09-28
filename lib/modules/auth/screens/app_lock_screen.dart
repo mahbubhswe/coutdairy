@@ -362,10 +362,8 @@ class _AppLockScreenState extends State<AppLockScreen> {
         : 'চার ডিজিটের পিন লিখুন';
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       backgroundColor: colors.surface,
-
-      body: Container(
+      body: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [colors.primaryContainer.withOpacity(0.75), colors.surface],
@@ -373,197 +371,179 @@ class _AppLockScreenState extends State<AppLockScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Center(
+        child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Card(
-                elevation: 12,
-                clipBehavior: Clip.antiAlias,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 28,
-                    vertical: 36,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [
+                          colors.primary.withOpacity(0.95),
+                          colors.secondary.withOpacity(0.9),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: Icon(
+                      widget.setupMode
+                          ? Icons.lock_reset_rounded
+                          : Icons.lock_open_rounded,
+                      size: 36,
+                      color: colors.onPrimary,
+                    ),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  widget.setupMode ? 'নিরাপদ পিন সেট করুন' : 'স্বাগতম!',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  instruction,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.textTheme.bodyMedium?.color?.withOpacity(
+                      0.75,
+                    ),
+                  ),
+                ),
+                if (widget.setupMode) ...[
+                  const SizedBox(height: 24),
+                  Row(
                     children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          padding: const EdgeInsets.all(18),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [
-                                colors.primary.withOpacity(0.95),
-                                colors.secondary.withOpacity(0.9),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                          ),
-                          child: Icon(
-                            widget.setupMode
-                                ? Icons.lock_reset_rounded
-                                : Icons.lock_open_rounded,
-                            size: 36,
-                            color: colors.onPrimary,
-                          ),
+                      Expanded(
+                        child: _buildStepPill(
+                          label: 'ধাপ ১',
+                          icon: _confirmPhase
+                              ? Icons.check_circle_outline
+                              : Icons.looks_one_outlined,
+                          active: !_confirmPhase,
+                          complete: _confirmPhase,
                         ),
                       ),
-                      const SizedBox(height: 24),
-                      Text(
-                        widget.setupMode ? 'নিরাপদ পিন সেট করুন' : 'স্বাগতম!',
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        instruction,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.textTheme.bodyMedium?.color?.withOpacity(
-                            0.75,
-                          ),
-                        ),
-                      ),
-                      if (widget.setupMode) ...[
-                        const SizedBox(height: 24),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildStepPill(
-                                label: 'ধাপ ১',
-                                icon: _confirmPhase
-                                    ? Icons.check_circle_outline
-                                    : Icons.looks_one_outlined,
-                                active: !_confirmPhase,
-                                complete: _confirmPhase,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: _buildStepPill(
-                                label: 'ধাপ ২',
-                                icon: Icons.looks_two_outlined,
-                                active: _confirmPhase,
-                                complete: false,
-                              ),
-                              ),
-                          ],
-                        ),
-                      ],
-                      const SizedBox(height: 24),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 260),
-                        child: _error == null
-                            ? const SizedBox.shrink(key: ValueKey('no-error'))
-                            : Container(
-                                key: const ValueKey('error'),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 12,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: colors.error.withOpacity(0.08),
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: colors.error.withOpacity(0.4),
-                                  ),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Icon(
-                                      Icons.error_outline_rounded,
-                                      color: colors.error,
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        _error!,
-                                        style: theme.textTheme.bodyMedium
-                                            ?.copyWith(
-                                              color: colors.error,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                      ),
-                      const SizedBox(height: 20),
-                      _buildPinField(
-                        label: widget.setupMode ? 'নতুন পিন' : 'পিন',
-                        icon: Icons.lock_outline,
-                        value: _pinInput,
-                        active: !widget.setupMode || !_confirmPhase,
-                      ),
-                      const SizedBox(height: 20),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 260),
-                        child: widget.setupMode && _confirmPhase
-                            ? Column(
-                                key: const ValueKey('confirm-field'),
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  _buildPinField(
-                                    label: 'পিন নিশ্চিত করুন',
-                                    icon: Icons.verified_user_outlined,
-                                    value: _confirmInput,
-                                    active: true,
-                                  ),
-                                ],
-                              )
-                            : const SizedBox.shrink(
-                                key: ValueKey('empty-confirm'),
-                              ),
-                      ),
-                      if (widget.setupMode && _confirmPhase) ...[
-                        const SizedBox(height: 12),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton.icon(
-                            onPressed: _resetSetupFlow,
-                            icon: const Icon(Icons.refresh_rounded),
-                            label: const Text('পিন আবার লিখুন'),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                      ],
-                      const SizedBox(height: 20),
-                      _buildKeypad(),
-                      const SizedBox(height: 12),
-                      if (_isProcessing)
-                        const Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 4),
-                            child: CircularProgressIndicator(strokeWidth: 2.6),
-                          ),
-                        ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'ব্যক্তিগত নিরাপত্তা নিশ্চিত করতে পিন কাউকে জানাবেন না।',
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.textTheme.bodySmall?.color?.withOpacity(
-                            0.7,
-                          ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _buildStepPill(
+                          label: 'ধাপ ২',
+                          icon: Icons.looks_two_outlined,
+                          active: _confirmPhase,
+                          complete: false,
                         ),
                       ),
                     ],
                   ),
+                ],
+                const SizedBox(height: 24),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 260),
+                  child: _error == null
+                      ? const SizedBox.shrink(key: ValueKey('no-error'))
+                      : Container(
+                          key: const ValueKey('error'),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: colors.error.withOpacity(0.08),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: colors.error.withOpacity(0.4),
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.error_outline_rounded,
+                                color: colors.error,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  _error!,
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: colors.error,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                 ),
-              ),
+                const SizedBox(height: 20),
+                _buildPinField(
+                  label: widget.setupMode ? 'নতুন পিন' : 'পিন',
+                  icon: Icons.lock_outline,
+                  value: _pinInput,
+                  active: !widget.setupMode || !_confirmPhase,
+                ),
+                const SizedBox(height: 20),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 260),
+                  child: widget.setupMode && _confirmPhase
+                      ? Column(
+                          key: const ValueKey('confirm-field'),
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _buildPinField(
+                              label: 'পিন নিশ্চিত করুন',
+                              icon: Icons.verified_user_outlined,
+                              value: _confirmInput,
+                              active: true,
+                            ),
+                          ],
+                        )
+                      : const SizedBox.shrink(
+                          key: ValueKey('empty-confirm'),
+                        ),
+                ),
+                if (widget.setupMode && _confirmPhase) ...[
+                  const SizedBox(height: 12),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton.icon(
+                      onPressed: _resetSetupFlow,
+                      icon: const Icon(Icons.refresh_rounded),
+                      label: const Text('পিন আবার লিখুন'),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+                const SizedBox(height: 20),
+                _buildKeypad(),
+                const SizedBox(height: 12),
+                if (_isProcessing)
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4),
+                      child: CircularProgressIndicator(strokeWidth: 2.6),
+                    ),
+                  ),
+                const SizedBox(height: 12),
+                Text(
+                  'ব্যক্তিগত নিরাপত্তা নিশ্চিত করতে পিন কাউকে জানাবেন না।',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.textTheme.bodySmall?.color?.withOpacity(
+                      0.7,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
