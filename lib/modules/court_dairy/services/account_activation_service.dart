@@ -10,13 +10,16 @@ class AccountActivationService {
       throw Exception('No authenticated user found.');
     }
 
+    final now = DateTime.now();
+    final endDate = now.add(Duration(days: days));
+
     await FirebaseFirestore.instance
         .collection(AppCollections.lawyers)
         .doc(user.uid)
         .update({
-      'isActive': true,
-      'subStartsAt': FieldValue.serverTimestamp(),
-      'subFor': days,
-    });
+          'isActive': true,
+          'subStartsAt': Timestamp.fromDate(now),
+          'subEndsAt': Timestamp.fromDate(endDate),
+        });
   }
 }

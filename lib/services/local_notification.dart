@@ -75,7 +75,7 @@ class LocalNotificationService {
   NotificationDetails notificationDetails() {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
-        'seba_pos_local_notification_channel',
+        'court_diary_local_notification_channel',
         'Local Notification',
         importance: Importance.max,
         priority: Priority.high,
