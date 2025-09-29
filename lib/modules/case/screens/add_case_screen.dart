@@ -1,5 +1,4 @@
 import 'package:hugeicons/hugeicons.dart';
-
 import '../../../widgets/dynamic_multi_step_form.dart';
 import '../../../widgets/app_text_from_field.dart';
 import '../../../widgets/app_type_ahead_field.dart';

@@ -96,10 +96,9 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
       final Color inactive = cs.outlineVariant;
       final Color completed = widget.completedColor ?? Colors.teal;
 
-      Widget header = Container(
+      Widget header = SizedBox(
         // Ensure the header background spans the full available width
         width: double.infinity,
-        color: widget.headerColor,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(

@@ -118,6 +118,7 @@ class CustomerServiceScreen extends StatelessWidget {
               _bullet('মোকদ্দমা তালিকা ও ব্যবস্থাপনা'),
               _bullet('শুনানির তারিখ রিমাইন্ডার'),
               _bullet('ক্লায়েন্ট ও প্রতিপক্ষ তথ্য সংরক্ষণ'),
+              _bullet('ক্লায়েন্টকে তারিখের আগের দিন Auto SMS'),
               _bullet('কোর্ট ফি ও খরচ হিসাব'),
               _bullet('ডকুমেন্ট ও প্রমাণ সংযুক্তি'),
               _bullet('দৈনিক অগ্রগতির রিপোর্ট'),

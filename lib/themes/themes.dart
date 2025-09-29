@@ -60,7 +60,7 @@ class Themes {
       unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
       indicatorSize: TabBarIndicatorSize.tab,
       indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(color: Colors.black, width: 1.0),
+        borderSide: BorderSide(color: Colors.black, width: 2.0),
       ),
 
       dividerColor: Colors.transparent,
@@ -163,7 +163,7 @@ class Themes {
       unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
       indicatorSize: TabBarIndicatorSize.tab,
       indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(color: _darkOnSurface, width: 1.0),
+        borderSide: BorderSide(color: _darkOnSurface, width: 2.0),
       ),
       dividerColor: Colors.transparent,
     ),

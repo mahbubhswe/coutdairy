@@ -18,7 +18,7 @@ class AccountsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final accent = isDark ? Colors.tealAccent : AppColors.fixedPrimary;
+    final accent = isDark ? Colors.white : AppColors.fixedPrimary;
     final numberFormatter = NumberFormat.currency(
       locale: 'bn_BD',
       symbol: '',

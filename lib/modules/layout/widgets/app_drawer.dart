@@ -441,9 +441,9 @@ class AppDrawer extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(12), // Rounded rectangle bg
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.outlineVariant,
-                ),
+                // border: Border.all(
+                //   color: Theme.of(context).colorScheme.outlineVariant,
+                // ),
               ),
               child: Icon(
                 icon,

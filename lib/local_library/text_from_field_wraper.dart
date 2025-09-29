@@ -68,32 +68,32 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
   }
 
   bool get hasTopLeftRadius => [
-        TextFormFieldPosition.alone,
-        TextFormFieldPosition.top,
-        TextFormFieldPosition.topLeft,
-        TextFormFieldPosition.left,
-      ].contains(widget.position);
+    TextFormFieldPosition.alone,
+    TextFormFieldPosition.top,
+    TextFormFieldPosition.topLeft,
+    TextFormFieldPosition.left,
+  ].contains(widget.position);
 
   bool get hasTopRightRadius => [
-        TextFormFieldPosition.alone,
-        TextFormFieldPosition.top,
-        TextFormFieldPosition.topRight,
-        TextFormFieldPosition.right,
-      ].contains(widget.position);
+    TextFormFieldPosition.alone,
+    TextFormFieldPosition.top,
+    TextFormFieldPosition.topRight,
+    TextFormFieldPosition.right,
+  ].contains(widget.position);
 
   bool get hasBottomLeftRadius => [
-        TextFormFieldPosition.alone,
-        TextFormFieldPosition.bottom,
-        TextFormFieldPosition.bottomLeft,
-        TextFormFieldPosition.left,
-      ].contains(widget.position);
+    TextFormFieldPosition.alone,
+    TextFormFieldPosition.bottom,
+    TextFormFieldPosition.bottomLeft,
+    TextFormFieldPosition.left,
+  ].contains(widget.position);
 
   bool get hasBottomRightRadius => [
-        TextFormFieldPosition.alone,
-        TextFormFieldPosition.bottom,
-        TextFormFieldPosition.bottomRight,
-        TextFormFieldPosition.right,
-      ].contains(widget.position);
+    TextFormFieldPosition.alone,
+    TextFormFieldPosition.bottom,
+    TextFormFieldPosition.bottomRight,
+    TextFormFieldPosition.right,
+  ].contains(widget.position);
 
   bool get hasTopBorder =>
       hasFocus ||
@@ -143,10 +143,12 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
         decoration: BoxDecoration(
           color: borderColor,
           borderRadius: BorderRadius.only(
-            topLeft:
-                hasTopLeftRadius ? Radius.circular(cornerRadius) : Radius.zero,
-            topRight:
-                hasTopRightRadius ? Radius.circular(cornerRadius) : Radius.zero,
+            topLeft: hasTopLeftRadius
+                ? Radius.circular(cornerRadius)
+                : Radius.zero,
+            topRight: hasTopRightRadius
+                ? Radius.circular(cornerRadius)
+                : Radius.zero,
             bottomLeft: hasBottomLeftRadius
                 ? Radius.circular(cornerRadius)
                 : Radius.zero,
@@ -167,8 +169,9 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
           decoration: BoxDecoration(
             color: fillColor,
             borderRadius: BorderRadius.only(
-              topLeft:
-                  hasTopLeftRadius ? Radius.circular(innerRadius) : Radius.zero,
+              topLeft: hasTopLeftRadius
+                  ? Radius.circular(innerRadius)
+                  : Radius.zero,
               topRight: hasTopRightRadius
                   ? Radius.circular(innerRadius)
                   : Radius.zero,
@@ -192,7 +195,7 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: widget.suffix!,
-                )
+                ),
             ],
           ),
         ),

@@ -26,22 +26,25 @@ class CaseDetailScreen extends StatelessWidget {
     final statuses = const ['Ongoing', 'Disposed', 'Completed'];
 
     Widget section(String title, Widget child) {
-      return Card(
-        elevation: 0.5,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+      return SizedBox(
+        width: double.infinity,
+        child: Card(
+          elevation: 0.5,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              child,
-            ],
+                const SizedBox(height: 12),
+                child,
+              ],
+            ),
           ),
         ),
       );
@@ -145,19 +148,6 @@ class CaseDetailScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      if (caseItem.caseType.isNotEmpty)
-                        Row(
-                          children: [
-                            const Icon(Icons.category_outlined, size: 18),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                'কেস টাইপ: ${caseItem.caseType}',
-                                style: theme.textTheme.bodyMedium,
-                              ),
-                            ),
-                          ],
-                        ),
                     ],
                   ),
 

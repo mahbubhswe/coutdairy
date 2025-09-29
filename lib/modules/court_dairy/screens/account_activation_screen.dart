@@ -14,19 +14,18 @@ class AccountActivationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
-
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        systemNavigationBarColor: cs.surface,
-        systemNavigationBarIconBrightness: isDark
-            ? Brightness.light
-            : Brightness.dark,
-        systemNavigationBarDividerColor: Colors.transparent,
-      ),
-      child: Scaffold(
-        backgroundColor: cs.surface,
-        body: SafeArea(
+    final colors = theme.colorScheme;
+    return Scaffold(
+      backgroundColor: cs.surface,
+      body: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [colors.surface, colors.primaryContainer.withOpacity(0.75)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 32),
@@ -175,9 +174,8 @@ class _ActivationPlanCard extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
           decoration: BoxDecoration(
-            color: cs.surface,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: cs.primary.withOpacity(0.24)),
+            color: cs.surface.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Stack(
             clipBehavior: Clip.none,
@@ -312,18 +310,17 @@ class _FeaturePoint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final cs = theme.colorScheme;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(Icons.check_circle_rounded, size: 20, color: cs.primary),
+        Icon(Icons.check_circle_rounded, size: 20, color: Colors.white),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             text,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: cs.onSurfaceVariant,
+              color: Colors.white,
               height: 1.5,
             ),
           ),
