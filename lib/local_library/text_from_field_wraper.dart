@@ -95,108 +95,96 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
     TextFormFieldPosition.right,
   ].contains(widget.position);
 
-  bool get hasTopBorder =>
-      hasFocus ||
-      [
-        TextFormFieldPosition.alone,
-        TextFormFieldPosition.top,
-        TextFormFieldPosition.topLeft,
-        TextFormFieldPosition.topRight,
-        TextFormFieldPosition.left,
-        TextFormFieldPosition.right,
-      ].contains(widget.position);
-
-  bool get hasLeftBorder =>
-      hasFocus ||
-      [
-        TextFormFieldPosition.alone,
-        TextFormFieldPosition.top,
-        TextFormFieldPosition.bottom,
-        TextFormFieldPosition.topLeft,
-        TextFormFieldPosition.left,
-        TextFormFieldPosition.center,
-        TextFormFieldPosition.bottomLeft,
-      ].contains(widget.position);
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    final Color shadowColor = widget.shadowColor ?? theme.shadowColor;
-    final Color fillColor = cs.surface;
-    // Remove outline border entirely
-    Color borderColor = Colors.transparent;
-    double borderWidth = 0.0;
-    double cornerRadius = widget.borderRadius;
-    double innerRadius = cornerRadius - borderWidth;
+    final bool isDark = theme.brightness == Brightness.dark;
+
+    final double radius = widget.borderRadius;
+    final BorderRadius borderRadius = BorderRadius.only(
+      topLeft: hasTopLeftRadius ? Radius.circular(radius) : Radius.zero,
+      topRight: hasTopRightRadius ? Radius.circular(radius) : Radius.zero,
+      bottomLeft: hasBottomLeftRadius ? Radius.circular(radius) : Radius.zero,
+      bottomRight: hasBottomRightRadius ? Radius.circular(radius) : Radius.zero,
+    );
+
+    final Color baseOverlay = cs.secondary.withOpacity(isDark ? 0.22 : 0.08);
+    final Color focusOverlay = cs.secondary.withOpacity(isDark ? 0.34 : 0.14);
+    final Color containerColor = Color.alphaBlend(
+      hasFocus ? focusOverlay : baseOverlay,
+      cs.surface,
+    );
+
+    final double shadowScale = widget.shadowSize <= 0 ? 0 : widget.shadowSize;
+    final List<BoxShadow> shadows = shadowScale == 0
+        ? const []
+        : [
+            BoxShadow(
+              color: (widget.shadowColor ?? Colors.black)
+                  .withOpacity(isDark ? 0.35 : 0.14),
+              blurRadius: 24 * shadowScale,
+              offset: Offset(0, 8 * shadowScale),
+            ),
+            if (hasFocus)
+              BoxShadow(
+                color: cs.secondary.withOpacity(isDark ? 0.28 : 0.1),
+                blurRadius: 30 * shadowScale,
+                offset: Offset(0, 10 * shadowScale),
+              ),
+          ];
+
+    final ThemeData decorationTheme = theme.copyWith(
+      inputDecorationTheme: theme.inputDecorationTheme.copyWith(
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        disabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        focusedErrorBorder: InputBorder.none,
+        filled: false,
+      ),
+    );
 
     return Focus(
       focusNode: focusNode,
-      child: Container(
-        padding: EdgeInsets.fromLTRB(
-          hasLeftBorder ? borderWidth : 0.0,
-          hasTopBorder ? borderWidth : 0.0,
-          borderWidth,
-          borderWidth,
-        ),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeOutCubic,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: borderColor,
-          borderRadius: BorderRadius.only(
-            topLeft: hasTopLeftRadius
-                ? Radius.circular(cornerRadius)
-                : Radius.zero,
-            topRight: hasTopRightRadius
-                ? Radius.circular(cornerRadius)
-                : Radius.zero,
-            bottomLeft: hasBottomLeftRadius
-                ? Radius.circular(cornerRadius)
-                : Radius.zero,
-            bottomRight: hasBottomRightRadius
-                ? Radius.circular(cornerRadius)
-                : Radius.zero,
-          ),
-          boxShadow: [
-            if (widget.shadowSize != 0.0)
-              BoxShadow(
-                color: shadowColor.withOpacity(0.5),
-                blurRadius: widget.shadowSize,
-                offset: Offset(widget.shadowSize, widget.shadowSize),
-              ),
-          ],
+          color: containerColor,
+          borderRadius: borderRadius,
+          boxShadow: shadows,
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: fillColor,
-            borderRadius: BorderRadius.only(
-              topLeft: hasTopLeftRadius
-                  ? Radius.circular(innerRadius)
-                  : Radius.zero,
-              topRight: hasTopRightRadius
-                  ? Radius.circular(innerRadius)
-                  : Radius.zero,
-              bottomLeft: hasBottomLeftRadius
-                  ? Radius.circular(innerRadius)
-                  : Radius.zero,
-              bottomRight: hasBottomRightRadius
-                  ? Radius.circular(innerRadius)
-                  : Radius.zero,
+        child: ClipRRect(
+          borderRadius: borderRadius,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 6,
             ),
-          ),
-          child: Row(
-            children: [
-              if (widget.prefix != null)
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: widget.prefix!,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (widget.prefix != null)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: widget.prefix!,
+                  ),
+                Expanded(
+                  child: Theme(
+                    data: decorationTheme,
+                    child: widget.formField,
+                  ),
                 ),
-              Expanded(child: widget.formField),
-              if (widget.suffix != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: widget.suffix!,
-                ),
-            ],
+                if (widget.suffix != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: widget.suffix!,
+                  ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:hugeicons/hugeicons.dart';
 
+import '../../../constants/app_colors.dart';
 import '../../../widgets/dynamic_multi_step_form.dart';
 import '../../../widgets/app_type_ahead_field.dart';
 import '../../../widgets/app_text_from_field.dart';
@@ -23,26 +24,42 @@ class EditCaseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(EditCaseController(caseItem));
 
-    Widget caseTypeChips() {
-      final appBarColor = Theme.of(context).appBarTheme.backgroundColor ??
+    Widget titledChipRow({
+      required String title,
+      required List<String> options,
+      required RxnString selected,
+    }) {
+      final appBarColor =
+          Theme.of(context).appBarTheme.backgroundColor ??
           Theme.of(context).colorScheme.primary;
-      return Wrap(
-        spacing: 8,
-        children: controller.caseTypes.map((type) {
-          return Obx(() {
-            final isSelected = controller.selectedCaseType.value == type;
-            return ChoiceChip(
-              label: Text(type),
-              selected: isSelected,
-              onSelected: (_) => controller.selectedCaseType.value = type,
-              shape: StadiumBorder(
-                side: BorderSide(
-                  color: isSelected ? Colors.transparent : appBarColor,
-                ),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+          Obx(
+            () => SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: options.map((t) {
+                  final isSelected = selected.value == t;
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: ChoiceChip(
+                      label: Text(t),
+                      selected: isSelected,
+                      onSelected: (_) => selected.value = t,
+                      shape: StadiumBorder(
+                        side: BorderSide(
+                          color: isSelected ? Colors.transparent : appBarColor,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
-            );
-          });
-        }).toList(),
+            ),
+          ),
+        ],
       );
     }
 
@@ -101,14 +118,29 @@ class EditCaseScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('কেস সম্পাদনা')),
-      body: Obx(() => DynamicMultiStepForm(
+      body: Obx(
+        () => Padding(
+          padding: const EdgeInsets.all(5),
+          child: DynamicMultiStepForm(
             steps: [
               FormStep(
                 title: const Text('কেস তথ্য'),
                 content: Column(
                   spacing: 10,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    caseTypeChips(),
+                    const SizedBox(height: 5),
+                    titledChipRow(
+                      title: 'কেসের ধরন',
+                      options: controller.caseTypes,
+                      selected: controller.selectedCaseType,
+                    ),
+                    titledChipRow(
+                      title: 'আদালতের ধরন',
+                      options: controller.courtTypes,
+                      selected: controller.selectedCourtType,
+                    ),
                     AppTextFromField(
                       controller: controller.caseTitle,
                       label: 'কেসের শিরোনাম',
@@ -129,48 +161,52 @@ class EditCaseScreen extends StatelessWidget {
                       prefixIcon: Icons.numbers,
                     ),
                     AppTextFromField(
-                      controller: controller.caseStatus,
-                      label: 'কেসের অবস্থা',
-                      hintText: 'কেসের অবস্থা লিখুন',
-                      prefixIcon: Icons.flag_outlined,
-                    ),
-                    AppTextFromField(
                       controller: controller.caseSummary,
                       label: 'সারাংশ',
                       hintText: 'সারাংশ লিখুন',
                       prefixIcon: Icons.description_outlined,
                       isMaxLines: 3,
                     ),
-                    Obx(() => ListTile(
-                          title: Text(controller.filedDate.value?.formattedDate ??
-                              'দাখিলের তারিখ'),
-                          trailing:
-                              const Icon(HugeIcons.strokeRoundedCalendar01),
-                          onTap: () async {
-                            final picked = await showDatePicker(
-                                context: context,
-                                initialDate: controller.filedDate.value ??
-                                    DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100));
-                            if (picked != null)
-                              controller.filedDate.value = picked;
-                          },
-                        )),
+                    Obx(
+                      () => InputChip(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        label: Text(
+                          controller.filedDate.value?.formattedDate ??
+                              'দাখিলের তারিখ',
+                        ),
+                        avatar: const Icon(HugeIcons.strokeRoundedCalendar01),
+                        onPressed: () async {
+                          final picked = await showDatePicker(
+                            context: context,
+                            initialDate:
+                                controller.filedDate.value ?? DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2100),
+                          );
+                          if (picked != null) {
+                            controller.filedDate.value = picked;
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
               FormStep(
                 title: const Text('পক্ষসমূহ'),
                 content: Column(
+                  spacing: 10,
                   children: [
+                    const SizedBox(height: 5),
                     partyDropdown(
                       selected: controller.selectedPlaintiff,
                       label: 'বাদী',
                       hint: 'বাদী নির্বাচন করুন',
                       icon: Icons.person_outline,
                     ),
-                    const SizedBox(height: 16),
                     partyDropdown(
                       selected: controller.selectedDefendant,
                       label: 'বিবাদী',
@@ -184,23 +220,9 @@ class EditCaseScreen extends StatelessWidget {
                 title: const Text('আরও'),
                 content: Column(
                   spacing: 10,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Obx(() => ListTile(
-                          title: Text(controller.hearingDate.value?.formattedDate ??
-                              'শুনানির তারিখ'),
-                          trailing:
-                              const Icon(HugeIcons.strokeRoundedCalendar01),
-                          onTap: () async {
-                            final picked = await showDatePicker(
-                                context: context,
-                                initialDate: controller.hearingDate.value ??
-                                    DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100));
-                            if (picked != null)
-                              controller.hearingDate.value = picked;
-                          },
-                        )),
+                    const SizedBox(height: 5),
                     AppTypeAheadField(
                       controller: controller.judgeName,
                       label: 'বিচারকের নাম',
@@ -214,12 +236,44 @@ class EditCaseScreen extends StatelessWidget {
                       hintText: 'আদালতের আদেশ লিখুন',
                       prefixIcon: Icons.article_outlined,
                     ),
+                    Obx(
+                      () => InputChip(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        label: Text(
+                          controller.hearingDate.value?.formattedDate ??
+                              'শুনানির তারিখ',
+                        ),
+                        avatar: const Icon(HugeIcons.strokeRoundedCalendar01),
+                        onPressed: () async {
+                          final picked = await showDatePicker(
+                            context: context,
+                            initialDate:
+                                controller.hearingDate.value ?? DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2100),
+                          );
+                          if (picked != null) {
+                            controller.hearingDate.value = picked;
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
             ],
             isLoading: controller.isLoading.value,
             controlsInBottom: true,
+            controlsPadding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
+            ),
+            stepIconColor: AppColors.fixedPrimary,
+            headerColor: Theme.of(context).colorScheme.secondary,
+            tightHorizontal: true,
             onSubmit: () {
               PanaraConfirmDialog.show(
                 context,
@@ -251,7 +305,9 @@ class EditCaseScreen extends StatelessWidget {
                 panaraDialogType: PanaraDialogType.normal,
               );
             },
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

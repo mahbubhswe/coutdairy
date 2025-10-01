@@ -1,7 +1,5 @@
-import 'package:court_dairy/constants/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_shadow/simple_shadow.dart';
 
 class AppButton extends StatelessWidget {
   final String label;
@@ -21,41 +19,73 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isEnabled = onPressed != null && !isLoading;
-    final cs = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+    final bool isDark = theme.brightness == Brightness.dark;
 
-    final Color bgEnabled = surfaceStyle ? cs.surface : AppColors.fixedPrimary;
-    final Color fgEnabled = surfaceStyle ? cs.onSurface : cs.onSecondary;
-    final Color bgDisabled = surfaceStyle
-        ? cs.surface
-        : cs.outlineVariant.withOpacity(0.6);
-    final Color fgDisabled = cs.onSurfaceVariant;
+    final Color accent = cs.secondary;
+    final Color surfaceBase = Color.alphaBlend(
+      accent.withOpacity(isDark ? 0.26 : 0.12),
+      cs.surface,
+    );
+    final Color surfaceActive = Color.alphaBlend(
+      accent.withOpacity(isDark ? 0.34 : 0.18),
+      cs.surface,
+    );
+    final Color disabledBase = Color.alphaBlend(
+      cs.onSurface.withOpacity(isDark ? 0.24 : 0.08),
+      cs.surface,
+    );
 
-    return SimpleShadow(
-      opacity: isEnabled ? (surfaceStyle ? 0.15 : 0.3) : 0,
-      child: InkWell(
-        onTap: isEnabled ? onPressed : null,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          height: 60,
-          decoration: BoxDecoration(
-            // Choose surface vs brand background
-            color: isEnabled ? bgEnabled : bgDisabled,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Center(
-            child: isLoading
-                ? CupertinoActivityIndicator(
-                    color: isEnabled ? fgEnabled : fgDisabled,
-                  )
-                : Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      // Match content color to chosen background color
-                      color: isEnabled ? fgEnabled : fgDisabled,
+    final Color backgroundColor = !isEnabled
+        ? (surfaceStyle ? surfaceBase : disabledBase)
+        : (surfaceStyle ? surfaceActive : accent);
+
+    final Color textColor = surfaceStyle ? cs.onSurface : cs.onSecondary;
+    final Color disabledText = cs.onSurfaceVariant;
+
+    final List<BoxShadow> shadows = !isEnabled
+        ? const []
+        : [
+            BoxShadow(
+              color: accent.withOpacity(surfaceStyle ? 0.18 : 0.32),
+              blurRadius: surfaceStyle ? 20 : 26,
+              offset: Offset(0, surfaceStyle ? 8 : 12),
+            ),
+          ];
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeOutCubic,
+      constraints: const BoxConstraints(minHeight: 56),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: shadows,
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: isEnabled ? onPressed : null,
+          splashColor: accent.withOpacity(0.12),
+          highlightColor: accent.withOpacity(0.08),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Center(
+              child: isLoading
+                  ? CupertinoActivityIndicator(
+                      color: isEnabled ? textColor : disabledText,
+                    )
+                  : Text(
+                      label,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.2,
+                        color: isEnabled ? textColor : disabledText,
+                      ),
                     ),
-                  ),
+            ),
           ),
         ),
       ),

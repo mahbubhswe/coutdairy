@@ -9,7 +9,7 @@ class CourtCase {
   // Case Information
   String caseType;
   String caseTitle;
-  final String courtType;
+  String courtType;
   String courtName;
   String caseNumber;
   Timestamp filedDate; // Use Timestamp instead of DateTime

@@ -18,12 +18,12 @@ class EditCaseController extends GetxController {
   late final TextEditingController caseTitle;
   late final TextEditingController courtName;
   late final TextEditingController caseNumber;
-  late final TextEditingController caseStatus;
   late final TextEditingController caseSummary;
   late final TextEditingController judgeName;
   late final TextEditingController courtOrder;
 
   final RxnString selectedCaseType = RxnString();
+  final RxnString selectedCourtType = RxnString();
   final Rx<DateTime?> filedDate = Rx<DateTime?>(null);
   final Rx<DateTime?> hearingDate = Rx<DateTime?>(null);
 
@@ -32,6 +32,7 @@ class EditCaseController extends GetxController {
 
   final parties = <Party>[].obs;
   final caseTypes = ['Civil', 'Criminal', 'Family', 'Other'];
+  final courtTypes = ['District', 'Appeal', 'High Court'];
 
   final RxBool isLoading = false.obs;
 
@@ -44,12 +45,11 @@ class EditCaseController extends GetxController {
     caseTitle = TextEditingController(text: caseModel.caseTitle);
     courtName = TextEditingController(text: caseModel.courtName);
     caseNumber = TextEditingController(text: caseModel.caseNumber);
-    caseStatus = TextEditingController(text: caseModel.caseStatus);
     caseSummary = TextEditingController(text: caseModel.caseSummary);
     judgeName = TextEditingController(text: caseModel.judgeName);
-    courtOrder =
-        TextEditingController(text: caseModel.courtNextOrder ?? '');
+    courtOrder = TextEditingController(text: caseModel.courtNextOrder ?? '');
     selectedCaseType.value = caseModel.caseType;
+    selectedCourtType.value = caseModel.courtType;
     filedDate.value = caseModel.filedDate.toDate();
     hearingDate.value = caseModel.nextHearingDate?.toDate();
     selectedPlaintiff.value = caseModel.plaintiff;
@@ -78,7 +78,7 @@ class EditCaseController extends GetxController {
     // Ensure Dropdown `value` matches one of the `items` references
     selectedPlaintiff.value = _matchFromList(caseModel.plaintiff);
     selectedDefendant.value = _matchFromList(caseModel.defendant);
-    }
+  }
 
   Future<void> _loadSuggestions(String uid) async {
     final doc = await AppFirebase()
@@ -122,20 +122,20 @@ class EditCaseController extends GetxController {
     try {
       isLoading.value = true;
       caseModel
-        ..caseType = selectedCaseType.value ?? ''
+        ..caseType = selectedCaseType.value ?? caseModel.caseType
+        ..courtType = selectedCourtType.value ?? caseModel.courtType
         ..caseTitle = caseTitle.text.trim()
         ..courtName = courtName.text.trim()
         ..caseNumber = caseNumber.text.trim()
         ..filedDate = Timestamp.fromDate(filedDate.value ?? DateTime.now())
-        ..caseStatus = caseStatus.text.trim()
         ..plaintiff = selectedPlaintiff.value!
         ..defendant = selectedDefendant.value!
+        ..judgeName = judgeName.text.trim()
         ..nextHearingDate = hearingDate.value != null
             ? Timestamp.fromDate(hearingDate.value!)
             : null
-        ..judgeName = judgeName.text.trim()
         ..courtNextOrder =
-            courtOrder.text.isNotEmpty ? courtOrder.text.trim() : null
+            courtOrder.text.trim().isNotEmpty ? courtOrder.text.trim() : null
         ..caseSummary = caseSummary.text.trim();
 
       await CaseService.updateCase(caseModel, user.uid);
