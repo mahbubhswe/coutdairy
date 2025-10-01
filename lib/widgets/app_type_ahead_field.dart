@@ -35,6 +35,7 @@ class AppTypeAheadField extends StatelessWidget {
     return TextFormFieldWrapper(
       borderFocusedColor: cs.primary,
       position: textFormFieldPosition,
+      prefix: Icon(prefixIcon, color: cs.onSurfaceVariant, size: 20),
       formField: TypeAheadField<String>(
         controller: controller,
         builder: (context, textController, focusNode) {
@@ -46,7 +47,6 @@ class AppTypeAheadField extends StatelessWidget {
               border: InputBorder.none,
               hintText: hintText,
               labelText: label,
-              prefixIcon: Icon(prefixIcon, color: cs.onSurfaceVariant),
             ),
             onChanged: onChanged,
             onTap: onTap,
@@ -59,9 +59,7 @@ class AppTypeAheadField extends StatelessWidget {
               .toList();
         },
         itemBuilder: (context, suggestion) {
-          return ListTile(
-            title: Text(suggestion),
-          );
+          return ListTile(title: Text(suggestion));
         },
         onSelected: (suggestion) {
           controller.text = suggestion;

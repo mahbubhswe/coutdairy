@@ -23,9 +23,10 @@ class AppDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return TextFormFieldWrapper(
       borderFocusedColor: AppColors.fixedPrimary,
-      prefix: Icon(prefixIcon),
+      prefix: Icon(prefixIcon, color: cs.onSurfaceVariant, size: 20),
       formField: DropdownButtonFormField<String>(
         value: value,
         decoration: InputDecoration(
@@ -35,10 +36,8 @@ class AppDropdown extends StatelessWidget {
         ),
         items: items
             .map(
-              (item) => DropdownMenuItem<String>(
-                value: item,
-                child: Text(item),
-              ),
+              (item) =>
+                  DropdownMenuItem<String>(value: item, child: Text(item)),
             )
             .toList(),
         onChanged: onChanged,

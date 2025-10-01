@@ -49,6 +49,8 @@ class AppTextFromField extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     return TextFormFieldWrapper(
       borderFocusedColor: AppColors.fixedPrimary,
+      prefix: Icon(prefixIcon, color: cs.onSurfaceVariant, size: 20),
+      suffix: suffixIconButton,
       formField: TextFormField(
         controller: controller,
         cursorColor: Theme.of(context).colorScheme.onSurface,
@@ -65,8 +67,6 @@ class AppTextFromField extends StatelessWidget {
           border: InputBorder.none,
           hintText: hintText,
           labelText: label,
-          prefixIcon: Icon(prefixIcon, color: cs.onSurfaceVariant),
-          suffixIcon: suffixIconButton,
         ),
       ),
       position: textFormFieldPosition,

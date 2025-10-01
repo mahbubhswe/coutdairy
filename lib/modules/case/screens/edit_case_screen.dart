@@ -78,6 +78,7 @@ class EditCaseScreen extends StatelessWidget {
         }
         return TextFormFieldWrapper(
           borderFocusedColor: cs.primary,
+          prefix: Icon(icon, color: cs.onSurfaceVariant, size: 20),
           formField: TypeAheadField<Party>(
             controller: textController,
             builder: (context, textEditingController, focusNode) {
@@ -89,7 +90,6 @@ class EditCaseScreen extends StatelessWidget {
                   border: InputBorder.none,
                   labelText: label,
                   hintText: hint,
-                  prefixIcon: Icon(icon, color: cs.onSurfaceVariant),
                 ),
                 onChanged: (_) => selected.value = null,
               );
@@ -289,9 +289,7 @@ class EditCaseScreen extends StatelessWidget {
                   final success = await controller.updateCase();
                   if (success) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('কেস আপডেট করা হয়েছে'),
-                      ),
+                      const SnackBar(content: Text('কেস আপডেট করা হয়েছে')),
                     );
                     Get.back();
                   } else {

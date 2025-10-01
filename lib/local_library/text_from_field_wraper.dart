@@ -21,11 +21,9 @@ class TextFormFieldWrapper extends StatefulWidget {
     this.suffix,
     this.prefix,
     this.shadowColor,
-    this.shadowSize = 0.5,
+    this.shadowSize = 0.15,
     this.borderRadius = 12.0,
-    this.borderThickness = 1.0,
     this.borderColor,
-    this.borderFocusedThickness = 3.0,
     this.borderFocusedColor,
   });
 
@@ -36,9 +34,7 @@ class TextFormFieldWrapper extends StatefulWidget {
   final Color? shadowColor;
   final double shadowSize;
   final double borderRadius;
-  final double borderThickness;
   final Color? borderColor;
-  final double borderFocusedThickness;
   final Color? borderFocusedColor;
 
   @override
@@ -109,8 +105,10 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
       bottomRight: hasBottomRightRadius ? Radius.circular(radius) : Radius.zero,
     );
 
-    final Color baseOverlay = cs.secondary.withOpacity(isDark ? 0.22 : 0.08);
-    final Color focusOverlay = cs.secondary.withOpacity(isDark ? 0.34 : 0.14);
+    final Color baseTint = widget.borderColor ?? cs.primary;
+    final Color focusTint = widget.borderFocusedColor ?? baseTint;
+    final Color baseOverlay = baseTint.withOpacity(isDark ? 0.18 : 0.06);
+    final Color focusOverlay = focusTint.withOpacity(isDark ? 0.28 : 0.12);
     final Color containerColor = Color.alphaBlend(
       hasFocus ? focusOverlay : baseOverlay,
       cs.surface,
@@ -121,16 +119,17 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
         ? const []
         : [
             BoxShadow(
-              color: (widget.shadowColor ?? Colors.black)
-                  .withOpacity(isDark ? 0.35 : 0.14),
-              blurRadius: 24 * shadowScale,
-              offset: Offset(0, 8 * shadowScale),
+              color: (widget.shadowColor ?? Colors.black).withOpacity(
+                isDark ? 0.3 : 0.1,
+              ),
+              blurRadius: 18 * shadowScale,
+              offset: Offset(0, 6 * shadowScale),
             ),
             if (hasFocus)
               BoxShadow(
-                color: cs.secondary.withOpacity(isDark ? 0.28 : 0.1),
-                blurRadius: 30 * shadowScale,
-                offset: Offset(0, 10 * shadowScale),
+                color: cs.primary.withOpacity(isDark ? 0.26 : 0.12),
+                blurRadius: 20 * shadowScale,
+                offset: Offset(0, 8 * shadowScale),
               ),
           ];
 
@@ -143,6 +142,8 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
         errorBorder: InputBorder.none,
         focusedErrorBorder: InputBorder.none,
         filled: false,
+        isDense: true,
+        contentPadding: EdgeInsets.zero,
       ),
     );
 
@@ -160,10 +161,7 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
         child: ClipRRect(
           borderRadius: borderRadius,
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 6,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -173,10 +171,7 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
                     child: widget.prefix!,
                   ),
                 Expanded(
-                  child: Theme(
-                    data: decorationTheme,
-                    child: widget.formField,
-                  ),
+                  child: Theme(data: decorationTheme, child: widget.formField),
                 ),
                 if (widget.suffix != null)
                   Padding(

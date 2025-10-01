@@ -77,6 +77,7 @@ class AddCaseScreen extends StatelessWidget {
         }
         return TextFormFieldWrapper(
           borderFocusedColor: cs.primary,
+          prefix: Icon(icon, color: cs.onSurfaceVariant, size: 20),
           formField: TypeAheadField<Party>(
             controller: textController,
             builder: (context, textEditingController, focusNode) {
@@ -88,7 +89,6 @@ class AddCaseScreen extends StatelessWidget {
                   border: InputBorder.none,
                   labelText: label,
                   hintText: hint,
-                  prefixIcon: Icon(icon, color: cs.onSurfaceVariant),
                 ),
                 onChanged: (_) => selected.value = null,
               );

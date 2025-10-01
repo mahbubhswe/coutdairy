@@ -21,119 +21,149 @@ class AddPartyScreen extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(title: const Text('নতুন পার্টি যোগ করুন')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          spacing: 16,
-          children: [
-            Obx(() {
-              final image = controller.photo.value;
-              return Align(
-                alignment: Alignment.centerLeft,
-                child: InkWell(
-                  onTap: controller.showImagePicker,
-                  borderRadius: BorderRadius.circular(16),
-                  child: Stack(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 520),
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: cs.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: cs.shadow.withOpacity(0.08),
+                        blurRadius: 24,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                    border: Border.all(
+                      color: cs.outlineVariant.withOpacity(0.4),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 20,
                     children: [
-                      if (image == null)
-                        DottedBorder(
-                          color: cs.outlineVariant,
-                          strokeWidth: 1.4,
-                          dashPattern: const [8, 6],
-                          borderType: BorderType.RRect,
-                          radius: const Radius.circular(16),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Container(
-                              width: 125,
-                              height: 125,
-                              color: cs.surfaceContainerHighest,
-                              child: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.camera_alt_rounded,
-                                      size: 36,
-                                      color: cs.onSurfaceVariant,
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      'ফটো যোগ করুন',
-                                      style: TextStyle(
-                                        color: cs.onSurfaceVariant,
-                                        fontWeight: FontWeight.w600,
+                      Text(
+                        'পার্টির তথ্য',
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                      Obx(() {
+                        final image = controller.photo.value;
+                        return InkWell(
+                          onTap: controller.showImagePicker,
+                          borderRadius: BorderRadius.circular(16),
+                          child: Stack(
+                            children: [
+                              if (image == null)
+                                DottedBorder(
+                                  color: cs.outlineVariant,
+                                  strokeWidth: 1.4,
+                                  dashPattern: const [8, 6],
+                                  borderType: BorderType.RRect,
+                                  radius: const Radius.circular(16),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Container(
+                                      width: 140,
+                                      height: 140,
+                                      color: cs.surface,
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.camera_alt_rounded,
+                                              size: 38,
+                                              color: cs.onSurfaceVariant,
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              'ফটো যোগ করুন',
+                                              style: TextStyle(
+                                                color: cs.onSurfaceVariant,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ],
+                                  ),
+                                )
+                              else
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Image.file(
+                                    File(image.path),
+                                    width: 140,
+                                    height: 140,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        )
-                      else
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.file(
-                            File(image.path),
-                            width: 125,
-                            height: 125,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      // Dotted border shown only when no image (handled above)
-                      Positioned(
-                        right: 6,
-                        bottom: 6,
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: cs.primary,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: cs.primary.withOpacity(0.25),
-                                blurRadius: 8,
-                                offset: const Offset(0, 3),
+                              Positioned(
+                                right: 6,
+                                bottom: 6,
+                                child: Container(
+                                  padding: const EdgeInsets.all(6),
+                                  decoration: BoxDecoration(
+                                    color: cs.primary,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: cs.primary.withOpacity(0.25),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.edit,
+                                    size: 18,
+                                    color: cs.onPrimary,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                          child: Icon(
-                            Icons.edit,
-                            size: 16,
-                            color: cs.onPrimary,
-                          ),
-                        ),
+                        );
+                      }),
+                      AppTextFromField(
+                        controller: controller.name,
+                        label: 'নাম',
+                        hintText: 'পার্টির নাম লিখুন',
+                        prefixIcon: Icons.person,
                       ),
+                      AppTextFromField(
+                        controller: controller.phone,
+                        label: 'মোবাইল',
+                        hintText: 'মোবাইল নম্বর লিখুন',
+                        prefixIcon: Icons.phone,
+                        keyboardType: TextInputType.phone,
+                      ),
+                      AppTextFromField(
+                        controller: controller.address,
+                        label: 'ঠিকানা (ঐচ্ছিক)',
+                        hintText: 'ঠিকানা লিখতে পারেন (ঐচ্ছিক)',
+                        prefixIcon: Icons.home,
+                        isMaxLines: 3,
+                      ),
+                      const SizedBox(height: 8),
                     ],
                   ),
                 ),
-              );
-            }),
-            AppTextFromField(
-              controller: controller.name,
-              label: 'নাম',
-              hintText: 'পার্টির নাম লিখুন',
-              prefixIcon: Icons.person,
+              ),
             ),
-            AppTextFromField(
-              controller: controller.phone,
-              label: 'মোবাইল',
-              hintText: 'মোবাইল নম্বর লিখুন',
-              prefixIcon: Icons.phone,
-              keyboardType: TextInputType.phone,
-            ),
-            AppTextFromField(
-              controller: controller.address,
-              label: 'ঠিকানা (ঐচ্ছিক)',
-              hintText: 'ঠিকানা লিখতে পারেন (ঐচ্ছিক)',
-              prefixIcon: Icons.home,
-              isMaxLines: 3,
-            ),
-            // SMS notification option removed
-            const SizedBox(height: 20),
-          ],
-        ),
+          );
+        },
       ),
       bottomNavigationBar: Obx(
         () => SafeArea(
