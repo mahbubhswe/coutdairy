@@ -213,7 +213,7 @@ class _OverdueSheetContent extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: onViewAll,
                     icon: const Icon(HugeIcons.strokeRoundedArrowRight02),
-                    label: const Text('সব কেস দেখুন'),
+                    label: const Text('কেস দেখুন'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green.shade600,
                       foregroundColor: Colors.white,
