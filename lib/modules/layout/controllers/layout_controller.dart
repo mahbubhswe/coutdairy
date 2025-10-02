@@ -116,6 +116,12 @@ class _OverdueSheetContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final ButtonStyle actionButtonStyle = ElevatedButton.styleFrom(
+      minimumSize: const Size.fromHeight(48),
+      padding: const EdgeInsets.symmetric(vertical: 14),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+    );
     return SafeArea(
       top: false,
       child: Padding(
@@ -200,10 +206,19 @@ class _OverdueSheetContent extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton(
+                  child: ElevatedButton(
                     onPressed: () => Get.back(),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.teal,
+                    style: actionButtonStyle.copyWith(
+                      backgroundColor: MaterialStateProperty.all(
+                        colorScheme.surface,
+                      ),
+                      foregroundColor: MaterialStateProperty.all(
+                        colorScheme.primary,
+                      ),
+                      elevation: MaterialStateProperty.all<double>(0),
+                      side: MaterialStateProperty.all(
+                        BorderSide(color: colorScheme.primary),
+                      ),
                     ),
                     child: const Text('পরে'),
                   ),
@@ -214,9 +229,11 @@ class _OverdueSheetContent extends StatelessWidget {
                     onPressed: onViewAll,
                     icon: const Icon(HugeIcons.strokeRoundedArrowRight02),
                     label: const Text('কেস দেখুন'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade600,
-                      foregroundColor: Colors.white,
+                    style: actionButtonStyle.copyWith(
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.green.shade600,
+                      ),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
                     ),
                   ),
                 ),
