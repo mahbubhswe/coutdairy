@@ -18,60 +18,73 @@ class AccountsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final cs = theme.colorScheme;
     final accent = isDark ? Colors.white : AppColors.fixedPrimary;
+    final Color gradientStart = accent.withOpacity(isDark ? 0.28 : 0.18);
+    final Color gradientEnd = accent.withOpacity(isDark ? 0.12 : 0.08);
+    cs.outlineVariant.withOpacity(isDark ? 0.5 : 0.22);
     final numberFormatter = NumberFormat.currency(
       locale: 'bn_BD',
       symbol: '',
       decimalDigits: 0,
     );
 
-    return Card(
-      elevation: 0.5,
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeOutCubic,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [gradientStart, gradientEnd],
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Small Icon container
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: accent.withOpacity(0.15),
+                color: Colors.white.withOpacity(isDark ? 0.08 : 0.22),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: accent, size: 20),
             ),
-            const SizedBox(width: 10),
-
-            // Texts
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: isDark ? Colors.white70 : Colors.black87,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: isDark ? Colors.white70 : cs.onSurface,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.2,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 2),
-                TweenAnimationBuilder<double>(
-                  tween: Tween<double>(begin: 0, end: amount),
-                  duration: const Duration(milliseconds: 700),
-                  curve: Curves.easeOutCubic,
-                  builder: (context, value, child) {
-                    return Text(
-                      numberFormatter.format(value).trim(),
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: accent,
-                        fontSize: 14,
-                      ),
-                    );
-                  },
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  TweenAnimationBuilder<double>(
+                    tween: Tween<double>(begin: 0, end: amount),
+                    duration: const Duration(milliseconds: 600),
+                    curve: Curves.easeOutCubic,
+                    builder: (context, value, child) {
+                      return Text(
+                        numberFormatter.format(value).trim(),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: accent,
+                          fontSize: 16,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -20,8 +20,6 @@ class TextFormFieldWrapper extends StatefulWidget {
     this.position = TextFormFieldPosition.alone,
     this.suffix,
     this.prefix,
-    this.shadowColor,
-    this.shadowSize = 0.15,
     this.borderRadius = 12.0,
     this.borderColor,
     this.borderFocusedColor,
@@ -31,8 +29,6 @@ class TextFormFieldWrapper extends StatefulWidget {
   final TextFormFieldPosition position;
   final Widget? prefix;
   final Widget? suffix;
-  final Color? shadowColor;
-  final double shadowSize;
   final double borderRadius;
   final Color? borderColor;
   final Color? borderFocusedColor;
@@ -114,24 +110,7 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
       cs.surface,
     );
 
-    final double shadowScale = widget.shadowSize <= 0 ? 0 : widget.shadowSize;
-    final List<BoxShadow> shadows = shadowScale == 0
-        ? const []
-        : [
-            BoxShadow(
-              color: (widget.shadowColor ?? Colors.black).withOpacity(
-                isDark ? 0.3 : 0.1,
-              ),
-              blurRadius: 18 * shadowScale,
-              offset: Offset(0, 6 * shadowScale),
-            ),
-            if (hasFocus)
-              BoxShadow(
-                color: cs.primary.withOpacity(isDark ? 0.26 : 0.12),
-                blurRadius: 20 * shadowScale,
-                offset: Offset(0, 8 * shadowScale),
-              ),
-          ];
+    final List<BoxShadow> shadows = const [];
 
     final ThemeData decorationTheme = theme.copyWith(
       inputDecorationTheme: theme.inputDecorationTheme.copyWith(

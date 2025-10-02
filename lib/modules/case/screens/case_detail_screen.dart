@@ -105,7 +105,7 @@ class CaseDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(caseItem.caseTitle),
+        title: Text('${caseItem.caseTitle}(${caseItem.caseNumber})'),
         actions: [
           PopupMenuButton<String>(
             onSelected: handleMenu,
@@ -125,32 +125,6 @@ class CaseDetailScreen extends StatelessWidget {
                 spacing: 5,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header summary - gradient container (same as profile screen)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 8,
-                    children: [
-                      Text(
-                        caseItem.caseTitle,
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          const Icon(Icons.gavel_outlined, size: 18),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              'কেস নং: ${caseItem.caseNumber}',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-
                   // Dates (moved up)
                   section(
                     'Hearings Dates',

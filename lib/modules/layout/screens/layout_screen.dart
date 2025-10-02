@@ -8,7 +8,6 @@ import '../../case/screens/case_screen.dart';
 import '../../court_dairy/screens/customer_service_screen.dart';
 import '../../../constants/app_texts.dart';
 import '../../accounts/screens/add_transaction_screen.dart';
-import '../../case/screens/case_fullscreen_screen.dart';
 import '../../case/screens/case_calendar_screen.dart';
 import '../../party/screens/add_party_screen.dart';
 import '../../party/screens/party_screen.dart';
@@ -39,16 +38,16 @@ class LayoutScreen extends GetView<LayoutController> {
                   },
                   icon: const Icon(Icons.search),
                 ),
-                IconButton(
-                  onPressed: () {
-                    Get.to(
-                      () => const CaseFullscreenScreen(),
-                      fullscreenDialog: true,
-                    );
-                  },
-                  icon: const Icon(HugeIcons.strokeRoundedArrowAllDirection),
-                  tooltip: 'ফুলস্ক্রিন কেস',
-                ),
+                // IconButton(
+                //   onPressed: () {
+                //     Get.to(
+                //       () => const CaseFullscreenScreen(),
+                //       fullscreenDialog: true,
+                //     );
+                //   },
+                //   icon: const Icon(HugeIcons.strokeRoundedArrowAllDirection),
+                //   tooltip: 'ফুলস্ক্রিন কেস',
+                // ),
                 IconButton(
                   onPressed: () {
                     Get.to(() => CaseCalendarScreen(), fullscreenDialog: true);
@@ -78,7 +77,6 @@ class LayoutScreen extends GetView<LayoutController> {
                   curve: Curves.easeInOut,
                   child: FloatingActionButton(
                     onPressed: () {
-                      
                       if (!ActivationGuard.check()) return;
                       final index = DefaultTabController.of(context).index;
                       if (index == 0) {
