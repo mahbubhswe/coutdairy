@@ -11,6 +11,7 @@ import '../../auth/controllers/local_auth_controller.dart';
 import '../../auth/screens/app_lock_screen.dart';
 import '../../auth/services/pin_lock_service.dart';
 import '../../court_dairy/screens/account_reset_screen.dart';
+import '../../court_dairy/screens/buy_sms_screen.dart';
 import '../controllers/layout_controller.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -105,6 +106,12 @@ class AppDrawer extends StatelessWidget {
           final formattedSignIn = lastSignIn != null
               ? lastSignIn.formattedDateTime
               : 'অজানা';
+          final smsBalanceText = NumberFormat.decimalPattern(
+            'bn',
+          ).format(lawyer.smsBalance);
+          final dateFormatter = DateFormat('dd MMM,yyyy');
+          final subscriptionStart = dateFormatter.format(lawyer.subStartsAt);
+          final subscriptionEnd = dateFormatter.format(lawyer.subEndsAt);
 
           return SafeArea(
             child: SingleChildScrollView(
@@ -308,7 +315,15 @@ class AppDrawer extends StatelessWidget {
                   _sectionHeader(context, 'সাবস্ক্রিপশন বিস্তারিত'),
 
                   const SizedBox(height: 8),
-
+                  _infoTile(
+                    context,
+                    icon: CupertinoIcons.chat_bubble_2_fill,
+                    title: 'SMS ব্যালেন্স',
+                    subtitle: '$smsBalanceText টি এসএমএস',
+                    isBold: true,
+                    hasArrow: true,
+                    onTap: () => Get.to(() => BuySmsView()),
+                  ),
                   _infoTile(
                     context,
                     icon: CupertinoIcons.calendar,
@@ -321,13 +336,13 @@ class AppDrawer extends StatelessWidget {
                     context,
                     icon: CupertinoIcons.clock_fill,
                     title: 'শুরু তারিখ',
-                    subtitle: DateFormat().format(lawyer.subStartsAt),
+                    subtitle: subscriptionStart,
                   ),
                   _infoTile(
                     context,
                     icon: CupertinoIcons.timer,
                     title: 'শেষ তারিখ',
-                    subtitle: DateFormat().format(lawyer.subEndsAt),
+                    subtitle: subscriptionEnd,
                   ),
 
                   const SizedBox(height: 36),
@@ -429,6 +444,16 @@ class AppDrawer extends StatelessWidget {
     VoidCallback? onTap,
     Widget? trailing,
   }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isLight = theme.brightness == Brightness.light;
+    final iconBackgroundColor = isLight
+        ? colorScheme.secondaryContainer
+        : colorScheme.surfaceContainerHighest;
+    final iconForegroundColor = isLight
+        ? colorScheme.onSecondaryContainer
+        : colorScheme.onSurfaceVariant;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 9),
       child: InkWell(
@@ -439,17 +464,13 @@ class AppDrawer extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                color: iconBackgroundColor,
                 borderRadius: BorderRadius.circular(12), // Rounded rectangle bg
                 // border: Border.all(
                 //   color: Theme.of(context).colorScheme.outlineVariant,
                 // ),
               ),
-              child: Icon(
-                icon,
-                size: 20,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+              child: Icon(icon, size: 20, color: iconForegroundColor),
             ),
             const SizedBox(width: 16),
             Expanded(
