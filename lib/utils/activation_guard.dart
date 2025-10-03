@@ -1,6 +1,7 @@
 ﻿import 'package:get/get.dart';
-import 'package:court_dairy/modules/court_dairy/screens/screens.dart';
 import 'package:court_dairy/modules/layout/controllers/layout_controller.dart';
+
+import '../modules/court_dairy/screens/account_activation_screen.dart';
 
 class ActivationGuard {
   /// Returns true if the current lawyer account is active.

@@ -76,7 +76,7 @@ void showNewUserDialog() {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'আপনি ৩০ দিনের ফ্রি ট্রায়াল পেয়েছেন। Court Diary এর সকল প্রিমিয়াম ফিচার নির্দ্বিধায় ব্যবহার করে দেখুন।',
+                  'আপনি ৩০ দিনের ফ্রি ট্রায়াল পেয়েছেন।',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
                 ),
@@ -155,33 +155,10 @@ String? _buildPricingMessage() {
   if (config == null) return null;
 
   final charge = config.activationCharge;
-  final validity = config.activationValidity;
-
-  if (charge <= 0) {
-    return 'ট্রায়াল শেষে সাবস্ক্রিপশন চার্জ সম্পর্কে বিস্তারিত জানতে অ্যাপের সেটিংস দেখুন।';
-  }
 
   final amount = _formatCurrency(charge);
 
-  if (validity <= 0) {
-    return 'ট্রায়াল শেষে মাত্র $amount থেকে সাবস্ক্রিপশন চালু থাকবে।';
-  }
-
-  if (validity == 1) {
-    return 'ট্রায়াল শেষে মাত্র $amount প্রতি মাসে সাবস্ক্রিপশন চালু রাখুন।';
-  }
-
-  if (validity <= 12) {
-    final months = _toBanglaDigits(validity.toString());
-    return 'ট্রায়াল শেষে মাত্র $amount প্রতি $months মাসের সাবস্ক্রিপশনের জন্য প্রযোজ্য হবে।';
-  }
-
-  if (validity >= 365) {
-    return 'ট্রায়াল শেষে মাত্র $amount প্রতি বছরে সাবস্ক্রিপশন নবায়ন করুন।';
-  }
-
-  final days = _toBanglaDigits(validity.toString());
-  return 'ট্রায়াল শেষে মাত্র $amount প্রতি $days দিনে সাবস্ক্রিপশন নবায়ন করতে হবে।';
+  return 'ট্রায়াল শেষে প্রতি মাসের জন্য সাবস্ক্রিপশন চার্জ মাত্র $amount টাকা।';
 }
 
 String _formatCurrency(num amount) {
@@ -208,7 +185,7 @@ String _formatCurrency(num amount) {
     }
   }
 
-  return '৳ ${_toBanglaDigits(buffer.toString())}';
+  return _toBanglaDigits(buffer.toString());
 }
 
 String _toBanglaDigits(String value) {
