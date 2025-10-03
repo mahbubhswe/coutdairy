@@ -203,6 +203,20 @@ class AppDrawer extends StatelessWidget {
 
                   const SizedBox(height: 36),
 
+                  // accounts Section
+                  _sectionHeader(context, 'একাউন্টস'),
+                  const SizedBox(height: 8),
+                  _infoTile(
+                    context,
+                    icon: CupertinoIcons.chat_bubble_2_fill,
+                    title: 'SMS ব্যালেন্স',
+                    subtitle: '$smsBalanceText টি এসএমএস',
+                    isBold: true,
+                    hasArrow: true,
+                    onTap: () => Get.to(() => BuySmsView()),
+                  ),
+                  const SizedBox(height: 12),
+
                   _sectionHeader(context, 'অ্যাপ সেটিংস'),
                   const SizedBox(height: 8),
                   Obx(() {
@@ -315,15 +329,7 @@ class AppDrawer extends StatelessWidget {
                   _sectionHeader(context, 'সাবস্ক্রিপশন বিস্তারিত'),
 
                   const SizedBox(height: 8),
-                  _infoTile(
-                    context,
-                    icon: CupertinoIcons.chat_bubble_2_fill,
-                    title: 'SMS ব্যালেন্স',
-                    subtitle: '$smsBalanceText টি এসএমএস',
-                    isBold: true,
-                    hasArrow: true,
-                    onTap: () => Get.to(() => BuySmsView()),
-                  ),
+
                   _infoTile(
                     context,
                     icon: CupertinoIcons.calendar,

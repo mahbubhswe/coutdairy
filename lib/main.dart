@@ -8,6 +8,7 @@ import 'modules/auth/screens/auth_view.dart';
 import 'modules/layout/screens/layout_screen.dart';
 import 'navigation/app_transitions.dart';
 import 'services/app_initializer.dart';
+import 'services/local_notification.dart';
 import 'services/initial_bindings.dart';
 import 'themes/theme_controller.dart';
 import 'themes/themes.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static bool _askedExactAlarmOnce = false;
+  static bool _handledInitialNotification = false;
 
   // Build a SystemUiOverlayStyle from the active ThemeData
   SystemUiOverlayStyle _overlayFor(ThemeData theme) {
@@ -84,6 +86,16 @@ class MyApp extends StatelessWidget {
           _askedExactAlarmOnce = true;
           WidgetsBinding.instance.addPostFrameCallback((_) {
             askForExactAlarmPermissionIfNeeded();
+          });
+        }
+        if (!_handledInitialNotification) {
+          _handledInitialNotification = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            final payload =
+                LocalNotificationService().consumeLaunchPayload();
+            if (payload != null) {
+              AppInitializer.handleNotificationPayload(payload);
+            }
           });
         }
         return child!;
@@ -146,3 +158,4 @@ class _LockedView extends StatelessWidget {
     );
   }
 }
+

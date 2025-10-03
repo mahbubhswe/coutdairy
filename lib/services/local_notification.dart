@@ -16,6 +16,8 @@ class LocalNotificationService {
   bool? _canScheduleExactAlarms;
   bool get canScheduleExactAlarms => _canScheduleExactAlarms ?? false;
 
+  String? _pendingLaunchPayload;
+
   Future<void> initialize({Function(String?)? onTap}) async {
     if (isInit) return;
     tz.initializeTimeZones();
@@ -34,12 +36,30 @@ class LocalNotificationService {
       android: androidInitializationSettings,
       iOS: iosInitializationSettings,
     );
+    final launchDetails =
+        await notificationsPlugin.getNotificationAppLaunchDetails();
+    final launchedFromNotification =
+        launchDetails?.didNotificationLaunchApp ?? false;
+    String? initialPayload;
+    final response = launchDetails?.notificationResponse;
+    if (response != null) {
+      initialPayload = response.payload;
+    } else if (launchDetails != null) {
+      try {
+        initialPayload = (launchDetails as dynamic).payload as String?;
+      } catch (_) {
+        // Older plugin versions exposed launch payload directly; ignore if absent.
+      }
+    }
     await notificationsPlugin.initialize(
       initSetting,
       onDidReceiveNotificationResponse: (details) {
         onTap?.call(details.payload);
       },
     );
+    if (launchedFromNotification && initialPayload != null) {
+      _pendingLaunchPayload = initialPayload;
+    }
 
     // Android 13+ needs runtime notification permission
     // Android 12+ may require special exact alarm permission
@@ -213,6 +233,12 @@ class LocalNotificationService {
     await _refreshExactAlarmCapability(androidPlugin);
   }
 
+  String? consumeLaunchPayload() {
+    final payload = _pendingLaunchPayload;
+    _pendingLaunchPayload = null;
+    return payload;
+  }
+
   Future<void> scheduleGlobalDailyReminders() async {
     await scheduleDailyAtTime(
       id: 2,
@@ -233,3 +259,5 @@ class LocalNotificationService {
     );
   }
 }
+
+

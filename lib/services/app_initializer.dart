@@ -54,13 +54,7 @@ class AppInitializer {
     final localNoti = LocalNotificationService();
     try {
       await localNoti.initialize(
-        onTap: (payload) {
-          if (payload == 'overdue_cases') {
-            Get.to(() => const OverdueCasesScreen());
-          } else if (payload == 'tomorrow_cases') {
-            Get.to(() => const TomorrowCasesScreen());
-          }
-        },
+        onTap: handleNotificationPayload,
       );
     } catch (_) {}
     // Daily reminders via alarm-based scheduling
@@ -72,5 +66,14 @@ class AppInitializer {
 
     // 7) Check for app updates in background (non-blocking)
     unawaited(AppUpdateService.checkForAppUpdate().catchError((_) {}));
+  }
+
+  static void handleNotificationPayload(String? payload) {
+    if (payload == null) return;
+    if (payload == 'overdue_cases') {
+      Get.to(() => const OverdueCasesScreen());
+    } else if (payload == 'tomorrow_cases') {
+      Get.to(() => const TomorrowCasesScreen());
+    }
   }
 }
