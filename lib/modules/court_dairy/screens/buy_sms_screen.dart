@@ -15,7 +15,6 @@ class BuySmsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    final pricePerSms = controller.smsPrice;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
@@ -118,7 +117,6 @@ class BuySmsView extends StatelessWidget {
                               final max = controller.maxSms;
                               final step = controller.step;
                               final divisions = ((max - min) / step).round();
-                              final mid = min + ((max - min) ~/ 2);
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
