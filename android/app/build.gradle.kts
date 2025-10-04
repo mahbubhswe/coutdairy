@@ -46,6 +46,18 @@ android {
         targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        val fbAppId = (project.findProperty("FACEBOOK_APP_ID") as? String).orEmpty()
+        val fbClientToken = (project.findProperty("FACEBOOK_CLIENT_TOKEN") as? String).orEmpty()
+        val resolvedFbAppId = fbAppId.ifBlank { "000000000000000" }
+
+        manifestPlaceholders["facebookAppId"] = resolvedFbAppId
+        manifestPlaceholders["facebookClientToken"] = fbClientToken
+        manifestPlaceholders["facebookLoginProtocolScheme"] = "fb$resolvedFbAppId"
+
+        resValue("string", "facebook_app_id", resolvedFbAppId)
+        resValue("string", "facebook_client_token", fbClientToken)
+        resValue("string", "facebook_login_protocol_scheme", "fb$resolvedFbAppId")
     }
 
     signingConfigs {

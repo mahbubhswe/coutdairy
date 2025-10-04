@@ -43,11 +43,35 @@
 		</array>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
-        <key>UIApplicationSupportsIndirectInputEvents</key>
-        <true/>
-        <key>UIStatusBarHidden</key>
-        <false/>
-        <key>NSFaceIDUsageDescription</key>
-        <string>Use Face ID to secure your account</string>
-       </dict>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true/>
+		<key>UIStatusBarHidden</key>
+		<false/>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Use Face ID to secure your account</string>
+		<key>FacebookAppID</key>
+		<string>000000000000000</string>
+		<key>FacebookClientToken</key>
+		<string></string>
+		<key>FacebookDisplayName</key>
+		<string>Court Dairy</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>fbapi</string>
+			<string>fb-messenger-api</string>
+			<string>fbauth2</string>
+			<string>fbshareextension</string>
+		</array>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>fb000000000000000</string>
+				</array>
+			</dict>
+		</array>
+	</dict>
 </plist>
