@@ -101,14 +101,33 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
       bottomRight: hasBottomRightRadius ? Radius.circular(radius) : Radius.zero,
     );
 
-    final Color baseTint = widget.borderColor ?? cs.primary;
-    final Color focusTint = widget.borderFocusedColor ?? baseTint;
-    final Color baseOverlay = baseTint.withOpacity(isDark ? 0.18 : 0.06);
-    final Color focusOverlay = focusTint.withOpacity(isDark ? 0.28 : 0.12);
-    final Color containerColor = Color.alphaBlend(
-      hasFocus ? focusOverlay : baseOverlay,
-      cs.surface,
-    );
+    final inputTheme = theme.inputDecorationTheme;
+    final Color baseFill = inputTheme.fillColor ?? cs.surface;
+    final Color focusedFill = inputTheme.focusColor ?? baseFill;
+
+    Color applyTint(Color background, Color? tint, double opacity) {
+      if (tint == null || opacity == 0) return background;
+      return Color.alphaBlend(tint.withOpacity(opacity), background);
+    }
+
+    final Color? baseTint =
+        widget.borderColor == null ? null : widget.borderColor;
+    final Color? focusTint =
+        widget.borderFocusedColor ?? widget.borderColor;
+
+    final double baseTintOpacity = baseTint == null
+        ? 0
+        : (isDark ? 0.08 : 0.04);
+    final double focusTintOpacity = focusTint == null
+        ? 0
+        : (isDark ? 0.14 : 0.08);
+
+    final Color restingBackground =
+        applyTint(baseFill, baseTint, baseTintOpacity);
+    final Color focusedBackground =
+        applyTint(focusedFill, focusTint, focusTintOpacity);
+    final Color containerColor =
+        hasFocus ? focusedBackground : restingBackground;
 
     final List<BoxShadow> shadows = const [];
 

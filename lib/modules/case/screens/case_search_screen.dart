@@ -36,15 +36,13 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
     final controller = Get.find<CaseController>();
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    final bool isDark = theme.brightness == Brightness.dark;
-
-    final Color baseColor = cs.surface;
-    final Color idleOverlay = cs.primary.withOpacity(isDark ? 0.12 : 0.06);
-    final Color focusOverlay = cs.primary.withOpacity(isDark ? 0.2 : 0.12);
-    final Color background = Color.alphaBlend(
-      _focusNode.hasFocus ? focusOverlay : idleOverlay,
-      baseColor,
-    );
+    final inputTheme = theme.inputDecorationTheme;
+    final Color baseBackground =
+        inputTheme.fillColor ?? cs.surface;
+    final Color focusedBackground =
+        inputTheme.focusColor ?? baseBackground;
+    final Color background =
+        _focusNode.hasFocus ? focusedBackground : baseBackground;
 
     return Scaffold(
       appBar: AppBar(

@@ -142,7 +142,7 @@ class CaseDetailScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Latest: '
+                                'Last: '
                                 '${last != null ? last.toDate().formattedDate : '-'}',
                               ),
                               const SizedBox(height: 6),
@@ -243,10 +243,11 @@ class CaseDetailScreen extends StatelessWidget {
                           );
                           final last = current.courtLastOrder;
                           final next = current.courtNextOrder;
+                          final inputBg = _statusBgColor(current.caseStatus);
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Latest: ${last ?? '-'}'),
+                              Text('Last: ${last ?? '-'}'),
                               const SizedBox(height: 6),
                               Row(
                                 mainAxisAlignment:
@@ -272,8 +273,10 @@ class CaseDetailScreen extends StatelessWidget {
                                             ),
                                             content: TextField(
                                               controller: controllerText,
-                                              decoration: const InputDecoration(
+                                              decoration: InputDecoration(
                                                 hintText: 'Enter next order',
+                                                filled: true,
+                                                fillColor: inputBg,
                                               ),
                                             ),
                                             actions: [
@@ -365,10 +368,13 @@ class CaseDetailScreen extends StatelessWidget {
                         const SizedBox(height: 8),
                         appInfoRow('Court type', caseItem.courtType),
                         const SizedBox(height: 8),
-                        if (caseItem.underSection?.isNotEmpty == true) ...[
-                          appInfoRow('Under section', caseItem.underSection!),
-                          const SizedBox(height: 8),
-                        ],
+                        appInfoRow(
+                          'Under section',
+                          (caseItem.underSection?.trim().isNotEmpty ?? false)
+                              ? caseItem.underSection!
+                              : '-',
+                        ),
+                        const SizedBox(height: 8),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -395,6 +401,11 @@ class CaseDetailScreen extends StatelessWidget {
                               ),
                             ),
                           ],
+                        ),
+                        const SizedBox(height: 8),
+                        appInfoRow(
+                          'Filed date',
+                          caseItem.filedDate.toDate().formattedDate,
                         ),
                       ],
                     ),
@@ -448,36 +459,6 @@ class CaseDetailScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // Summary
-                  section(
-                    'Summary',
-                    Text(
-                      caseItem.caseSummary.isEmpty ? '-' : caseItem.caseSummary,
-                    ),
-                  ), // Documents
-                  section(
-                    'Documents',
-                    caseItem.documentsAttached.isEmpty
-                        ? const Text('-')
-                        : GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: caseItem.documentsAttached.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  mainAxisSpacing: 8,
-                                  crossAxisSpacing: 8,
-                                ),
-                            itemBuilder: (context, index) {
-                              final url = caseItem.documentsAttached[index];
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(url, fit: BoxFit.cover),
-                              );
-                            },
-                          ),
-                  ),
 
                   // Case Status (inline update)
                   section(
@@ -487,6 +468,7 @@ class CaseDetailScreen extends StatelessWidget {
                         (c) => c.docId == caseItem.docId,
                         orElse: () => caseItem,
                       );
+                      final fieldBg = _statusBgColor(current.caseStatus);
                       return DropdownButtonFormField<String>(
                         value: current.caseStatus.isEmpty
                             ? null
@@ -500,7 +482,7 @@ class CaseDetailScreen extends StatelessWidget {
                           hintText: 'Select case status',
                           prefixIcon: const Icon(Icons.flag_outlined),
                           filled: true,
-                          fillColor: theme.colorScheme.surface.withOpacity(0.7),
+                          fillColor: fieldBg,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 12,
                             vertical: 12,
@@ -565,14 +547,6 @@ class CaseDetailScreen extends StatelessWidget {
                     }),
                   ),
 
-                  // Filed Date (separate section at bottom)
-                  section(
-                    'Filed date',
-                    appInfoRow(
-                      'Filed date',
-                      caseItem.filedDate.toDate().formattedDate,
-                    ),
-                  ),
                 ],
               ),
             ),

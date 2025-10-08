@@ -101,7 +101,7 @@ class Themes {
     inputDecorationTheme: _buildInputDecorationTheme(
       isDark: false,
       surface: _lightSurface,
-      accent: _brandSecondary,
+      accent: _brandPrimary,
       onSurface: _lightOnSurface,
     ),
     elevatedButtonTheme: _buildElevatedButtonTheme(
@@ -286,11 +286,15 @@ class Themes {
     required Color onSurface,
   }) {
     final Color idleFill = Color.alphaBlend(
-      accent.withOpacity(isDark ? 0.26 : 0.10),
+      accent.withOpacity(isDark ? 0.12 : 0.06),
+      surface,
+    );
+    final Color hoverFill = Color.alphaBlend(
+      accent.withOpacity(isDark ? 0.16 : 0.08),
       surface,
     );
     final Color focusFill = Color.alphaBlend(
-      accent.withOpacity(isDark ? 0.38 : 0.16),
+      accent.withOpacity(isDark ? 0.20 : 0.12),
       surface,
     );
 
@@ -303,7 +307,7 @@ class Themes {
       filled: true,
       fillColor: idleFill,
       focusColor: focusFill,
-      hoverColor: focusFill,
+      hoverColor: hoverFill,
       border: outline(14),
       enabledBorder: outline(14),
       focusedBorder: outline(14),

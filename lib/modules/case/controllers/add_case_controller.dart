@@ -44,6 +44,8 @@ class AddCaseController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    filedDate.value = DateTime.now();
+    hearingDate.value = DateTime.now();
     final user = AppFirebase().currentUser;
     if (user != null) {
       PartyService.getParties(user.uid).listen((list) {

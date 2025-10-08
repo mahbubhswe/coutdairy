@@ -167,13 +167,6 @@ class AddCaseScreen extends StatelessWidget {
                       hintText: 'Enter the under section (optional)',
                       prefixIcon: Icons.rule_outlined,
                     ),
-                    AppTextFromField(
-                      controller: controller.caseSummary,
-                      label: 'Summary',
-                      hintText: 'Enter a summary',
-                      prefixIcon: Icons.description_outlined,
-                      isMaxLines: 3,
-                    ),
                     Obx(
                       () => InputChip(
                         padding: const EdgeInsets.symmetric(

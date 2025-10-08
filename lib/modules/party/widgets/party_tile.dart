@@ -29,6 +29,9 @@ class PartyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final avatarBg = colorScheme.secondaryContainer;
+    final avatarFg = colorScheme.onSecondaryContainer;
     return Card(
       elevation: 0,
       color: Theme.of(context).scaffoldBackgroundColor,
@@ -39,8 +42,8 @@ class PartyTile extends StatelessWidget {
         contentPadding: const EdgeInsets.only(left: 12, right: 8),
         dense: true,
         leading: CircleAvatar(
-          backgroundColor: Colors.orange.shade100,
-          foregroundColor: Colors.orange,
+          backgroundColor: avatarBg,
+          foregroundColor: avatarFg,
           backgroundImage: party.photoUrl != null && party.photoUrl!.isNotEmpty
               ? NetworkImage(party.photoUrl!)
               : null,
