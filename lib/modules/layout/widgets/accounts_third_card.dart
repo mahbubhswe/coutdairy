@@ -51,14 +51,14 @@ class AccountsThirdCard extends StatelessWidget {
             children: [
               Expanded(
                 child: AccountsCard(
-                  title: 'নতুন কেস',
+                  title: 'New cases',
                   amount: newCases,
                   icon: Icons.new_releases,
                 ),
               ),
               Expanded(
                 child: AccountsCard(
-                  title: 'মোট কোর্ট',
+                  title: 'Total courts',
                   amount: totalCourts,
                   icon: Icons.account_balance,
                 ),
@@ -70,14 +70,14 @@ class AccountsThirdCard extends StatelessWidget {
             children: [
               Expanded(
                 child: AccountsCard(
-                  title: 'এই মাসে জমা',
+                  title: 'Deposits this month',
                   amount: depositThisMonth,
                   icon: Icons.attach_money,
                 ),
               ),
               Expanded(
                 child: AccountsCard(
-                  title: 'এই মাসে খরচ',
+                  title: 'Expenses this month',
                   amount: expenseThisMonth,
                   icon: Icons.money_off,
                 ),

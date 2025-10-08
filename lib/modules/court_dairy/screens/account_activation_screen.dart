@@ -77,25 +77,11 @@ class _ActivationPlanCard extends StatelessWidget {
       }
     }
 
-    return '৳ ${_toBanglaDigits(buffer.toString())}';
+    return 'BDT ${buffer.toString()}';
   }
 
   String _toBanglaDigits(String value) {
-    const englishToBangla = {
-      '0': '০',
-      '1': '১',
-      '2': '২',
-      '3': '৩',
-      '4': '৪',
-      '5': '৫',
-      '6': '৬',
-      '7': '৭',
-      '8': '৮',
-      '9': '৯',
-      ',': ',',
-      '.': '.',
-    };
-    return value.split('').map((char) => englishToBangla[char] ?? char).join();
+    return value;
   }
 
   @override
@@ -116,22 +102,24 @@ class _ActivationPlanCard extends StatelessWidget {
     String durationSummary;
 
     if (validityDays >= 365) {
-      planTitle = 'বার্ষিক অ্যাক্টিভেশন প্যাকেজ';
-      feeLabel = 'বার্ষিক ফি';
-      durationSummary = 'এক বছর মেয়াদী সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।';
-    } else if (validityDays >= 30) {
-      planTitle = 'মাসিক অ্যাক্টিভেশন প্যাকেজ';
-      feeLabel = 'মাসিক ফি';
-      durationSummary = 'এক মাস মেয়াদি সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।';
-    } else if (validityDays > 0) {
-      planTitle = 'অ্যাক্টিভেশন প্যাকেজ';
-      feeLabel = 'সাবস্ক্রিপশন ফি';
+      planTitle = 'Annual activation package';
+      feeLabel = 'Annual fee';
       durationSummary =
-          '${_toBanglaDigits(validityDays.toString())} দিনের সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।';
+          'One-time payment for a one-year subscription.';
+    } else if (validityDays >= 30) {
+      planTitle = 'Monthly activation package';
+      feeLabel = 'Monthly fee';
+      durationSummary =
+          'One-time payment for a one-month subscription.';
+    } else if (validityDays > 0) {
+      planTitle = 'Activation package';
+      feeLabel = 'Subscription fee';
+      durationSummary =
+          'One-time payment for a ${validityDays.toString()}-day subscription.';
     } else {
-      planTitle = 'অ্যাক্টিভেশন প্যাকেজ';
-      feeLabel = 'সাবস্ক্রিপশন ফি';
-      durationSummary = 'সাবস্ক্রিপশনের জন্য এককালীন পেমেন্ট।';
+      planTitle = 'Activation package';
+      feeLabel = 'Subscription fee';
+      durationSummary = 'One-time payment for the subscription.';
     }
 
     if (activationCharge <= 0) {
@@ -149,7 +137,7 @@ class _ActivationPlanCard extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'অ্যাক্টিভেশন চার্জ কনফিগার করা হয়নি। সহায়তার জন্য সাপোর্টে যোগাযোগ করুন।',
+                'Activation charge is not configured. Please contact support for assistance.',
                 style: theme.textTheme.bodyMedium,
               ),
             ),
@@ -169,7 +157,7 @@ class _ActivationPlanCard extends StatelessWidget {
         ),
         const SizedBox(height: 12),
 
-        // Stack ব্যবহার করে ডিসকাউন্ট ব্যাজ ও কন্টেন্ট
+        // Discount badge and content using a stack layout
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
@@ -196,7 +184,7 @@ class _ActivationPlanCard extends StatelessWidget {
                     Text(
                       _formatAmount(activationCharge),
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.red, // কাটা দামের রঙ লাল
+                        color: Colors.red,
                         decoration: TextDecoration.lineThrough,
                         fontWeight: FontWeight.w600,
                       ),
@@ -211,7 +199,7 @@ class _ActivationPlanCard extends StatelessWidget {
                   if (hasDiscount) ...[
                     const SizedBox(height: 4),
                     Text(
-                      '${_toBanglaDigits(discountLabel)}% ডিসকাউন্ট এর পর মূল্য',
+                      '${_toBanglaDigits(discountLabel)}% discount price',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: cs.primary,
                         fontWeight: FontWeight.w600,
@@ -227,8 +215,7 @@ class _ActivationPlanCard extends StatelessWidget {
                   ),
                 ],
               ),
-
-              // ডিসকাউন্ট ব্যাজ (টপ রাইট)
+              // Discount badge (top right)
               if (hasDiscount)
                 Positioned(
                   right: -6,
@@ -267,14 +254,14 @@ class _ActivationPlanCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             _FeaturePoint(
-              text: 'পেমেন্ট করার সাথে সাথেই অটোমেটিক একাউন্ট একটিভ হয়ে যাবে।',
+              text: 'Your account will activate automatically right after payment.',
             ),
             SizedBox(height: 10),
             _FeaturePoint(
-              text: 'প্রফেশনাল সাপোর্ট টিম থেকে অগ্রাধিকার সহায়তা।',
+              text: 'Priority assistance from the professional support team.',
             ),
             SizedBox(height: 10),
-            _FeaturePoint(text: 'চেম্বারের ডাটা ও তথ্য নিরাপদে সংরক্ষণ।'),
+            _FeaturePoint(text: 'Store your chamber data securely.'),
           ],
         ),
         const SizedBox(height: 28),
@@ -292,7 +279,7 @@ class _ActivationPlanCard extends StatelessWidget {
               elevation: 0,
             ),
             child: const Text(
-              'এখনই পেমেন্ট করে অ্যাক্টিভ করুন',
+              'Activate now',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
           ),

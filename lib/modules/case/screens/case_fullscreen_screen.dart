@@ -13,7 +13,7 @@ class CaseFullscreenScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('আপনার কেস'),
+        title: const Text('Your cases'),
         actions: [
           IconButton(
             onPressed: () {
@@ -29,7 +29,7 @@ class CaseFullscreenScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
-        child: const CaseScreen(showHeader: false),
+        child: const CaseScreen(),
       ),
     );
   }

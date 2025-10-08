@@ -95,7 +95,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
   Future<void> _completeSetup() async {
     if (_confirmInput != _pinInput) {
       setState(() {
-        _error = 'দুটি পিন মেলেনি';
+        _error = 'The two PINs do not match';
         _confirmInput = '';
       });
       return;
@@ -113,7 +113,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
       Get.back(result: true);
     } else {
       setState(() {
-        _error = 'পিন সেভ করা যায়নি';
+        _error = 'Could not save the PIN';
         _isProcessing = false;
       });
     }
@@ -132,7 +132,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
       Get.back(result: true);
     } else {
       setState(() {
-        _error = 'ভুল পিন';
+        _error = 'Incorrect PIN';
         _pinInput = '';
         _isProcessing = false;
       });
@@ -357,9 +357,9 @@ class _AppLockScreenState extends State<AppLockScreen> {
     final colors = theme.colorScheme;
     final instruction = widget.setupMode
         ? (_confirmPhase
-            ? 'নতুন পিনটি পুনরায় লিখুন'
-            : 'চার সংখ্যার একটি নতুন পিন বাছাই করুন')
-        : 'চার ডিজিটের পিন লিখুন';
+            ? 'Re-enter the new PIN'
+            : 'Choose a new four-digit PIN')
+        : 'Enter your four-digit PIN';
 
     return Scaffold(
       backgroundColor: colors.surface,
@@ -403,7 +403,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  widget.setupMode ? 'নিরাপদ পিন সেট করুন' : 'স্বাগতম!',
+                  widget.setupMode ? 'Set a secure PIN' : 'Welcome!',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w600,
@@ -425,7 +425,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                     children: [
                       Expanded(
                         child: _buildStepPill(
-                          label: 'ধাপ ১',
+                          label: 'Step 1',
                           icon: _confirmPhase
                               ? Icons.check_circle_outline
                               : Icons.looks_one_outlined,
@@ -436,7 +436,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildStepPill(
-                          label: 'ধাপ ২',
+                          label: 'Step 2',
                           icon: Icons.looks_two_outlined,
                           active: _confirmPhase,
                           complete: false,
@@ -486,7 +486,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                 ),
                 const SizedBox(height: 20),
                 _buildPinField(
-                  label: widget.setupMode ? 'নতুন পিন' : 'পিন',
+                  label: widget.setupMode ? 'New PIN' : 'PIN',
                   icon: Icons.lock_outline,
                   value: _pinInput,
                   active: !widget.setupMode || !_confirmPhase,
@@ -500,7 +500,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             _buildPinField(
-                              label: 'পিন নিশ্চিত করুন',
+                              label: 'Confirm PIN',
                               icon: Icons.verified_user_outlined,
                               value: _confirmInput,
                               active: true,
@@ -518,7 +518,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                     child: TextButton.icon(
                       onPressed: _resetSetupFlow,
                       icon: const Icon(Icons.refresh_rounded),
-                      label: const Text('পিন আবার লিখুন'),
+                      label: const Text('Enter PIN again'),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -535,7 +535,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                   ),
                 const SizedBox(height: 12),
                 Text(
-                  'ব্যক্তিগত নিরাপত্তা নিশ্চিত করতে পিন কাউকে জানাবেন না।',
+                  'Do not share your PIN with anyone for your security.',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.textTheme.bodySmall?.color?.withOpacity(

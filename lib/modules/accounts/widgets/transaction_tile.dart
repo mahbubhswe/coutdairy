@@ -34,12 +34,14 @@ class TransactionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final amountText = NumberFormat.currency(
-      locale: 'bn_BD',
-      symbol: '৳',
+      locale: 'en_US',
+      symbol: 'BDT ',
       decimalDigits: 0,
     ).format(transaction.amount);
     return Card(
-      elevation: 0.5,
+      elevation: 0,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      surfaceTintColor: Colors.transparent,
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: ListTile(
@@ -64,7 +66,7 @@ class TransactionTile extends StatelessWidget {
               ),
             ),
             Text(
-              'পেমেন্ট: ${transaction.paymentMethod}',
+              'Payment: ${transaction.paymentMethod}',
             ),
           ],
         ),
@@ -93,11 +95,11 @@ class TransactionTile extends StatelessWidget {
                   final items = <PopupMenuEntry<String>>[];
                   if (onEdit != null) {
                     items.add(
-                        const PopupMenuItem(value: 'edit', child: Text('সম্পাদনা')));
+                        const PopupMenuItem(value: 'edit', child: Text('Edit')));
                   }
                   if (onDelete != null) {
                     items.add(const PopupMenuItem(
-                        value: 'delete', child: Text('মুছে ফেলুন')));
+                        value: 'delete', child: Text('Delete')));
                   }
                   return items;
                 },

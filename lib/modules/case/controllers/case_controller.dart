@@ -79,6 +79,30 @@ class CaseController extends GetxController {
     }).toList();
   }
 
+  String _normalizeStatus(CourtCase c) =>
+      (c.caseStatus).trim().toLowerCase();
+
+  bool _matchesAny(CourtCase c, List<String> statuses) {
+    final norm = _normalizeStatus(c);
+    return statuses.contains(norm);
+  }
+
+  List<CourtCase> get statusNewCases => cases.where((c) {
+        final norm = _normalizeStatus(c);
+        if (norm.isEmpty || norm == 'new' || norm == 'pending') return true;
+        return false;
+      }).toList();
+
+  List<CourtCase> get statusRunningCases => cases
+      .where((c) =>
+          _matchesAny(c, const ['ongoing', 'running', 'in progress', 'active']))
+      .toList();
+
+  List<CourtCase> get statusClosedCases => cases
+      .where((c) => _matchesAny(c,
+          const ['closed', 'disposed', 'completed', 'resolved', 'finished']))
+      .toList();
+
   List<CourtCase> get filteredCases {
     switch (selectedFilter.value) {
       case 'tomorrow':
@@ -87,6 +111,14 @@ class CaseController extends GetxController {
         return weekCases;
       case 'month':
         return monthCases;
+      case 'new':
+        return statusNewCases;
+      case 'running':
+        return statusRunningCases;
+      case 'closed':
+        return statusClosedCases;
+      case 'all':
+        return cases;
       default:
         return todayCases;
     }
@@ -96,6 +128,10 @@ class CaseController extends GetxController {
   int get tomorrowCount => tomorrowCases.length;
   int get weekCount => weekCases.length;
   int get monthCount => monthCases.length;
+  int get newCount => statusNewCases.length;
+  int get runningCount => statusRunningCases.length;
+  int get closedCount => statusClosedCases.length;
+  int get totalCount => cases.length;
 
   @override
   void onInit() {

@@ -15,38 +15,17 @@ class PartyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(PartyController());
-    final layoutController = Get.put(LayoutController());
+    final layoutController = Get.find<LayoutController>();
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
       return Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'আপনার পক্ষসমূহ',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Get.to(() => AllPartyScreen());
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  child: const Text('সব দেখুন'),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: controller.parties.isEmpty
                 ? const DataNotFound(
-                    title: "দুঃখিত", subtitle: 'কোনো পক্ষ পাওয়া যায়নি')
+                    title: 'No results', subtitle: 'No parties were found')
                 : ListView.builder(
                     controller: layoutController.scrollController,
                     itemCount: controller.parties.length > 10

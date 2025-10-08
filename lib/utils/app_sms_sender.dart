@@ -42,7 +42,7 @@ class AppSmsSender {
     }
 
     final amount = NumberFormat("##,##,###", "bn").format(balance);
-    final message = 'আপনার ব্যালেন্স ৳$amount';
+    final message = 'Your balance is BDT $amount';
     final apiKey = config.smsApiKey;
     final senderId = config.smsSenderId;
     final shopName = LocalStorageService.read('shopName') ?? '';
@@ -73,13 +73,13 @@ class AppSmsSender {
         if (kDebugMode) {
           print('SMS failed: ${response.data}');
         }
-        Get.snackbar('এসএমএস', 'বার্তা পাঠাতে ব্যর্থ');
+        Get.snackbar('SMS', 'Failed to send message');
       }
     } catch (e) {
       if (kDebugMode) {
         print('Error sending SMS: $e');
       }
-      Get.snackbar('এসএমএস', 'বার্তা পাঠাতে ত্রুটি');
+      Get.snackbar('SMS', 'Error while sending message');
     }
   }
 }

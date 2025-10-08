@@ -19,6 +19,7 @@ class EditCaseController extends GetxController {
   late final TextEditingController courtName;
   late final TextEditingController caseNumber;
   late final TextEditingController caseSummary;
+  late final TextEditingController underSection;
   late final TextEditingController judgeName;
   late final TextEditingController courtOrder;
 
@@ -28,7 +29,6 @@ class EditCaseController extends GetxController {
   final Rx<DateTime?> hearingDate = Rx<DateTime?>(null);
 
   final Rx<Party?> selectedPlaintiff = Rx<Party?>(null);
-  final Rx<Party?> selectedDefendant = Rx<Party?>(null);
 
   final parties = <Party>[].obs;
   final caseTypes = ['Civil', 'Criminal', 'Family', 'Other'];
@@ -46,6 +46,7 @@ class EditCaseController extends GetxController {
     courtName = TextEditingController(text: caseModel.courtName);
     caseNumber = TextEditingController(text: caseModel.caseNumber);
     caseSummary = TextEditingController(text: caseModel.caseSummary);
+    underSection = TextEditingController(text: caseModel.underSection ?? '');
     judgeName = TextEditingController(text: caseModel.judgeName);
     courtOrder = TextEditingController(text: caseModel.courtNextOrder ?? '');
     selectedCaseType.value = caseModel.caseType;
@@ -53,7 +54,6 @@ class EditCaseController extends GetxController {
     filedDate.value = caseModel.filedDate.toDate();
     hearingDate.value = caseModel.nextHearingDate?.toDate();
     selectedPlaintiff.value = caseModel.plaintiff;
-    selectedDefendant.value = caseModel.defendant;
 
     final user = AppFirebase().currentUser;
     if (user != null) {
@@ -77,7 +77,6 @@ class EditCaseController extends GetxController {
 
     // Ensure Dropdown `value` matches one of the `items` references
     selectedPlaintiff.value = _matchFromList(caseModel.plaintiff);
-    selectedDefendant.value = _matchFromList(caseModel.defendant);
   }
 
   Future<void> _loadSuggestions(String uid) async {
@@ -129,7 +128,7 @@ class EditCaseController extends GetxController {
         ..caseNumber = caseNumber.text.trim()
         ..filedDate = Timestamp.fromDate(filedDate.value ?? DateTime.now())
         ..plaintiff = selectedPlaintiff.value!
-        ..defendant = selectedDefendant.value!
+        ..underSection = underSection.text.trim().isEmpty ? null : underSection.text.trim()
         ..judgeName = judgeName.text.trim()
         ..nextHearingDate = hearingDate.value != null
             ? Timestamp.fromDate(hearingDate.value!)

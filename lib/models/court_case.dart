@@ -15,9 +15,9 @@ class CourtCase {
   Timestamp filedDate; // Use Timestamp instead of DateTime
   String caseStatus;
 
-  // Plaintiff and Defendant Information
+  // Party Information
   Party plaintiff;
-  Party defendant;
+  String? underSection;
 
   // Hearing Dates
   Timestamp? lastHearingDate; // Firestore Timestamp
@@ -47,7 +47,7 @@ class CourtCase {
     required this.filedDate,
     required this.caseStatus,
     required this.plaintiff,
-    required this.defendant,
+    this.underSection,
     this.lastHearingDate,
     this.nextHearingDate,
     required this.judgeName,
@@ -68,7 +68,7 @@ class CourtCase {
       'filedDate': filedDate, // Firestore Timestamp will be directly saved
       'caseStatus': caseStatus,
       'plaintiff': plaintiff.toMap(),
-      'defendant': defendant.toMap(),
+      'underSection': underSection,
       'lastHearingDate': lastHearingDate,
       'nextHearingDate': nextHearingDate,
       'judgeName': judgeName,
@@ -91,7 +91,7 @@ class CourtCase {
       filedDate: map['filedDate'], // Firestore Timestamp
       caseStatus: map['caseStatus'],
       plaintiff: Party.fromMap(map['plaintiff']),
-      defendant: Party.fromMap(map['defendant']),
+      underSection: map['underSection'],
       lastHearingDate: map['lastHearingDate'],
       nextHearingDate: map['nextHearingDate'],
       judgeName: map['judgeName'],

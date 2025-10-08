@@ -92,16 +92,16 @@ class AddPartyController extends GetxController {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    action(Icons.camera_alt_rounded, 'ক্যামেরা', () {
+                    action(Icons.camera_alt_rounded, 'Camera', () {
                       Get.back();
                       _pickImage(ImageSource.camera);
                     }),
-                    action(Icons.photo_library_outlined, 'গ্যালারি', () {
+                    action(Icons.photo_library_outlined, 'Gallery', () {
                       Get.back();
                       _pickImage(ImageSource.gallery);
                     }),
                     if (photo.value != null)
-                      action(Icons.delete_outline, 'রিমুভ', () {
+                      action(Icons.delete_outline, 'Remove', () {
                         Get.back();
                         photo.value = null;
                       }),

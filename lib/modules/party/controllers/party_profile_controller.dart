@@ -27,15 +27,15 @@ class PartyProfileController extends GetxController {
       await PartyService.deleteParty(party);
       Get.back();
       Get.snackbar(
-        'সফল হয়েছে',
-        'পক্ষ মুছে ফেলা হয়েছে',
+        'Success',
+        'Party deleted successfully',
         backgroundColor: Colors.white,
         colorText: Colors.green,
       );
     } catch (e) {
       Get.snackbar(
-        'ত্রুটি',
-        'পক্ষ মুছতে ব্যর্থ হয়েছে',
+        'Error',
+        'Failed to delete party',
         backgroundColor: Colors.white,
         colorText: Colors.red,
       );
@@ -62,8 +62,8 @@ class PartyProfileController extends GetxController {
       isSendSms.value = value;
     } catch (e) {
       Get.snackbar(
-        'ত্রুটি',
-        'আপডেট ব্যর্থ হয়েছে',
+        'Error',
+        'Failed to update',
         backgroundColor: Colors.white,
         colorText: Colors.red,
       );

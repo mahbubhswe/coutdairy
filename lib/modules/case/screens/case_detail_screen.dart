@@ -86,10 +86,10 @@ class CaseDetailScreen extends StatelessWidget {
         if (id == null) return;
         PanaraConfirmDialog.show(
           context,
-          title: 'নিশ্চিত করুন',
-          message: 'কেস মুছে ফেলতে চান?',
-          confirmButtonText: 'হ্যাঁ',
-          cancelButtonText: 'না',
+          title: 'Confirm',
+          message: 'Do you want to delete the case?',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
           onTapCancel: () => Navigator.of(context).pop(),
           onTapConfirm: () async {
             Navigator.of(context).pop();
@@ -110,8 +110,8 @@ class CaseDetailScreen extends StatelessWidget {
           PopupMenuButton<String>(
             onSelected: handleMenu,
             itemBuilder: (context) => const [
-              PopupMenuItem(value: 'edit', child: Text('সম্পাদনা')),
-              PopupMenuItem(value: 'delete', child: Text('মুছে ফেলুন')),
+              PopupMenuItem(value: 'edit', child: Text('Edit')),
+              PopupMenuItem(value: 'delete', child: Text('Delete')),
             ],
           ),
         ],
@@ -142,7 +142,7 @@ class CaseDetailScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'সর্বশেষ: '
+                                'Latest: '
                                 '${last != null ? last.toDate().formattedDate : '-'}',
                               ),
                               const SizedBox(height: 6),
@@ -152,7 +152,7 @@ class CaseDetailScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      'পরবর্তী: '
+                                      'Next: '
                                       '${next != null ? next.toDate().formattedDate : '-'}',
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -169,11 +169,11 @@ class CaseDetailScreen extends StatelessWidget {
                                       if (picked != null) {
                                         PanaraConfirmDialog.show(
                                           context,
-                                          title: 'নিশ্চিত করুন',
+                                          title: 'Confirm',
                                           message:
-                                              'নেক্সট হিয়ারিং ডেট আপডেট করবেন?',
-                                          confirmButtonText: 'হ্যাঁ',
-                                          cancelButtonText: 'না',
+                                              'Update the next hearing date?',
+                                          confirmButtonText: 'Yes',
+                                          cancelButtonText: 'No',
                                           onTapCancel: () =>
                                               Navigator.of(context).pop(),
                                           onTapConfirm: () async {
@@ -198,8 +198,8 @@ class CaseDetailScreen extends StatelessWidget {
                                               SnackBar(
                                                 content: Text(
                                                   ok
-                                                      ? 'নেক্সট হিয়ারিং ডেট আপডেট হয়েছে'
-                                                      : 'আপডেট করতে ব্যর্থ',
+                                                      ? 'Next hearing date updated'
+                                                      : 'Failed to update',
                                                 ),
                                               ),
                                             );
@@ -212,7 +212,7 @@ class CaseDetailScreen extends StatelessWidget {
                                     icon: const Icon(
                                       HugeIcons.strokeRoundedCalendar01,
                                     ),
-                                    tooltip: 'পরবর্তী শুনানি আপডেট',
+                                    tooltip: 'Update next hearing',
                                     iconSize: 20,
                                     splashRadius: 20,
                                     constraints: const BoxConstraints.tightFor(
@@ -232,7 +232,7 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Court Orders (moved up)
                   section(
-                    'আদালতের আদেশ',
+                    'Court order',
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -246,7 +246,7 @@ class CaseDetailScreen extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('সর্বশেষ: ${last ?? '-'}'),
+                              Text('Latest: ${last ?? '-'}'),
                               const SizedBox(height: 6),
                               Row(
                                 mainAxisAlignment:
@@ -254,7 +254,7 @@ class CaseDetailScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      'পরবর্তী: ${next ?? '-'}',
+                                      'Next: ${next ?? '-'}',
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
@@ -268,7 +268,7 @@ class CaseDetailScreen extends StatelessWidget {
                                         builder: (ctx) {
                                           return AlertDialog(
                                             title: const Text(
-                                              'পরবর্তী আদেশ আপডেট',
+                                              'Update next order',
                                             ),
                                             content: TextField(
                                               controller: controllerText,
@@ -280,14 +280,14 @@ class CaseDetailScreen extends StatelessWidget {
                                               TextButton(
                                                 onPressed: () =>
                                                     Navigator.pop(ctx),
-                                                child: const Text('বাতিল'),
+                                                child: const Text('Cancel'),
                                               ),
                                               TextButton(
                                                 onPressed: () => Navigator.pop(
                                                   ctx,
                                                   controllerText.text.trim(),
                                                 ),
-                                                child: const Text('আপডেট'),
+                                                child: const Text('Update'),
                                               ),
                                             ],
                                           );
@@ -297,10 +297,10 @@ class CaseDetailScreen extends StatelessWidget {
                                       if (text == null || text.isEmpty) return;
                                       PanaraConfirmDialog.show(
                                         context,
-                                        title: 'নিশ্চিত করুন',
-                                        message: 'নেক্সট অর্ডার আপডেট করবেন?',
-                                        confirmButtonText: 'হ্যাঁ',
-                                        cancelButtonText: 'না',
+                                        title: 'Confirm',
+                                        message: 'Update the next order?',
+                                        confirmButtonText: 'Yes',
+                                        cancelButtonText: 'No',
                                         onTapCancel: () =>
                                             Navigator.of(context).pop(),
                                         onTapConfirm: () async {
@@ -325,8 +325,8 @@ class CaseDetailScreen extends StatelessWidget {
                                             SnackBar(
                                               content: Text(
                                                 ok
-                                                    ? 'নেক্সট অর্ডার আপডেট হয়েছে'
-                                                    : 'আপডেট করতে ব্যর্থ',
+                                                    ? 'Next order updated'
+                                                    : 'Failed to update',
                                               ),
                                             ),
                                           );
@@ -338,7 +338,7 @@ class CaseDetailScreen extends StatelessWidget {
                                     icon: const Icon(
                                       HugeIcons.strokeRoundedEdit03,
                                     ),
-                                    tooltip: 'পরবর্তী আদেশ আপডেট',
+                                    tooltip: 'Update next order',
                                     iconSize: 20,
                                     splashRadius: 20,
                                     constraints: const BoxConstraints.tightFor(
@@ -357,19 +357,23 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Case Information
                   section(
-                    'কেস তথ্য',
+                    'Case information',
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        appInfoRow('কেসের ধরন', caseItem.caseType),
+                        appInfoRow('Case type', caseItem.caseType),
                         const SizedBox(height: 8),
-                        appInfoRow('আদালতের ধরন', caseItem.courtType),
+                        appInfoRow('Court type', caseItem.courtType),
                         const SizedBox(height: 8),
+                        if (caseItem.underSection?.isNotEmpty == true) ...[
+                          appInfoRow('Under section', caseItem.underSection!),
+                          const SizedBox(height: 8),
+                        ],
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'কেসের অবস্থা',
+                              'Case status',
                               style: TextStyle(fontSize: 14),
                             ),
                             Container(
@@ -398,14 +402,14 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Court Information
                   section(
-                    'আদালত তথ্য',
+                    'Court information',
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        appInfoRow('আদালতের নাম', caseItem.courtName),
+                        appInfoRow('Court name', caseItem.courtName),
                         const SizedBox(height: 8),
                         appInfoRow(
-                          'বিচারক',
+                          'Judge',
                           caseItem.judgeName.isEmpty ? '-' : caseItem.judgeName,
                         ),
                       ],
@@ -414,50 +418,23 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Parties
                   section(
-                    'পক্ষসমূহ',
+                    'Party',
                     Column(
                       children: [
                         ListTile(
                           contentPadding: EdgeInsets.zero,
                           title: Text(caseItem.plaintiff.name),
-                          subtitle: Text('বাদী\n${caseItem.plaintiff.address}'),
+                          subtitle: Text('Plaintiff\n${caseItem.plaintiff.address}'),
                           isThreeLine: true,
                           trailing: IconButton(
                             icon: const Icon(HugeIcons.strokeRoundedCall02),
-                            tooltip: 'বাদীকে কল করুন',
+                            tooltip: 'Call plaintiff',
                             onPressed: (caseItem.plaintiff.phone.isEmpty)
                                 ? null
                                 : () async {
                                     final uri = Uri(
                                       scheme: 'tel',
                                       path: caseItem.plaintiff.phone,
-                                    );
-                                    if (await canLaunchUrl(uri)) {
-                                      await launchUrl(
-                                        uri,
-                                        mode: LaunchMode.externalApplication,
-                                      );
-                                    }
-                                  },
-                          ),
-                        ),
-                        const Divider(height: 0),
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: Text(caseItem.defendant.name),
-                          subtitle: Text(
-                            'বিবাদী\n${caseItem.defendant.address}',
-                          ),
-                          isThreeLine: true,
-                          trailing: IconButton(
-                            icon: const Icon(HugeIcons.strokeRoundedCall02),
-                            tooltip: 'বিবাদীকে কল করুন',
-                            onPressed: (caseItem.defendant.phone.isEmpty)
-                                ? null
-                                : () async {
-                                    final uri = Uri(
-                                      scheme: 'tel',
-                                      path: caseItem.defendant.phone,
                                     );
                                     if (await canLaunchUrl(uri)) {
                                       await launchUrl(
@@ -504,7 +481,7 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Case Status (inline update)
                   section(
-                    'কেসের অবস্থা',
+                    'Case status',
                     Obx(() {
                       final current = controller.cases.firstWhere(
                         (c) => c.docId == caseItem.docId,
@@ -519,7 +496,7 @@ class CaseDetailScreen extends StatelessWidget {
                         menuMaxHeight: 320,
                         icon: const Icon(Icons.keyboard_arrow_down_rounded),
                         decoration: InputDecoration(
-                          labelText: 'কেসের অবস্থা',
+                          labelText: 'Case status',
                           hintText: 'Select case status',
                           prefixIcon: const Icon(Icons.flag_outlined),
                           filled: true,
@@ -544,10 +521,10 @@ class CaseDetailScreen extends StatelessWidget {
                           if (v == null) return;
                           PanaraConfirmDialog.show(
                             context,
-                            title: 'নিশ্চিত করুন',
-                            message: 'কেস স্ট্যাটাস "$v" এ পরিবর্তন করবেন?',
-                            confirmButtonText: 'হ্যাঁ',
-                            cancelButtonText: 'না',
+                            title: 'Confirm',
+                            message: 'Change the case status to "$v"?',
+                            confirmButtonText: 'Yes',
+                            cancelButtonText: 'No',
                             onTapCancel: () {
                               Navigator.of(context).pop();
                               // revert visual selection
@@ -575,8 +552,8 @@ class CaseDetailScreen extends StatelessWidget {
                                 SnackBar(
                                   content: Text(
                                     ok
-                                        ? 'স্ট্যাটাস আপডেট হয়েছে'
-                                        : 'স্ট্যাটাস আপডেট ব্যর্থ',
+                                        ? 'Status updated'
+                                        : 'Status update failed',
                                   ),
                                 ),
                               );
@@ -590,9 +567,9 @@ class CaseDetailScreen extends StatelessWidget {
 
                   // Filed Date (separate section at bottom)
                   section(
-                    'Filed Date',
+                    'Filed date',
                     appInfoRow(
-                      'Filed Date',
+                      'Filed date',
                       caseItem.filedDate.toDate().formattedDate,
                     ),
                   ),

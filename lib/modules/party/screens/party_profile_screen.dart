@@ -27,7 +27,7 @@ class PartyProfileScreen extends StatelessWidget {
         : Get.put(TransactionController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('পক্ষ প্রোফাইল'),
+        title: const Text('Party profile'),
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
@@ -42,8 +42,8 @@ class PartyProfileScreen extends StatelessWidget {
               }
             },
             itemBuilder: (context) => const [
-              PopupMenuItem(value: 'edit', child: Text('এডিট')),
-              PopupMenuItem(value: 'delete', child: Text('ডিলিট')),
+              PopupMenuItem(value: 'edit', child: Text('Edit')),
+              PopupMenuItem(value: 'delete', child: Text('Delete')),
             ],
           ),
         ],
@@ -127,7 +127,7 @@ class PartyProfileScreen extends StatelessWidget {
                               children: [
                                 const Icon(Icons.person_outline, size: 20),
                                 const SizedBox(width: 8),
-                                Expanded(child: appInfoRow('নাম', party.name)),
+                                Expanded(child: appInfoRow('Name', party.name)),
                               ],
                             ),
                             const Divider(height: 20),
@@ -136,7 +136,7 @@ class PartyProfileScreen extends StatelessWidget {
                                 const Icon(Icons.call_outlined, size: 20),
                                 const SizedBox(width: 8),
                                 Expanded(
-                                  child: appInfoRow('মোবাইল', party.phone),
+                                  child: appInfoRow('Mobile', party.phone),
                                 ),
                               ],
                             ),
@@ -150,7 +150,7 @@ class PartyProfileScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Expanded(
-                                  child: appInfoRow('ঠিকানা', party.address),
+                                  child: appInfoRow('Address', party.address),
                                 ),
                               ],
                             ),
@@ -169,9 +169,7 @@ class PartyProfileScreen extends StatelessWidget {
                       if (!caseController.isLoading.value) {
                         caseCount = caseController.cases
                             .where(
-                              (c) =>
-                                  matchesParty(c.plaintiff, party) ||
-                                  matchesParty(c.defendant, party),
+                              (c) => matchesParty(c.plaintiff, party),
                             )
                             .length;
                       }
@@ -181,8 +179,8 @@ class PartyProfileScreen extends StatelessWidget {
                             .fold(0.0, (sum, t) => sum + (t.amount));
                       }
                       final amountText = NumberFormat.currency(
-                        locale: 'bn_BD',
-                        symbol: '৳',
+                        locale: 'en_US',
+                        symbol: 'BDT ',
                         decimalDigits: 0,
                       ).format(txTotal);
                       return Card(
@@ -199,7 +197,7 @@ class PartyProfileScreen extends StatelessWidget {
                                   Icon(Icons.insights_outlined, size: 20),
                                   SizedBox(width: 8),
                                   Text(
-                                    'ওভারভিউ',
+                                    'Overview',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -207,9 +205,9 @@ class PartyProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               const Divider(height: 20),
-                              appInfoRow('মোট কেস', caseCount.toString()),
+                              appInfoRow('Total cases', caseCount.toString()),
                               const Divider(height: 20),
-                              appInfoRow('মোট পেমেন্ট', amountText),
+                              appInfoRow('Total payments', amountText),
                             ],
                           ),
                         ),
@@ -230,7 +228,7 @@ class PartyProfileScreen extends StatelessWidget {
                               vertical: 4,
                             ),
                             leading: const Icon(Icons.receipt_long_rounded),
-                            title: const Text('লেনদেন দেখুন'),
+                            title: const Text('View transactions'),
                             trailing: const Icon(Icons.chevron_right_rounded),
                             onTap: () {
                               Get.to(
@@ -245,7 +243,7 @@ class PartyProfileScreen extends StatelessWidget {
                               vertical: 4,
                             ),
                             leading: const Icon(Icons.gavel_rounded),
-                            title: const Text('কেস দেখুন'),
+                            title: const Text('View cases'),
                             trailing: const Icon(Icons.chevron_right_rounded),
                             onTap: () {
                               Get.to(() => PartyCasesScreen(party: party));
@@ -262,7 +260,7 @@ class PartyProfileScreen extends StatelessWidget {
                       elevation: 0.5,
                       child: Obx(
                         () => SwitchListTile(
-                          title: const Text('এসএমএস নোটিফায়ার'),
+                          title: const Text('SMS notifier'),
                           value: controller.isSendSms.value,
                           onChanged: controller.updateSms,
                         ),

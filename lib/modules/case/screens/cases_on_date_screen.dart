@@ -19,7 +19,7 @@ class CasesOnDateScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('কেসসমূহ: $title'),
+        title: Text('Cases: $title'),
       ),
       body: Obx(() {
         final list = controller.cases.where((c) {
@@ -28,7 +28,7 @@ class CasesOnDateScreen extends StatelessWidget {
           return _isSameDay(d, date);
         }).toList();
         if (list.isEmpty) {
-          return const Center(child: Text('এই তারিখে কোনো কেস নেই'));
+          return const Center(child: Text('No cases on this date'));
         }
         return ListView.builder(
           itemCount: list.length,

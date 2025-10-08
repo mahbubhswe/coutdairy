@@ -208,7 +208,7 @@ exports.sendTomorrowCaseSms = functions.pubsub
           continue;
         }
         const hearingDate = hearingTimestamp.toDate();
-        const caseTitle = caseData.caseTitle || caseData.caseNumber || 'আপনার মামলা';
+        const caseTitle = caseData.caseTitle || caseData.caseNumber || 'your case';
 
         const recipients = [];
         const plaintiff = caseData.plaintiff;
@@ -219,15 +219,6 @@ exports.sendTomorrowCaseSms = functions.pubsub
             phone: plaintiff.phone,
           });
         }
-        const defendant = caseData.defendant;
-        if (defendant) {
-          recipients.push({
-            role: 'defendant',
-            name: defendant.name,
-            phone: defendant.phone,
-          });
-        }
-
         for (const recipient of recipients) {
           if (remainingBalance <= 0) {
             break;
@@ -248,9 +239,9 @@ exports.sendTomorrowCaseSms = functions.pubsub
           }
 
           const contactLine = lawyerData.phone
-            ? `${lawyerData.phone} নম্বরে যোগাযোগ করুন।`
-            : 'অ্যাপে বিস্তারিত দেখুন।';
-          const message = `আগামীকাল (${formatDateInDhaka(hearingDate)}) আপনার মামলা "${caseTitle}" এর শুনানি নির্ধারিত আছে। ${contactLine}`;
+            ? `Contact at ${lawyerData.phone}.`
+            : 'View details in the app.';
+          const message = `Tomorrow (${formatDateInDhaka(hearingDate)}) your case "${caseTitle}" has a scheduled hearing. ${contactLine}`;
           const success = await sendSmsViaBulk({
             apiKey: smsConfig.apiKey,
             senderId: smsConfig.senderId,

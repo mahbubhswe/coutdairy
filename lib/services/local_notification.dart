@@ -242,8 +242,8 @@ class LocalNotificationService {
   Future<void> scheduleGlobalDailyReminders() async {
     await scheduleDailyAtTime(
       id: 2,
-      title: 'আগামীকালের কেস',
-      body: 'আগামীকালের কেস দেখতে ট্যাপ করুন।',
+      title: "Tomorrow's cases",
+      body: 'Tap to view tomorrow’s cases.',
       hour: 16,
       minute: 0,
       payload: 'tomorrow_cases',
@@ -251,13 +251,12 @@ class LocalNotificationService {
 
     await scheduleDailyAtTime(
       id: 310,
-      title: 'অপারেটিং কেস আপডেট করুন',
-      body: 'অপারেটিং কেস আপডেট করতে ট্যাপ করুন।',
+      title: 'Update overdue cases',
+      body: 'Tap to update your overdue cases.',
       hour: 0,
       minute: 0,
       payload: 'overdue_cases',
     );
   }
 }
-
 

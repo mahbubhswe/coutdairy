@@ -196,7 +196,7 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
                 minimumSize: const Size(0, 36),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              child: const Text('পেছনে'),
+              child: const Text('Back'),
             ),
           const Spacer(),
           ElevatedButton(
@@ -208,7 +208,7 @@ class _DynamicMultiStepFormState extends State<DynamicMultiStepForm> {
             ),
             child: widget.isLoading && isLast
                 ? const CupertinoActivityIndicator()
-                : Text(isLast ? 'জমা দিন' : 'পরবর্তী'),
+                : Text(isLast ? 'Submit' : 'Next'),
           ),
         ],
       );

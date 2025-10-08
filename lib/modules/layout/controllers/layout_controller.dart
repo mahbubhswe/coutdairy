@@ -14,6 +14,7 @@ class LayoutController extends GetxController {
   final layoutService = LayoutService();
   final ScrollController scrollController = ScrollController();
   final isDashboardVisible = true.obs;
+  final RxInt currentIndex = 0.obs;
   final caseController = Get.put(CaseController());
   final localAuthController = Get.find<LocalAuthController>();
 
@@ -66,6 +67,30 @@ class LayoutController extends GetxController {
     layoutService.getLawyerInfo().listen((data) {
       lawyer.value = data;
     });
+  }
+
+  void onDestinationSelected(int index) {
+    if (currentIndex.value == index) {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          0,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        );
+      }
+      return;
+    }
+    currentIndex.value = index;
+    if (!isDashboardVisible.value) {
+      isDashboardVisible.value = true;
+    }
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+      );
+    }
   }
 
   Future<void> _maybeShowOverdueSheet() async {
@@ -162,7 +187,7 @@ class _OverdueSheetContent extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'বকেয়া হিয়ারিং আপডেট',
+                        'Overdue hearing update',
                         style: textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
@@ -170,8 +195,8 @@ class _OverdueSheetContent extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         count == 1
-                            ? '১টি কেসের তারিখ পার হয়ে গেছে, আপডেট করা প্রয়োজন।'
-                            : '$count টি কেসের তারিখ পার হয়ে গেছে, আপডেট করা প্রয়োজন।',
+                            ? '1 case is overdue and needs to be updated.'
+                            : '$count cases are overdue and need to be updated.',
                         style: textTheme.bodySmall?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -195,7 +220,7 @@ class _OverdueSheetContent extends StatelessWidget {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'লিস্ট খুলে নেক্সট হিয়ারিং ডেট দেখে আপডেট করুন।',
+                      'Open the list to review and update the next hearing date.',
                       style: textTheme.bodySmall,
                     ),
                   ),
@@ -220,7 +245,7 @@ class _OverdueSheetContent extends StatelessWidget {
                         BorderSide(color: colorScheme.primary),
                       ),
                     ),
-                    child: const Text('পরে'),
+                    child: const Text('Later'),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -228,7 +253,7 @@ class _OverdueSheetContent extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: onViewAll,
                     icon: const Icon(HugeIcons.strokeRoundedArrowRight02),
-                    label: const Text('কেস দেখুন'),
+                    label: const Text('View cases'),
                     style: actionButtonStyle.copyWith(
                       backgroundColor: MaterialStateProperty.all(
                         Colors.green.shade600,

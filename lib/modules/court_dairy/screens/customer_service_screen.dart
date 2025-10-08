@@ -25,7 +25,7 @@ class CustomerServiceScreen extends StatelessWidget {
             children: [
               // Contact Section
               Text(
-                'যোগাযোগ',
+                'Contact',
                 style: textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
@@ -42,11 +42,11 @@ class CustomerServiceScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text('ইমেইল: support@appseba.com'),
+                    Text('Email: support@appseba.com'),
                     SizedBox(height: 4),
-                    Text('ফোন: 01607415159'),
+                    Text('Phone: 01607415159'),
                     SizedBox(height: 4),
-                    Text('হোয়াটসঅ্যাপ: 01607415159'),
+                    Text('WhatsApp: 01607415159'),
                   ],
                 ),
               ),
@@ -57,7 +57,7 @@ class CustomerServiceScreen extends StatelessWidget {
                 children: [
                   ElevatedButton.icon(
                     icon: const Icon(Icons.call),
-                    label: const Text('কল করুন'),
+                    label: const Text('Call'),
                     onPressed: () async {
                       final uri = Uri(scheme: 'tel', path: '01607415159');
                       try {
@@ -85,7 +85,7 @@ class CustomerServiceScreen extends StatelessWidget {
                   ),
                   OutlinedButton.icon(
                     icon: const Icon(Icons.email_outlined),
-                    label: const Text('ইমেইল'),
+                    label: const Text('Email'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Theme.of(context).colorScheme.tertiary,
                       side: BorderSide(
@@ -109,67 +109,67 @@ class CustomerServiceScreen extends StatelessWidget {
               const SizedBox(height: 24),
               // Features Section
               Text(
-                'অ্যাপের ফিচারসমূহ',
+                'App features',
                 style: textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: 8),
-              _bullet('মোকদ্দমা তালিকা ও ব্যবস্থাপনা'),
-              _bullet('শুনানির তারিখ রিমাইন্ডার'),
-              _bullet('ক্লায়েন্ট ও প্রতিপক্ষ তথ্য সংরক্ষণ'),
-              _bullet('ক্লায়েন্টকে তারিখের আগের দিন Auto SMS'),
-              _bullet('কোর্ট ফি ও খরচ হিসাব'),
-              _bullet('ডকুমেন্ট ও প্রমাণ সংযুক্তি'),
-              _bullet('দৈনিক অগ্রগতির রিপোর্ট'),
-              _bullet('ক্যালেন্ডার সিঙ্ক ও নোটিফিকেশন'),
-              _bullet('কেস সার্চ ও ফিল্টার অপশন'),
-              _bullet('অফলাইনে তথ্য ব্যবহারের সুবিধা'),
-              _bullet('নিরাপদ ক্লাউড ব্যাকআপ'),
-              _bullet('বহু-ব্যবহারকারী পারমিশন নিয়ন্ত্রণ'),
-              _bullet('টাস্ক ও রিমাইন্ডার ম্যানেজার'),
-              _bullet('কেস আপডেট শেয়ারিং'),
-              _bullet('ডেটা এক্সপোর্ট ও প্রিন্টিং'),
-              _bullet('ক্লায়েন্ট পেমেন্ট ট্র্যাকিং'),
+              _bullet('Case listing and management'),
+              _bullet('Hearing date reminders'),
+              _bullet('Store client and opponent information'),
+              _bullet('Automatic SMS to clients the day before a hearing'),
+              _bullet('Track court fees and expenses'),
+              _bullet('Attach documents and evidence'),
+              _bullet('Daily progress reports'),
+              _bullet('Calendar sync and notifications'),
+              _bullet('Case search and filter options'),
+              _bullet('Offline access to information'),
+              _bullet('Secure cloud backup'),
+              _bullet('Multi-user permission control'),
+              _bullet('Task and reminder manager'),
+              _bullet('Case update sharing'),
+              _bullet('Data export and printing'),
+              _bullet('Client payment tracking'),
               const SizedBox(height: 24),
               // How to Use Section
               Text(
-                'কিভাবে ব্যবহার করবেন',
+                'How to use',
                 style: textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: 8),
-              _bullet('পার্টি ট্যাব থেকে নতুন পার্টি যোগ করুন।'),
-              _bullet('কেস ট্যাব থেকে নতুন কেস যোগ করে পার্টি লিঙ্ক করুন।'),
-              _bullet('হিসাব ট্যাবে আয়/ব্যয়ের লেনদেন রেকর্ড রাখুন।'),
-              _bullet('কেস ডিটেইলসে শুনানির তারিখ আপডেট করুন।'),
-              _bullet('প্রয়োজনে Buy SMS স্ক্রিন থেকে এসএমএস প্যাক নিন।'),
+              _bullet('Add new parties from the Parties tab.'),
+              _bullet('Add new cases from the Cases tab and link parties.'),
+              _bullet('Record income and expense transactions in the Accounts tab.'),
+              _bullet('Update hearing dates inside the case details.'),
+              _bullet('Purchase SMS packs from the Buy SMS screen when needed.'),
               const SizedBox(height: 24),
               // FAQs Section
               Text(
-                'প্রায় জিজ্ঞাসা (FAQ)',
+                'Frequently asked questions (FAQ)',
                 style: textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: 8),
               _buildFaq(
-                question: 'কিভাবে কেস যোগ করবো?',
+                question: 'How do I add a case?',
                 answer:
-                    'কেস ট্যাবে যান -> Add Case -> ফর্ম পূরণ করে Submit করুন।',
+                    'Go to the Cases tab -> Add Case -> fill out the form and submit.',
               ),
               _buildFaq(
-                question: 'পার্টি কিভাবে যুক্ত করবো?',
-                answer: 'পার্টি ট্যাব -> Add Party -> তথ্য দিয়ে সেভ করুন।',
+                question: 'How do I add a party?',
+                answer: 'Go to the Parties tab -> Add Party -> enter the details and save.',
               ),
               _buildFaq(
-                question: 'লেনদেন কিভাবে যোগ করবো?',
-                answer: 'হিসাব ট্যাব -> নতুন লেনদেন -> তথ্য দিয়ে সেভ করুন।',
+                question: 'How do I add a transaction?',
+                answer: 'Go to the Accounts tab -> New transaction -> enter the details and save.',
               ),
               _buildFaq(
-                question: 'সাপোর্টে কিভাবে যোগাযোগ করবো?',
-                answer: 'উপরের কল/WhatsApp/ইমেইল অপশন ব্যবহার করুন।',
+                question: 'How do I contact support?',
+                answer: 'Use the call, WhatsApp, or email options above.',
               ),
               const SizedBox(height: 24),
               const Center(child: CompanyInfo()),

@@ -41,13 +41,13 @@ class AccountResetController extends GetxController {
       HapticFeedback.heavyImpact();
       await _resetAllData();
       Get.snackbar(
-        'সম্পন্ন',
-        'সব কেস, পক্ষ এবং লেনদেন মুছে ফেলা হয়েছে।',
+        'Completed',
+        'All cases, parties, and transactions have been deleted.',
         snackPosition: SnackPosition.BOTTOM,
       );
     } catch (e) {
       Get.snackbar(
-        'ত্রুটি',
+        'Error',
         e.toString(),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red.shade100,
@@ -98,7 +98,7 @@ class AccountResetScreen extends StatelessWidget {
     final dangerTextColor = Colors.red.shade700;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('অ্যাকাউন্ট রিসেট')),
+      appBar: AppBar(title: const Text('Reset account')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -107,7 +107,7 @@ class AccountResetScreen extends StatelessWidget {
           children: [
             Icon(Icons.warning_amber_rounded, color: dangerColor, size: 100),
             Text(
-              'বিপদ অঞ্চল',
+              'Danger zone',
               style: theme.textTheme.titleLarge?.copyWith(
                 color: dangerTextColor,
                 fontWeight: FontWeight.w800,
@@ -126,18 +126,18 @@ class AccountResetScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 6),
                   const Text(
-                    'এই অ্যাকাউন্ট রিসেট করলে আপনার সব ডেটা মুছে যাবে — '
-                    'সকল কেস, পার্টি ও ট্রান্সাকশন স্থায়ীভাবে ডিলিট হবে। '
-                    'এই কাজটি বাতিল করা যাবে না।',
+                    'Resetting this account will erase all of your data — '
+                    'All cases, parties, and transactions will be permanently deleted. '
+                    'This action cannot be undone.',
                   ),
                   const SizedBox(height: 10),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
                     children: const [
-                      _DangerChip(label: 'কেস'),
-                      _DangerChip(label: 'পক্ষসমূহ'),
-                      _DangerChip(label: 'লেনদেন'),
+                      _DangerChip(label: 'Cases'),
+                      _DangerChip(label: 'Parties'),
+                      _DangerChip(label: 'Transactions'),
                     ],
                   ),
                 ],
@@ -198,10 +198,10 @@ class AccountResetScreen extends StatelessWidget {
                             const SizedBox(width: 8),
                             Text(
                               resetting
-                                  ? 'রিসেট হচ্ছে...'
+                                  ? 'Resetting...'
                                   : (p <= 0
-                                        ? 'অ্যাকাউন্ট রিসেট করতে ধরে রাখুন (৩.০ সেকেন্ড)'
-                                        : 'ধরে থাকুন... (${timeLeft.toStringAsFixed(1)}সেকেন্ড)'),
+                                        ? 'Hold to reset the account (3.0 seconds)'
+                                        : 'Keep holding... (${timeLeft.toStringAsFixed(1)} seconds)'),
                               style: TextStyle(
                                 fontWeight: FontWeight.w800,
                                 color: p > 0.5 ? Colors.white : dangerTextColor,

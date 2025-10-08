@@ -24,7 +24,7 @@ class AccountsCard extends StatelessWidget {
     final Color gradientEnd = accent.withOpacity(isDark ? 0.12 : 0.08);
     cs.outlineVariant.withOpacity(isDark ? 0.5 : 0.22);
     final numberFormatter = NumberFormat.currency(
-      locale: 'bn_BD',
+      locale: 'en_US',
       symbol: '',
       decimalDigits: 0,
     );

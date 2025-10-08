@@ -20,7 +20,7 @@ class CaseCalendarScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('কেস ক্যালেন্ডার'),
+        title: const Text('Case calendar'),
         actions: [
           IconButton(
             onPressed: () => Get.back(),
@@ -41,13 +41,13 @@ class CaseCalendarScreen extends StatelessWidget {
         final totalCells = daysInMonth + firstWeekday - 1;
         final monthLabel = DateFormat('MMMM yyyy').format(now);
         final weekdays = const [
-          'সোম',
-          'মঙ্গল',
-          'বুধ',
-          'বৃহ',
-          'শুক্র',
-          'শনি',
-          'রবি',
+          'Mon',
+          'Tue',
+          'Wed',
+          'Thu',
+          'Fri',
+          'Sat',
+          'Sun',
         ];
 
         return Column(
@@ -68,7 +68,7 @@ class CaseCalendarScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'মোট ${_caseController.monthCount} টি কেস',
+                        'Total ${_caseController.monthCount} cases',
                         style: Theme.of(context).textTheme.labelMedium
                             ?.copyWith(color: Theme.of(context).hintColor),
                       ),
@@ -88,7 +88,7 @@ class CaseCalendarScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'কেস আছে',
+                        'cases',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
@@ -210,7 +210,7 @@ class CaseCalendarScreen extends StatelessWidget {
                             if (!isCompact) ...[
                               const Spacer(),
                               Text(
-                                hasCase ? '$count টি কেস' : '',
+                                hasCase ? '$count cases' : '',
                                 style: Theme.of(context).textTheme.labelSmall
                                     ?.copyWith(
                                       color: hasCase

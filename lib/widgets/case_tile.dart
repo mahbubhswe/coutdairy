@@ -13,8 +13,12 @@ class CaseTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final background = Theme.of(context).scaffoldBackgroundColor;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: background,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
       child: ListTile(
         title: Text(data.caseTitle),
         onTap: onTap,
@@ -27,8 +31,8 @@ class CaseTile extends StatelessWidget {
             }
           },
           itemBuilder: (context) => [
-            const PopupMenuItem(value: 'edit', child: Text('সম্পাদনা')),
-            const PopupMenuItem(value: 'delete', child: Text('মুছে ফেলুন')),
+            const PopupMenuItem(value: 'edit', child: Text('Edit')),
+            const PopupMenuItem(value: 'delete', child: Text('Delete')),
           ],
         ),
       ),

@@ -29,7 +29,7 @@ class AddTransactionScreen extends StatelessWidget {
       borderSide: BorderSide.none,
     );
     return Scaffold(
-      appBar: AppBar(title: const Text('নতুন লেনদেন যুক্ত করুন')),
+      appBar: AppBar(title: const Text('Add new transaction')),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -66,8 +66,8 @@ class AddTransactionScreen extends StatelessWidget {
                                     Icons.keyboard_arrow_down_rounded,
                                   ),
                                   decoration: InputDecoration(
-                                    labelText: 'ধরণ',
-                                    hintText: 'লেনদেনের ধরণ নির্বাচন করুন',
+                                    labelText: 'Type',
+                                    hintText: 'Select transaction type',
                                     prefixIcon: const Icon(
                                       Icons.account_balance_wallet_outlined,
                                     ),
@@ -94,8 +94,8 @@ class AddTransactionScreen extends StatelessWidget {
                                 ),
                                 AppTextFromField(
                                   controller: controller.amount,
-                                  label: 'পরিমাণ',
-                                  hintText: 'পরিমাণ লিখুন',
+                                  label: 'Amount',
+                                  hintText: 'Enter amount',
                                   prefixIcon: Icons.money,
                                   keyboardType: TextInputType.number,
                                 ),
@@ -108,8 +108,8 @@ class AddTransactionScreen extends StatelessWidget {
                                     Icons.keyboard_arrow_down_rounded,
                                   ),
                                   decoration: InputDecoration(
-                                    labelText: 'পেমেন্ট পদ্ধতি',
-                                    hintText: 'পেমেন্ট পদ্ধতি নির্বাচন করুন',
+                                    labelText: 'Payment method',
+                                    hintText: 'Select payment method',
                                     prefixIcon: const Icon(Icons.payment),
                                     filled: true,
                                     fillColor: fieldFillColor,
@@ -135,8 +135,8 @@ class AddTransactionScreen extends StatelessWidget {
                                 ),
                                 AppTextFromField(
                                   controller: controller.note,
-                                  label: 'নোট',
-                                  hintText: 'নোট লিখুন',
+                                  label: 'Note',
+                                  hintText: 'Enter a note',
                                   prefixIcon: Icons.note,
                                   isMaxLines: 3,
                                 ),
@@ -157,16 +157,16 @@ class AddTransactionScreen extends StatelessWidget {
                     child: ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 520),
                       child: AppButton(
-                        label: 'সেভ করুন',
+                        label: 'Save',
                         isLoading: controller.isLoading.value,
                         onPressed: controller.enableBtn.value
                             ? () {
                                 PanaraConfirmDialog.show(
                                   context,
-                                  title: 'নিশ্চিত করুন',
-                                  message: 'লেনদেন যুক্ত করতে চান?',
-                                  confirmButtonText: 'হ্যাঁ',
-                                  cancelButtonText: 'না',
+                                  title: 'Confirm',
+                                  message: 'Do you want to add the transaction?',
+                                  confirmButtonText: 'Yes',
+                                  cancelButtonText: 'No',
                                   onTapCancel: () {
                                     Navigator.of(context).pop();
                                   },
@@ -180,7 +180,7 @@ class AddTransactionScreen extends StatelessWidget {
                                       ).showSnackBar(
                                         const SnackBar(
                                           content: Text(
-                                            'লেনদেন যুক্ত করা হয়েছে',
+                                            'Transaction added successfully',
                                           ),
                                         ),
                                       );
@@ -191,7 +191,7 @@ class AddTransactionScreen extends StatelessWidget {
                                       ).showSnackBar(
                                         const SnackBar(
                                           content: Text(
-                                            'লেনদেন যুক্ত করতে ব্যর্থ হয়েছে',
+                                            'Failed to add transaction',
                                           ),
                                         ),
                                       );

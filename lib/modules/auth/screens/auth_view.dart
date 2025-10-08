@@ -29,26 +29,26 @@ class AuthScreen extends StatelessWidget {
                   children: [
                     Image.asset(AppImages.logo, height: 150),
                     const Text(
-                      'স্বাগতম ফিরে',
+                      'Welcome back',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      'আপনার একাউন্টে প্রবেশ করুন',
+                      'Sign in to your account',
                       style: TextStyle(fontSize: 16),
                     ),
                     AppTextFromField(
                       controller: controller.email,
-                      label: "ইমেইল",
-                      hintText: "আপনার জিমেইল ঠিকানা লিখুন",
+                      label: "Email",
+                      hintText: "Enter your Gmail address",
                       prefixIcon: HugeIcons.strokeRoundedMail02,
                     ),
                     AppTextFromField(
                       controller: controller.password,
-                      label: "পাসওয়ার্ড",
-                      hintText: "আপনার পাসওয়ার্ড লিখুন",
+                      label: "Password",
+                      hintText: "Enter your password",
                       prefixIcon: HugeIcons.strokeRoundedLockPassword,
                       isPassword: true,
                     ),
@@ -59,7 +59,7 @@ class AuthScreen extends StatelessWidget {
                             ? null
                             : controller.forgotPassword,
                         child: const Text(
-                          "পাসওয়ার্ড ভুলে গেছেন?",
+                          "Forgot password?",
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Colors.teal,
@@ -109,7 +109,7 @@ class AuthScreen extends StatelessWidget {
                     Obx(() {
                       return AppButton(
                         surfaceStyle: true,
-                        label: 'লগইন',
+                        label: 'Log in',
                         onPressed: controller.enableBtn.value
                             ? () => controller.login()
                             : null,
@@ -126,7 +126,7 @@ class AuthScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           buttonColor: Colors.white,
                         ),
-                        text: "গুগল দিয়ে সাইন ইন",
+                        text: "Sign in with Google",
                       );
                     }),
                     const SizedBox(height: 10),

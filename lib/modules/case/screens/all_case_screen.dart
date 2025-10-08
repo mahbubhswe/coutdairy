@@ -18,7 +18,7 @@ class AllCaseScreen extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('সমস্ত কেস')),
+      appBar: AppBar(title: const Text('All cases')),
       body: Column(
         spacing: 10,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +35,7 @@ class AllCaseScreen extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('কেসের ধরন',
+                  const Text('Case type',
                       style: TextStyle(fontWeight: FontWeight.w600)),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -46,7 +46,7 @@ class AllCaseScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 8),
                           child: ChoiceChip(
                             label: Text(
-                              t == 'All' ? 'সব' : t,
+                              t == 'All' ? 'All' : t,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: selected
@@ -76,7 +76,7 @@ class AllCaseScreen extends StatelessWidget {
                       }).toList(),
                     ),
                   ),
-                  const Text('আদালতের ধরন',
+                  const Text('Court type',
                       style: TextStyle(fontWeight: FontWeight.w600)),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -87,7 +87,7 @@ class AllCaseScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 8),
                           child: ChoiceChip(
                             label: Text(
-                              t == 'All' ? 'সব' : t,
+                              t == 'All' ? 'All' : t,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: selected
@@ -133,7 +133,7 @@ class AllCaseScreen extends StatelessWidget {
 
               if (filtered.isEmpty) {
                 return const DataNotFound(
-                    title: 'দুঃখিত', subtitle: 'কোনো কেস পাওয়া যায়নি');
+                    title: 'No results', subtitle: 'No cases were found');
               }
 
               return ListView.builder(

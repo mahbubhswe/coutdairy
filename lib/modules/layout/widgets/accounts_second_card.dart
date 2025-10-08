@@ -37,14 +37,14 @@ class AccountsSecondCard extends StatelessWidget {
             children: [
               Expanded(
                 child: AccountsCard(
-                  title: 'মোট পার্টি',
+                  title: 'Total parties',
                   amount: totalParties,
                   icon: Icons.people_alt,
                 ),
               ),
               Expanded(
                 child: AccountsCard(
-                  title: 'মোট জমা',
+                  title: 'Total deposits',
                   amount: totalDeposit,
                   icon: Icons.savings,
                 ),
@@ -56,14 +56,14 @@ class AccountsSecondCard extends StatelessWidget {
             children: [
               Expanded(
                 child: AccountsCard(
-                  title: 'মোট খরচ',
+                  title: 'Total expenses',
                   amount: totalExpense,
                   icon: Icons.trending_down,
                 ),
               ),
               Expanded(
                 child: AccountsCard(
-                  title: 'বর্তমান ব্যালেন্স',
+                  title: 'Current balance',
                   amount: balance,
                   icon: Icons.account_balance_wallet,
                 ),

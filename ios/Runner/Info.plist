@@ -50,9 +50,9 @@
 		<key>NSFaceIDUsageDescription</key>
 		<string>Use Face ID to secure your account</string>
 		<key>FacebookAppID</key>
-		<string>000000000000000</string>
+		<string>1331936988623198</string>
 		<key>FacebookClientToken</key>
-		<string></string>
+		<string>55557faf8ced19eb59062c81bc5236da</string>
 		<key>FacebookDisplayName</key>
 		<string>Court Dairy</string>
 		<key>LSApplicationQueriesSchemes</key>
@@ -69,7 +69,7 @@
 				<string>Editor</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
-					<string>fb000000000000000</string>
+					<string>fb1331936988623198</string>
 				</array>
 			</dict>
 		</array>

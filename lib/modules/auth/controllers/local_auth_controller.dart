@@ -44,8 +44,8 @@ class LocalAuthController extends GetxController with WidgetsBindingObserver {
       }
       if (!ok) {
         Get.snackbar(
-          'অথেন্টিকেশন ব্যর্থ হয়েছে',
-          'লক চালু করতে একটি অ্যাপ পিন সেট করুন।',
+          'Authentication failed',
+          'Set an app PIN to enable the lock.',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red.shade100,
           colorText: Colors.black,
@@ -77,8 +77,8 @@ class LocalAuthController extends GetxController with WidgetsBindingObserver {
     isAuthenticating.value = false;
     if (!didAuth) {
       Get.snackbar(
-        'অথেন্টিকেশন ব্যর্থ হয়েছে',
-        'আনলক করতে সেটিংস থেকে অ্যাপ পিন সেট করুন।',
+        'Authentication failed',
+        'Set an app PIN from settings to unlock.',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red.shade100,
         colorText: Colors.black,

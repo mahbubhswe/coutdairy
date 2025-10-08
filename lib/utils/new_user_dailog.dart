@@ -68,7 +68,7 @@ void showNewUserDialog() {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'অভিনন্দন!',
+                  'Congratulations!',
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.2,
@@ -76,7 +76,7 @@ void showNewUserDialog() {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'আপনি ৩০ দিনের ফ্রি ট্রায়াল পেয়েছেন।',
+                  'You have received a 30-day free trial.',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
                 ),
@@ -126,7 +126,7 @@ void showNewUserDialog() {
                       ),
                     ),
                     child: Text(
-                      'ব্যবহার শুরু করুন',
+                      'Get started',
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: cs.onPrimary,
                         fontWeight: FontWeight.w600,
@@ -138,7 +138,7 @@ void showNewUserDialog() {
                 TextButton(
                   onPressed: () => Get.back(),
                   style: TextButton.styleFrom(foregroundColor: cs.primary),
-                  child: const Text('পরে মনে করিয়ে দিন'),
+                  child: const Text('Remind me later'),
                 ),
               ],
             ),
@@ -158,7 +158,7 @@ String? _buildPricingMessage() {
 
   final amount = _formatCurrency(charge);
 
-  return 'ট্রায়াল শেষে প্রতি মাসের জন্য সাবস্ক্রিপশন চার্জ মাত্র $amount টাকা।';
+  return 'After the trial, the monthly subscription price is only $amount.';
 }
 
 String _formatCurrency(num amount) {
@@ -185,24 +185,9 @@ String _formatCurrency(num amount) {
     }
   }
 
-  return _toBanglaDigits(buffer.toString());
+  return buffer.toString();
 }
 
 String _toBanglaDigits(String value) {
-  const englishToBangla = {
-    '0': '০',
-    '1': '১',
-    '2': '২',
-    '3': '৩',
-    '4': '৪',
-    '5': '৫',
-    '6': '৬',
-    '7': '৭',
-    '8': '৮',
-    '9': '৯',
-    ',': ',',
-    '.': '.',
-  };
-
-  return value.split('').map((char) => englishToBangla[char] ?? char).join();
+  return value;
 }

@@ -23,8 +23,9 @@ class AllTransactionsScreen extends StatelessWidget {
     final dates = ['All', 'Today', 'This Week', 'This Month'];
     final appBarColor = Theme.of(context).appBarTheme.backgroundColor ??
         Theme.of(context).colorScheme.primary;
+    
     return Scaffold(
-      appBar: AppBar(title: const Text('সমস্ত লেনদেন')),
+      appBar: AppBar(title: const Text('All transactions')),
       body: Column(
         children: [
           Padding(
@@ -32,8 +33,7 @@ class AllTransactionsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('ধরন',
-                    style: TextStyle(fontWeight: FontWeight.w600)),
+                const Text('Type', style: TextStyle(fontWeight: FontWeight.w600)),
                 const SizedBox(height: 8),
                 Obx(() {
                   return SingleChildScrollView(
@@ -44,7 +44,7 @@ class AllTransactionsScreen extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: ChoiceChip(
-                            label: Text(t == 'All' ? 'সব' : t),
+                            label: Text(t == 'All' ? 'All' : t),
                             selected: selected,
                             onSelected: (_) => typeFilter.value = t,
                             shape: StadiumBorder(
@@ -61,8 +61,7 @@ class AllTransactionsScreen extends StatelessWidget {
                   );
                 }),
                 const SizedBox(height: 16),
-                const Text('তারিখ',
-                    style: TextStyle(fontWeight: FontWeight.w600)),
+                const Text('Date', style: TextStyle(fontWeight: FontWeight.w600)),
                 const SizedBox(height: 8),
                 Obx(() => DropdownButtonFormField<String>(
                       value: dateFilter.value,
@@ -92,13 +91,13 @@ class AllTransactionsScreen extends StatelessWidget {
                               (e) => DropdownMenuItem(
                                   value: e,
                                   child: Text(e == 'All'
-                                      ? 'সব'
+                                      ? 'All'
                                       : e == 'Today'
-                                          ? 'আজ'
+                                          ? 'Today'
                                           : e == 'This Week'
-                                              ? 'এই সপ্তাহ'
+                                              ? 'This week'
                                               : e == 'This Month'
-                                                  ? 'এই মাস'
+                                                  ? 'This month'
                                                   : e)))
                           .toList(),
                       onChanged: (v) => dateFilter.value = v ?? 'All',
@@ -137,7 +136,7 @@ class AllTransactionsScreen extends StatelessWidget {
 
               if (filtered.isEmpty) {
                 return const DataNotFound(
-                    title: 'দুঃখিত', subtitle: 'কোনো লেনদেন পাওয়া যায়নি');
+                    title: 'No results', subtitle: 'No transactions were found');
               }
 
               return ListView.builder(
@@ -148,8 +147,7 @@ class AllTransactionsScreen extends StatelessWidget {
                     transaction: transaction,
                     onEdit: () {
                       if (ActivationGuard.check()) {
-                        Get.to(() =>
-                            EditTransactionScreen(transaction: transaction));
+                        Get.to(() => EditTransactionScreen(transaction: transaction));
                       }
                     },
                     onDelete: () async {

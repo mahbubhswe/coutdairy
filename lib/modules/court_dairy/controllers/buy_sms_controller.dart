@@ -17,10 +17,10 @@ class BuySmsController extends GetxController {
   double get totalPrice => smsCount.value * smsPrice;
 
   String get formattedSmsCount =>
-      NumberFormat("##,##,###", "bn").format(smsCount.value);
+      NumberFormat("##,##,###", "en").format(smsCount.value);
 
   String get formattedTotalPrice =>
-      NumberFormat("##,##,###", "bn").format(totalPrice);
+      NumberFormat("##,##,###", "en").format(totalPrice);
 
   Future<void> buySms() async {
     final success = await PaymentService.payNow(
@@ -32,24 +32,24 @@ class BuySmsController extends GetxController {
         await BuySmsService.addSmsBalance(count: smsCount.value);
         Get.back();
         Get.snackbar(
-          'সফল হয়েছে',
-          'SMS যুক্ত হয়েছে',
+          'Success',
+          'SMS balance updated successfully',
           backgroundColor: Colors.white,
           colorText: Colors.green,
           duration: const Duration(seconds: 3),
         );
       } catch (e) {
         Get.snackbar(
-          'ত্রুটি',
-          'SMS ব্যালেন্স আপডেট করতে ব্যর্থ হয়েছে',
+          'Error',
+          'Failed to update SMS balance',
           backgroundColor: Colors.white,
           colorText: Colors.red,
         );
       }
     } else {
       Get.snackbar(
-        'ত্রুটি',
-        'পেমেন্ট সফল হয়নি। আবার চেষ্টা করুন।',
+        'Error',
+        'Payment was not successful. Please try again.',
         backgroundColor: Colors.white,
         colorText: Colors.red,
         duration: const Duration(seconds: 3),

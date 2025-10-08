@@ -12,12 +12,12 @@ class TomorrowCasesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<CaseController>();
     return Scaffold(
-      appBar: AppBar(title: const Text('আগামীকালের কেসসমূহ')),
+      appBar: AppBar(title: const Text('Tomorrow’s cases')),
       body: Obx(() {
         final list = controller.tomorrowCases;
         if (list.isEmpty) {
           return const DataNotFound(
-              title: 'দুঃখিত', subtitle: 'কোনো কেস পাওয়া যায়নি');
+              title: 'No results', subtitle: 'No cases were found');
         }
         return ListView.builder(
           itemCount: list.length,

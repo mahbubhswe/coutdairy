@@ -26,7 +26,7 @@ class BuySmsView extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('SMS কেনার প্যাকেজ'),
+          title: const Text('Buy SMS packages'),
           centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
@@ -86,7 +86,7 @@ class BuySmsView extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'এসএমএস ক্রয় ক্যালকুলেটর',
+                                        'SMS purchase calculator',
                                         style: theme.textTheme.titleMedium
                                             ?.copyWith(
                                               fontWeight: FontWeight.w600,
@@ -94,7 +94,7 @@ class BuySmsView extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'সংখ্যা সামঞ্জস্য করে সঙ্গে সঙ্গে আপডেট হওয়া মূল্য দেখুন।',
+                                        'Adjust the quantity to see the updated price instantly.',
                                         style: theme.textTheme.bodySmall
                                             ?.copyWith(
                                               color: cs.onSurfaceVariant,
@@ -107,7 +107,7 @@ class BuySmsView extends StatelessWidget {
                             ),
 
                             Text(
-                              'সংখ্যা নির্বাচন করুন',
+                              'Select the quantity',
                               style: theme.textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
@@ -161,7 +161,7 @@ class BuySmsView extends StatelessWidget {
                                   const SizedBox(height: 12),
                                   Text.rich(
                                     TextSpan(
-                                      text: 'আপনি ',
+                                      text: 'You ',
                                       children: [
                                         TextSpan(
                                           text: controller.formattedSmsCount,
@@ -172,7 +172,7 @@ class BuySmsView extends StatelessWidget {
                                         ),
                                         const TextSpan(
                                           text:
-                                              ' টি এসএমএস নির্বাচন করেছেন,\nযার মূল্য ',
+                                              ' SMS,\nwhich costs ',
                                         ),
                                         TextSpan(
                                           text: controller.formattedTotalPrice,
@@ -181,7 +181,7 @@ class BuySmsView extends StatelessWidget {
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        const TextSpan(text: ' টাকা।'),
+                                        const TextSpan(text: ' BDT.'),
                                       ],
                                     ),
                                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -198,7 +198,7 @@ class BuySmsView extends StatelessWidget {
                       ),
                     ),
                     AppButton(
-                      label: 'এখনই পেমেন্ট করুন',
+                      label: 'Pay now',
                       onPressed: () => controller.buySms(),
                     ),
                     const SizedBox(height: 24),

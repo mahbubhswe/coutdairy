@@ -134,23 +134,23 @@ class AccountActivationController extends GetxController {
         await AccountActivationService.markAccountActivated(days: validity);
         Get.back();
         Get.snackbar(
-          'সফল হয়েছে',
-          '${_durationLabel(validity)} জন্য আপনার অ্যাকাউন্ট সক্রিয় হয়েছে।',
+          'Success',
+          'Your account has been activated for ${_durationLabel(validity)}.',
           backgroundColor: Colors.white,
           colorText: Colors.green,
         );
       } catch (e) {
         Get.snackbar(
-          'ত্রুটি',
-          'অ্যাকাউন্ট অ্যাক্টিভেট করতে সমস্যা হয়েছে।',
+          'Error',
+          'There was a problem activating the account.',
           backgroundColor: Colors.white,
           colorText: Colors.red,
         );
       }
     } else {
       Get.snackbar(
-        'ব্যর্থ হয়েছে',
-        'পেমেন্ট সফল হয়নি। আবার চেষ্টা করুন।',
+        'Failed',
+        'Payment was not successful. Please try again.',
         backgroundColor: Colors.white,
         colorText: Colors.red,
       );
@@ -159,34 +159,18 @@ class AccountActivationController extends GetxController {
 
   String _durationLabel(int days) {
     if (days >= 365) {
-      return 'এক বছরের';
+      return 'one year';
     } else if (days >= 30) {
-      return 'এক মাসের';
+      return 'one month';
     } else if (days > 0) {
-      return '${_toBanglaDigits(days.toString())} দিনের';
+      return '${days.toString()} days';
     }
 
-    return 'সীমিত সময়ের';
+    return 'a limited time';
   }
 
   String _toBanglaDigits(String value) {
-    const englishToBangla = {
-      '0': '০',
-      '1': '১',
-      '2': '২',
-      '3': '৩',
-      '4': '৪',
-      '5': '৫',
-      '6': '৬',
-      '7': '৭',
-      '8': '৮',
-      '9': '৯',
-    };
-
-    return value
-        .split('')
-        .map((char) => englishToBangla[char] ?? char)
-        .join();
+    return value;
   }
 
   @override

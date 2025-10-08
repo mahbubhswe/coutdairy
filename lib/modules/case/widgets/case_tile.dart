@@ -10,93 +10,97 @@ class CaseTile extends StatelessWidget {
   final CourtCase caseItem;
 
   String _initials(String text) {
-    final parts = text.trim().split(RegExp(r"\s+"));
-    if (parts.isEmpty) return '';
-    final first = parts.first.isNotEmpty ? parts.first[0] : '';
-    final last = parts.length > 1 && parts.last.isNotEmpty ? parts.last[0] : '';
-    return (first + last).toUpperCase();
+    final cleaned = text.trim();
+    if (cleaned.isEmpty) return '';
+    final parts = cleaned.split(RegExp(r'\s+'));
+    final firstChar = parts.first.isNotEmpty ? parts.first[0] : '';
+    return firstChar.toUpperCase();
   }
-
-  // Keep UI minimal per request: title, number, court name
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      elevation: 0.5,
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+    final tileBackground = theme.scaffoldBackgroundColor;
+    final dividerColor = (colorScheme.outlineVariant ?? colorScheme.outline)
+        .withOpacity(isDark ? 0.32 : 0.16);
+    final subtitleColor = colorScheme.onSurfaceVariant;
+    final leadingBackground = colorScheme.secondaryContainer;
+    final leadingTextColor = colorScheme.onSecondaryContainer;
+    final trailingColor = colorScheme.onSurfaceVariant;
+
+    final lastOrder = caseItem.courtLastOrder;
+    final String subtitle = (lastOrder != null && lastOrder.trim().isNotEmpty)
+        ? lastOrder
+        : caseItem.courtName;
+
+    return Material(
+      color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(8),
         onTap: () => Get.to(() => CaseDetailScreen(caseItem)),
-        child: ListTile(
-          contentPadding: const EdgeInsets.only(left: 12, right: 8),
-          dense: true,
-          leading: CircleAvatar(
-            backgroundColor: Colors.orange.shade100,
-            foregroundColor: Colors.orange,
-            child: Text(
-              _initials(caseItem.caseTitle),
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: tileBackground,
+            border: Border(),
           ),
-          title: Text(
-            caseItem.caseTitle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.titleMedium,
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  Icon(
-                    Icons.confirmation_number_outlined,
-                    size: 14,
-                    color: Colors.grey.shade600,
+              CircleAvatar(
+                radius: 24,
+                backgroundColor: leadingBackground,
+                child: Text(
+                  _initials(caseItem.caseTitle),
+                  style: TextStyle(
+                    color: leadingTextColor,
+                    fontWeight: FontWeight.w600,
                   ),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      caseItem.caseTitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
                       'Case No: ${caseItem.caseNumber}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.grey.shade700,
+                        color: subtitleColor,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 2),
-              Row(
-                children: [
-                  Icon(
-                    Icons.account_balance_outlined,
-                    size: 14,
-                    color: Colors.grey.shade600,
-                  ),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(
-                      caseItem.courtName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.grey.shade700,
+
+                    if (caseItem.underSection?.isNotEmpty == true) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        'Section: ' + caseItem.underSection!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: subtitleColor,
+                        ),
                       ),
-                    ),
-                  ),
-                ],
+                    ],
+                  ],
+                ),
               ),
+              const SizedBox(width: 12),
+              Icon(Icons.arrow_forward_ios_rounded,
+                  size: 16, color: trailingColor),
             ],
-          ),
-          // Trailing arrow to indicate navigation
-          trailing: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: 16,
-            color: Colors.grey,
           ),
         ),
       ),

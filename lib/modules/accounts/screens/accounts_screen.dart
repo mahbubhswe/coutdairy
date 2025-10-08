@@ -12,37 +12,17 @@ class AccountsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(TransactionController());
-    final layoutController = Get.put(LayoutController());
+    final layoutController = Get.find<LayoutController>();
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
       return Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('সাম্প্রতিক লেনদেন',
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                TextButton(
-                  onPressed: () {
-                    Get.to(() => AllTransactionsScreen());
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  child: const Text('সমস্ত লেনদেন'),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: controller.transactions.isEmpty
                 ? const DataNotFound(
-                    title: 'দুঃখিত', subtitle: 'কোনো লেনদেন পাওয়া যায়নি')
+                    title: 'No results', subtitle: 'No transactions were found')
                 : ListView.builder(
                     controller: layoutController.scrollController,
                     itemCount: controller.transactions.length > 10

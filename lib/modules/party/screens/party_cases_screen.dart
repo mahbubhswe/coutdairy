@@ -8,6 +8,7 @@ import '../../../widgets/data_not_found.dart';
 
 class PartyCasesScreen extends StatelessWidget {
   final Party party;
+  
   PartyCasesScreen({super.key, required this.party});
 
   final CaseController _caseController = Get.isRegistered<CaseController>()
@@ -22,18 +23,17 @@ class PartyCasesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('${party.name} - কেস')),
+      appBar: AppBar(title: Text('${party.name} - Cases')),
       body: Obx(() {
         if (_caseController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
         final cases = _caseController.cases.where((c) {
-          return _matchesParty(c.plaintiff, party) ||
-              _matchesParty(c.defendant, party);
+          return _matchesParty(c.plaintiff, party);
         }).toList();
 
         if (cases.isEmpty) {
-          return const DataNotFound(title: 'দুঃখিত', subtitle: 'কোনো কেস পাওয়া যায়নি');
+          return const DataNotFound(title: 'No results', subtitle: 'No cases were found');
         }
 
         return ListView.builder(
@@ -47,4 +47,3 @@ class PartyCasesScreen extends StatelessWidget {
     );
   }
 }
-

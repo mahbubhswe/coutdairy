@@ -21,18 +21,18 @@ class PartyTile extends StatelessWidget {
   });
 
   String _initials(String name) {
-    final parts = name.trim().split(RegExp(r"\s+"));
-    if (parts.isEmpty) return '';
-    final first = parts.first.isNotEmpty ? parts.first[0] : '';
-    final last = parts.length > 1 && parts.last.isNotEmpty ? parts.last[0] : '';
-    return (first + last).toUpperCase();
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return '';
+    return trimmed[0].toUpperCase();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Card(
-      elevation: 0.5,
+      elevation: 0,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      surfaceTintColor: Colors.transparent,
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: ListTile(
@@ -70,7 +70,7 @@ class PartyTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              tooltip: 'পেমেন্ট',
+              tooltip: 'Add Payment',
               icon: const Icon(HugeIcons.strokeRoundedPayment02),
               onPressed: () async {
                 Get.to(
@@ -80,7 +80,7 @@ class PartyTile extends StatelessWidget {
               },
             ),
             IconButton(
-              tooltip: 'কল করুন',
+              tooltip: 'Call',
               icon: const Icon(HugeIcons.strokeRoundedCall02),
               onPressed: () async {
                 final uri = Uri(scheme: 'tel', path: party.phone);
@@ -103,14 +103,14 @@ class PartyTile extends StatelessWidget {
                   final items = <PopupMenuEntry<String>>[];
                   if (onEdit != null) {
                     items.add(
-                      const PopupMenuItem(value: 'edit', child: Text('সম্পাদনা')),
+                      const PopupMenuItem(value: 'edit', child: Text('Edit')),
                     );
                   }
                   if (onDelete != null) {
                     items.add(
                       const PopupMenuItem(
                         value: 'delete',
-                        child: Text('মুছে ফেলুন'),
+                        child: Text('Delete'),
                       ),
                     );
                   }

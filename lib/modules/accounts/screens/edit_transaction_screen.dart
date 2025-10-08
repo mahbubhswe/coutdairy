@@ -21,7 +21,7 @@ class EditTransactionScreen extends StatelessWidget {
     final controller = Get.put(EditTransactionController(transaction));
     return Scaffold(
       appBar: AppBar(
-        title: const Text('লেনদেন আপডেট করুন'),
+        title: const Text('Update transaction'),
       ),
       body: Obx(() {
         return SingleChildScrollView(
@@ -36,8 +36,8 @@ class EditTransactionScreen extends StatelessWidget {
                 menuMaxHeight: 320,
                 icon: const Icon(Icons.keyboard_arrow_down_rounded),
                 decoration: InputDecoration(
-                  labelText: 'ধরণ',
-                  hintText: 'লেনদেনের ধরণ নির্বাচন করুন',
+                  labelText: 'Type',
+                  hintText: 'Select transaction type',
                   prefixIcon: const Icon(Icons.category),
                   filled: true,
                   fillColor:
@@ -58,8 +58,8 @@ class EditTransactionScreen extends StatelessWidget {
               ),
               AppTextFromField(
                 controller: controller.amount,
-                label: 'পরিমাণ',
-                hintText: 'পরিমাণ লিখুন',
+                label: 'Amount',
+                hintText: 'Enter amount',
                 prefixIcon: Icons.money,
                 keyboardType: TextInputType.number,
               ),
@@ -70,8 +70,8 @@ class EditTransactionScreen extends StatelessWidget {
                 menuMaxHeight: 320,
                 icon: const Icon(Icons.keyboard_arrow_down_rounded),
                 decoration: InputDecoration(
-                  labelText: 'পেমেন্ট পদ্ধতি',
-                  hintText: 'পেমেন্ট পদ্ধতি নির্বাচন করুন',
+                  labelText: 'Payment method',
+                  hintText: 'Select payment method',
                   prefixIcon: const Icon(Icons.payment),
                   filled: true,
                   fillColor:
@@ -92,8 +92,8 @@ class EditTransactionScreen extends StatelessWidget {
               ),
               AppTextFromField(
                 controller: controller.note,
-                label: 'নোট',
-                hintText: 'নোট লিখুন',
+                label: 'Note',
+                hintText: 'Enter a note',
                 prefixIcon: Icons.note,
                 isMaxLines: 3,
               ),
@@ -107,16 +107,16 @@ class EditTransactionScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: AppButton(
-                label: 'আপডেট করুন',
+                label: 'Update',
                 isLoading: controller.isLoading.value,
                 onPressed: controller.enableBtn.value
                     ? () {
                         PanaraConfirmDialog.show(
                           context,
-                          title: 'নিশ্চিত করুন',
-                          message: 'লেনদেন আপডেট করতে চান?',
-                          confirmButtonText: 'হ্যাঁ',
-                          cancelButtonText: 'না',
+                          title: 'Confirm',
+                          message: 'Do you want to update the transaction?',
+                          confirmButtonText: 'Yes',
+                          cancelButtonText: 'No',
                           onTapCancel: () {
                             Navigator.of(context).pop();
                           },
@@ -127,14 +127,14 @@ class EditTransactionScreen extends StatelessWidget {
                             if (success) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('লেনদেন আপডেট করা হয়েছে'),
+                                  content: Text('Transaction updated successfully'),
                                 ),
                               );
                               Get.back();
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('লেনদেন আপডেট করতে ব্যর্থ হয়েছে'),
+                                  content: Text('Failed to update transaction'),
                                 ),
                               );
                             }

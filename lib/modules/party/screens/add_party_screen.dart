@@ -20,7 +20,7 @@ class AddPartyScreen extends StatelessWidget {
     final controller = Get.put(AddPartyController());
     final cs = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(title: const Text('নতুন পার্টি যোগ করুন')),
+      appBar: AppBar(title: const Text('Add new party')),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -84,7 +84,7 @@ class AddPartyScreen extends StatelessWidget {
                                                     ),
                                                     const SizedBox(height: 8),
                                                     Text(
-                                                      'ফটো যোগ করুন',
+                                                      'Add photo',
                                                       style: TextStyle(
                                                         color:
                                                             cs.onSurfaceVariant,
@@ -143,21 +143,21 @@ class AddPartyScreen extends StatelessWidget {
                               }),
                               AppTextFromField(
                                 controller: controller.name,
-                                label: 'নাম',
-                                hintText: 'পার্টির নাম লিখুন',
+                                label: 'Name',
+                                hintText: 'Enter party name',
                                 prefixIcon: Icons.person,
                               ),
                               AppTextFromField(
                                 controller: controller.phone,
-                                label: 'মোবাইল',
-                                hintText: 'মোবাইল নম্বর লিখুন',
+                                label: 'Mobile',
+                                hintText: 'Enter mobile number',
                                 prefixIcon: Icons.phone,
                                 keyboardType: TextInputType.phone,
                               ),
                               AppTextFromField(
                                 controller: controller.address,
-                                label: 'ঠিকানা (ঐচ্ছিক)',
-                                hintText: 'ঠিকানা লিখতে পারেন (ঐচ্ছিক)',
+                                label: 'Address (optional)',
+                                hintText: 'You may enter an address (optional)',
                                 prefixIcon: Icons.home,
                                 isMaxLines: 3,
                               ),
@@ -178,16 +178,16 @@ class AddPartyScreen extends StatelessWidget {
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 520),
                         child: AppButton(
-                          label: 'সেভ করুন',
+                          label: 'Save',
                           isLoading: controller.isLoading.value,
                           onPressed: controller.enableBtn.value
                               ? () {
                                   PanaraConfirmDialog.show(
                                     context,
-                                    title: 'আপনি কি নিশ্চিত?',
-                                    message: 'পার্টি তথ্য সংরক্ষণ করতে চান?',
-                                    confirmButtonText: 'হ্যাঁ',
-                                    cancelButtonText: 'না',
+                                    title: 'Are you sure?',
+                                    message: 'Do you want to save this party?',
+                                    confirmButtonText: 'Yes',
+                                    cancelButtonText: 'No',
                                     onTapCancel: () {
                                       Navigator.of(context).pop();
                                     },
@@ -201,7 +201,7 @@ class AddPartyScreen extends StatelessWidget {
                                         ).showSnackBar(
                                           const SnackBar(
                                             content: Text(
-                                              'পার্টি সফলভাবে যুক্ত হয়েছে',
+                                              'Party added successfully',
                                             ),
                                           ),
                                         );
@@ -212,7 +212,7 @@ class AddPartyScreen extends StatelessWidget {
                                         ).showSnackBar(
                                           const SnackBar(
                                             content: Text(
-                                              'পার্টি যোগ করতে ব্যর্থ হয়েছে',
+                                              'Failed to add party',
                                             ),
                                           ),
                                         );

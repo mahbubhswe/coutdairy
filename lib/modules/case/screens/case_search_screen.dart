@@ -75,7 +75,7 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
                 border: InputBorder.none,
                 isDense: true,
                 contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                hintText: 'কেস খুঁজুন',
+                hintText: 'Search cases',
                 hintStyle: theme.textTheme.bodyLarge?.copyWith(
                   color: cs.onSurfaceVariant,
                 ),
@@ -120,15 +120,13 @@ class _CaseSearchScreenState extends State<CaseSearchScreen> {
           final title = c.caseTitle.toLowerCase();
           final number = c.caseNumber.toLowerCase();
           final plaintiff = c.plaintiff.name.toLowerCase();
-          final defendant = c.defendant.name.toLowerCase();
+          final underSection = (c.underSection ?? '').toLowerCase();
           final pPhone = c.plaintiff.phone.toLowerCase();
-          final dPhone = c.defendant.phone.toLowerCase();
           return title.contains(q) ||
               number.contains(q) ||
               plaintiff.contains(q) ||
-              defendant.contains(q) ||
-              pPhone.contains(q) ||
-              dPhone.contains(q);
+              underSection.contains(q) ||
+              pPhone.contains(q);
         }).toList();
         return ListView.builder(
           itemCount: results.length,

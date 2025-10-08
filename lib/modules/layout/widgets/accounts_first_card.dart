@@ -35,14 +35,14 @@ class AccountsFirstCard extends StatelessWidget {
             children: [
               Expanded(
                 child: AccountsCard(
-                  title: 'চলমান কেস',
+                  title: 'Ongoing cases',
                   amount: running,
                   icon: Icons.play_circle_fill,
                 ),
               ),
               Expanded(
                 child: AccountsCard(
-                  title: 'বন্ধ কেস',
+                  title: 'Closed cases',
                   amount: closed,
                   icon: Icons.lock_outline,
                 ),
@@ -55,14 +55,14 @@ class AccountsFirstCard extends StatelessWidget {
             children: [
               Expanded(
                 child: AccountsCard(
-                  title: 'কমপ্লিট কেস',
+                  title: 'Completed cases',
                   amount: complicated,
                   icon: Icons.task_alt,
                 ),
               ),
               Expanded(
                 child: AccountsCard(
-                  title: 'মোট কেস',
+                  title: 'Total cases',
                   amount: totalCases,
                   icon: Icons.library_books,
                 ),

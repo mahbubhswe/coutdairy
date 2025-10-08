@@ -20,25 +20,25 @@ class AppText extends StatelessWidget {
     return AnimatedTextKit(
       animatedTexts: [
         ColorizeAnimatedText(
-          'কোর্ট ডাইরি অ্যাপ ব্যবহার খুব সহজ ও নিরাপদ',
+          'Court Diary is easy and secure to use',
           textStyle: colorizeTextStyle,
           colors: _colors(context),
           textAlign: TextAlign.center,
         ),
         ColorizeAnimatedText(
-          'অটমেটিক ডাটা বেকাপ থাকে Google সার্ভারে',
+          'Automatic data backup on Google servers',
           textStyle: colorizeTextStyle,
           colors: _colors(context),
           textAlign: TextAlign.center,
         ),
         ColorizeAnimatedText(
-          'ইন্টারনেট ছাড়াও ব্যবহার করুন নিশ্চিন্তে',
+          'Use confidently even without internet',
           textStyle: colorizeTextStyle,
           colors: _colors(context),
           textAlign: TextAlign.center,
         ),
         ColorizeAnimatedText(
-          'কোন ধরণের এড বা বিজ্ঞাপন দেখার ঝামেলা নেই',
+          'No ads or interruptions',
           textStyle: colorizeTextStyle,
           colors: _colors(context),
           textAlign: TextAlign.center,

@@ -18,6 +18,9 @@ class AddCaseController extends GetxController {
   final courtName = TextEditingController();
   final caseNumber = TextEditingController();
   final caseSummary = TextEditingController();
+
+  final underSection = TextEditingController();
+
   final judgeName = TextEditingController();
   final courtOrder = TextEditingController();
 
@@ -27,8 +30,6 @@ class AddCaseController extends GetxController {
   final Rx<DateTime?> hearingDate = Rx<DateTime?>(null);
 
   final Rx<Party?> selectedPlaintiff = Rx<Party?>(null);
-  final Rx<Party?> selectedDefendant = Rx<Party?>(null);
-
   final parties = <Party>[].obs;
   final caseTypes = ['Civil', 'Criminal', 'Family', 'Other'];
   final courtTypes = ['District', 'Appeal', 'High Court'];
@@ -118,7 +119,7 @@ class AddCaseController extends GetxController {
         filedDate: Timestamp.fromDate(filedDate.value ?? DateTime.now()),
         caseStatus: 'Ongoing',
         plaintiff: selectedPlaintiff.value!,
-        defendant: selectedDefendant.value!,
+        underSection: underSection.text.trim().isEmpty ? null : underSection.text.trim(),
         nextHearingDate:
             hearingDate.value != null ? Timestamp.fromDate(hearingDate.value!) : null,
         judgeName: judgeName.text.trim(),

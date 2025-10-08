@@ -117,14 +117,14 @@ class EditCaseScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('কেস সম্পাদনা')),
+      appBar: AppBar(title: const Text('Edit case')),
       body: Obx(
         () => Padding(
           padding: const EdgeInsets.all(5),
           child: DynamicMultiStepForm(
             steps: [
               FormStep(
-                title: const Text('কেস তথ্য'),
+                title: const Text('Case information'),
                 content: Column(
                   spacing: 10,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -132,38 +132,44 @@ class EditCaseScreen extends StatelessWidget {
                   children: [
                     const SizedBox(height: 5),
                     titledChipRow(
-                      title: 'কেসের ধরন',
+                      title: 'Case type',
                       options: controller.caseTypes,
                       selected: controller.selectedCaseType,
                     ),
                     titledChipRow(
-                      title: 'আদালতের ধরন',
+                      title: 'Court type',
                       options: controller.courtTypes,
                       selected: controller.selectedCourtType,
                     ),
                     AppTextFromField(
                       controller: controller.caseTitle,
-                      label: 'কেসের শিরোনাম',
-                      hintText: 'কেসের শিরোনাম লিখুন',
+                      label: 'Case title',
+                      hintText: 'Enter the case title',
                       prefixIcon: Icons.title,
                     ),
                     AppTypeAheadField(
                       controller: controller.courtName,
-                      label: 'আদালতের নাম',
-                      hintText: 'আদালতের নাম লিখুন',
+                      label: 'Court name',
+                      hintText: 'Enter the court name',
                       prefixIcon: Icons.account_balance,
                       suggestions: controller.allCourtNames,
                     ),
                     AppTextFromField(
                       controller: controller.caseNumber,
-                      label: 'কেস নম্বর',
-                      hintText: 'কেস নম্বর লিখুন',
+                      label: 'Case number',
+                      hintText: 'Enter the case number',
                       prefixIcon: Icons.numbers,
                     ),
                     AppTextFromField(
+                      controller: controller.underSection,
+                      label: 'Under section',
+                      hintText: 'Enter the under section (optional)',
+                      prefixIcon: Icons.rule_outlined,
+                    ),
+                    AppTextFromField(
                       controller: controller.caseSummary,
-                      label: 'সারাংশ',
-                      hintText: 'সারাংশ লিখুন',
+                      label: 'Summary',
+                      hintText: 'Enter a summary',
                       prefixIcon: Icons.description_outlined,
                       isMaxLines: 3,
                     ),
@@ -175,7 +181,7 @@ class EditCaseScreen extends StatelessWidget {
                         ),
                         label: Text(
                           controller.filedDate.value?.formattedDate ??
-                              'দাখিলের তারিখ',
+                              'Filed date',
                         ),
                         avatar: const Icon(HugeIcons.strokeRoundedCalendar01),
                         onPressed: () async {
@@ -196,28 +202,22 @@ class EditCaseScreen extends StatelessWidget {
                 ),
               ),
               FormStep(
-                title: const Text('পক্ষসমূহ'),
+                title: const Text('Party'),
                 content: Column(
                   spacing: 10,
                   children: [
                     const SizedBox(height: 5),
                     partyDropdown(
                       selected: controller.selectedPlaintiff,
-                      label: 'বাদী',
-                      hint: 'বাদী নির্বাচন করুন',
-                      icon: Icons.person_outline,
-                    ),
-                    partyDropdown(
-                      selected: controller.selectedDefendant,
-                      label: 'বিবাদী',
-                      hint: 'বিবাদী নির্বাচন করুন',
+                      label: 'Plaintiff',
+                      hint: 'Select plaintiff',
                       icon: Icons.person_outline,
                     ),
                   ],
                 ),
               ),
               FormStep(
-                title: const Text('আরও'),
+                title: const Text('More details'),
                 content: Column(
                   spacing: 10,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -225,15 +225,15 @@ class EditCaseScreen extends StatelessWidget {
                     const SizedBox(height: 5),
                     AppTypeAheadField(
                       controller: controller.judgeName,
-                      label: 'বিচারকের নাম',
-                      hintText: 'বিচারকের নাম লিখুন',
+                      label: 'Judge name',
+                      hintText: 'Enter the judge name',
                       prefixIcon: Icons.gavel,
                       suggestions: controller.allJudgeNames,
                     ),
                     AppTextFromField(
                       controller: controller.courtOrder,
-                      label: 'আদালতের আদেশ',
-                      hintText: 'আদালতের আদেশ লিখুন',
+                      label: 'Court order',
+                      hintText: 'Enter the court order',
                       prefixIcon: Icons.article_outlined,
                     ),
                     Obx(
@@ -244,7 +244,7 @@ class EditCaseScreen extends StatelessWidget {
                         ),
                         label: Text(
                           controller.hearingDate.value?.formattedDate ??
-                              'শুনানির তারিখ',
+                              'Hearing date',
                         ),
                         avatar: const Icon(HugeIcons.strokeRoundedCalendar01),
                         onPressed: () async {
@@ -277,10 +277,10 @@ class EditCaseScreen extends StatelessWidget {
             onSubmit: () {
               PanaraConfirmDialog.show(
                 context,
-                title: 'নিশ্চিত করুন',
-                message: 'কেস আপডেট করতে চান?',
-                confirmButtonText: 'হ্যাঁ',
-                cancelButtonText: 'না',
+                title: 'Confirm',
+                message: 'Do you want to update the case?',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
                 onTapCancel: () {
                   Navigator.of(context).pop();
                 },
@@ -289,13 +289,13 @@ class EditCaseScreen extends StatelessWidget {
                   final success = await controller.updateCase();
                   if (success) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('কেস আপডেট করা হয়েছে')),
+                      const SnackBar(content: Text('Case updated successfully')),
                     );
                     Get.back();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('কেস আপডেট করতে ব্যর্থ হয়েছে'),
+                        content: Text('Failed to update case'),
                       ),
                     );
                   }

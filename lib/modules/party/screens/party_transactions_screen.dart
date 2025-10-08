@@ -21,7 +21,7 @@ class PartyTransactionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('${party.name} - লেনদেন')),
+      appBar: AppBar(title: Text('${party.name} - Transactions')),
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
@@ -30,7 +30,7 @@ class PartyTransactionsScreen extends StatelessWidget {
             .where((t) => t.partyId == party.docId)
             .toList();
         if (filtered.isEmpty) {
-          return const DataNotFound(title: 'দুঃখিত', subtitle: 'কোনো লেনদেন পাওয়া যায়নি');
+          return const DataNotFound(title: 'No results', subtitle: 'No transactions were found');
         }
         return ListView.builder(
           itemCount: filtered.length,
