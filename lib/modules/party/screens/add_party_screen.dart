@@ -122,7 +122,7 @@ class AddPartyScreen extends StatelessWidget {
                                             ),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: cs.primary.withOpacity(
+                                                color: cs.primary.withValues(alpha: 
                                                   0.25,
                                                 ),
                                                 blurRadius: 8,
@@ -193,12 +193,14 @@ class AddPartyScreen extends StatelessWidget {
                                     },
                                     onTapConfirm: () async {
                                       Navigator.of(context).pop();
+                                      final messenger = ScaffoldMessenger.of(
+                                        context,
+                                      );
                                       final success = await controller
                                           .addParty();
+                                      if (!context.mounted) return;
                                       if (success) {
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
+                                        messenger.showSnackBar(
                                           const SnackBar(
                                             content: Text(
                                               'Party added successfully',
@@ -207,9 +209,7 @@ class AddPartyScreen extends StatelessWidget {
                                         );
                                         Get.back();
                                       } else {
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
+                                        messenger.showSnackBar(
                                           const SnackBar(
                                             content: Text(
                                               'Failed to add party',

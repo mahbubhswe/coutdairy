@@ -63,7 +63,7 @@ class AccountsScreen extends StatelessWidget {
                     side: BorderSide(
                       color: isSelected
                           ? accentColor
-                          : colorScheme.outlineVariant.withOpacity(0.6),
+                          : colorScheme.outlineVariant.withValues(alpha: 0.6),
                     ),
                   ),
                   showCheckmark: false,
@@ -80,7 +80,7 @@ class AccountsScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: colorScheme.outlineVariant.withOpacity(0.6),
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.6),
                   width: 1,
                 ),
                 color: chipContainerColor,

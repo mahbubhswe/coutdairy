@@ -109,7 +109,7 @@ class SettingsScreen extends StatelessWidget {
                       radius: 40,
                       backgroundColor: Theme.of(
                         context,
-                      ).colorScheme.surfaceVariant,
+                      ).colorScheme.surfaceContainerHighest,
                       backgroundImage: user.photoURL != null
                           ? CachedNetworkImageProvider(user.photoURL!)
                           : null,
@@ -159,7 +159,7 @@ class SettingsScreen extends StatelessWidget {
                   subtitle: '$smsBalanceText remaining',
                   subtitleColor: Theme.of(
                     context,
-                  ).colorScheme.primary.withOpacity(0.8),
+                  ).colorScheme.primary.withValues(alpha: 0.8),
                   isBold: true,
                   hasArrow: true,
                   onTap: () => Get.to(() => BuySmsView()),
@@ -251,6 +251,7 @@ class SettingsScreen extends StatelessWidget {
                   onTap: () async {
                     final verified = await Get.to(() => const AppLockScreen());
                     if (verified != true) return;
+                    if (!context.mounted) return;
                     final confirm = await showCupertinoDialog<bool>(
                       context: context,
                       builder: (ctx) => CupertinoAlertDialog(

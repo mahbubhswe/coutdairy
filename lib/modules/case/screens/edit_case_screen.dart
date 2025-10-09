@@ -88,7 +88,7 @@ class EditCaseScreen extends StatelessWidget {
                           color: Theme.of(context)
                               .colorScheme
                               .onSurfaceVariant
-                              .withOpacity(0.4),
+                              .withValues(alpha: 0.4),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -359,18 +359,20 @@ class EditCaseScreen extends StatelessWidget {
                 },
                 onTapConfirm: () async {
                   Navigator.of(context).pop();
+                  final messenger = ScaffoldMessenger.of(context);
                   final success = await controller.updateCase();
-                  if (success) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Case updated successfully')),
-                    );
-                    Get.back();
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Failed to update case'),
+                  if (!context.mounted) return;
+                  messenger.showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        success
+                            ? 'Case updated successfully'
+                            : 'Failed to update case',
                       ),
-                    );
+                    ),
+                  );
+                  if (success) {
+                    Get.back();
                   }
                 },
                 panaraDialogType: PanaraDialogType.normal,

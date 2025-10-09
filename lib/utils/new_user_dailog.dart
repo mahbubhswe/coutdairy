@@ -7,7 +7,7 @@ import 'app_config.dart';
 void showNewUserDialog() {
   Future.delayed(const Duration(seconds: 5), () {
     final context = Get.context;
-    if (context == null) return;
+    if (context == null || !context.mounted) return;
 
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
@@ -23,15 +23,15 @@ void showNewUserDialog() {
             borderRadius: BorderRadius.circular(24),
             gradient: LinearGradient(
               colors: [
-                cs.primary.withOpacity(0.15),
-                cs.tertiary.withOpacity(0.12),
+                cs.primary.withValues(alpha: 0.15),
+                cs.tertiary.withValues(alpha: 0.12),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.12),
+                color: Colors.black.withValues(alpha: 0.12),
                 blurRadius: 32,
                 offset: const Offset(0, 18),
               ),
@@ -53,8 +53,8 @@ void showNewUserDialog() {
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
                       colors: [
-                        cs.primary.withOpacity(0.18),
-                        cs.secondary.withOpacity(0.24),
+                        cs.primary.withValues(alpha: 0.18),
+                        cs.secondary.withValues(alpha: 0.24),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -89,7 +89,7 @@ void showNewUserDialog() {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      color: cs.primaryContainer.withOpacity(0.18),
+                      color: cs.primaryContainer.withValues(alpha: 0.18),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,8 +186,4 @@ String _formatCurrency(num amount) {
   }
 
   return buffer.toString();
-}
-
-String _toBanglaDigits(String value) {
-  return value;
 }

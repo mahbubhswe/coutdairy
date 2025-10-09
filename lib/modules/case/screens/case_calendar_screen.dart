@@ -81,7 +81,7 @@ class CaseCalendarScreen extends StatelessWidget {
                         width: 12,
                         height: 12,
                         decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.25),
+                          color: Colors.green.withValues(alpha: 0.25),
                           borderRadius: BorderRadius.circular(3),
                           border: Border.all(color: Colors.green.shade600),
                         ),
@@ -142,7 +142,7 @@ class CaseCalendarScreen extends StatelessWidget {
                     context,
                   ).colorScheme.outlineVariant;
                   final bgColor = hasCase
-                      ? Colors.green.withOpacity(0.18)
+                      ? Colors.green.withValues(alpha: 0.18)
                       : Theme.of(context).colorScheme.surface;
                   final borderColor = hasCase
                       ? Colors.green.shade600

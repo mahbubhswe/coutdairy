@@ -169,10 +169,6 @@ class AccountActivationController extends GetxController {
     return 'a limited time';
   }
 
-  String _toBanglaDigits(String value) {
-    return value;
-  }
-
   @override
   void onClose() {
     _scrollTimer?.cancel();

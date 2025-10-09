@@ -28,7 +28,7 @@ class AppDropdown extends StatelessWidget {
       borderFocusedColor: AppColors.fixedPrimary,
       prefix: Icon(prefixIcon, color: cs.onSurfaceVariant, size: 20),
       formField: DropdownButtonFormField<String>(
-        value: value,
+        initialValue: value,
         decoration: InputDecoration(
           border: InputBorder.none,
           labelText: label,

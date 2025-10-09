@@ -76,7 +76,7 @@ class EditCaseController extends GetxController {
   }
 
   void _syncSelectedPartiesWithList() {
-    Party? _matchFromList(Party target) {
+    Party? matchFromList(Party target) {
       try {
         return parties.firstWhere(
             (p) => p.name == target.name && p.phone == target.phone);
@@ -86,7 +86,7 @@ class EditCaseController extends GetxController {
     }
 
     // Ensure Dropdown `value` matches one of the `items` references
-    final matched = _matchFromList(caseModel.plaintiff);
+    final matched = matchFromList(caseModel.plaintiff);
     if (matched != null) {
       applyPlaintiff(matched);
     }
@@ -230,7 +230,7 @@ class EditCaseController extends GetxController {
         ..courtName = courtName.text.trim()
         ..caseNumber = caseNumber.text.trim()
         ..filedDate = Timestamp.fromDate(filedDate.value ?? DateTime.now())
-        ..plaintiff = plaintiff!
+        ..plaintiff = plaintiff
         ..underSection = underSection.text.trim().isEmpty ? null : underSection.text.trim()
         ..judgeName = judgeName.text.trim()
         ..nextHearingDate = hearingDate.value != null

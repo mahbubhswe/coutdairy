@@ -25,15 +25,15 @@ class AppButton extends StatelessWidget {
 
     final Color accent = cs.secondary;
     final Color surfaceBase = Color.alphaBlend(
-      accent.withOpacity(isDark ? 0.26 : 0.12),
+      accent.withValues(alpha: isDark ? 0.26 : 0.12),
       cs.surface,
     );
     final Color surfaceActive = Color.alphaBlend(
-      accent.withOpacity(isDark ? 0.34 : 0.18),
+      accent.withValues(alpha: isDark ? 0.34 : 0.18),
       cs.surface,
     );
     final Color disabledBase = Color.alphaBlend(
-      cs.onSurface.withOpacity(isDark ? 0.24 : 0.08),
+      cs.onSurface.withValues(alpha: isDark ? 0.24 : 0.08),
       cs.surface,
     );
 
@@ -48,7 +48,7 @@ class AppButton extends StatelessWidget {
         ? const []
         : [
             BoxShadow(
-              color: accent.withOpacity(surfaceStyle ? 0.18 : 0.32),
+              color: accent.withValues(alpha: surfaceStyle ? 0.18 : 0.32),
               blurRadius: surfaceStyle ? 20 : 26,
               offset: Offset(0, surfaceStyle ? 8 : 12),
             ),
@@ -68,8 +68,8 @@ class AppButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: isEnabled ? onPressed : null,
-          splashColor: accent.withOpacity(0.12),
-          highlightColor: accent.withOpacity(0.08),
+          splashColor: accent.withValues(alpha: 0.12),
+          highlightColor: accent.withValues(alpha: 0.08),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Center(

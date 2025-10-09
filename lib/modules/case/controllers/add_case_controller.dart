@@ -222,7 +222,7 @@ class AddCaseController extends GetxController {
         caseNumber: caseNumber.text.trim(),
         filedDate: Timestamp.fromDate(filedDate.value ?? DateTime.now()),
         caseStatus: 'Ongoing',
-        plaintiff: plaintiff!,
+        plaintiff: plaintiff,
         underSection: underSection.text.trim().isEmpty
             ? null
             : underSection.text.trim(),

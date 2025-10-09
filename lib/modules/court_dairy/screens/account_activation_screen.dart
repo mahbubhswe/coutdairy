@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../widgets/app_footer.dart';
@@ -20,7 +19,7 @@ class AccountActivationScreen extends StatelessWidget {
       body: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [colors.surface, colors.primaryContainer.withOpacity(0.75)],
+            colors: [colors.surface, colors.primaryContainer.withValues(alpha: 0.75)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -162,7 +161,7 @@ class _ActivationPlanCard extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
           decoration: BoxDecoration(
-            color: cs.surface.withOpacity(0.5),
+            color: cs.surface.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Stack(
@@ -230,7 +229,7 @@ class _ActivationPlanCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),

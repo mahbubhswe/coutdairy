@@ -47,11 +47,6 @@ class ConverterService {
     }
   }
 
-  /// Converts English digits to Bangla digits
-  static String _toBanglaDigits(String input) {
-    return input;
-  }
-
   /// Format DateTime to a readable date like: 5, Jan 2025
   static String formatDateToBangla(DateTime dateTime) {
     const englishMonths = [

@@ -156,15 +156,15 @@ class _AppLockScreenState extends State<AppLockScreen> {
       foreground = colors.onPrimary;
       borderColor = colors.primary;
     } else if (active) {
-      background = colors.primaryContainer.withOpacity(0.55);
+      background = colors.primaryContainer.withValues(alpha: 0.55);
       foreground = colors.onPrimaryContainer;
       borderColor = colors.primary;
     } else {
-      background = colors.surfaceVariant.withOpacity(0.7);
+      background = colors.surfaceContainerHighest.withValues(alpha: 0.7);
       foreground =
-          theme.textTheme.bodyMedium?.color?.withOpacity(0.7) ??
+          theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7) ??
           colors.onSurfaceVariant;
-      borderColor = colors.outline.withOpacity(0.3);
+      borderColor = colors.outline.withValues(alpha: 0.3);
     }
 
     return AnimatedContainer(
@@ -233,12 +233,12 @@ class _AppLockScreenState extends State<AppLockScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 color: active
-                    ? colors.primaryContainer.withOpacity(0.45)
-                    : colors.surfaceVariant.withOpacity(0.4),
+                    ? colors.primaryContainer.withValues(alpha: 0.45)
+                    : colors.surfaceContainerHighest.withValues(alpha: 0.4),
                 border: Border.all(
                   color: active
                       ? colors.primary
-                      : colors.outline.withOpacity(0.5),
+                      : colors.outline.withValues(alpha: 0.5),
                   width: active ? 1.8 : 1.2,
                 ),
               ),
@@ -258,7 +258,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                         '–',
                         key: ValueKey('empty-$index'),
                         style: theme.textTheme.titleLarge?.copyWith(
-                          color: colors.outline.withOpacity(0.5),
+                          color: colors.outline.withValues(alpha: 0.5),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -291,8 +291,8 @@ class _AppLockScreenState extends State<AppLockScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
         child: Material(
           color: isDisabled
-              ? colors.surfaceVariant.withOpacity(0.15)
-              : colors.surfaceVariant.withOpacity(0.35),
+              ? colors.surfaceContainerHighest.withValues(alpha: 0.15)
+              : colors.surfaceContainerHighest.withValues(alpha: 0.35),
           borderRadius: BorderRadius.circular(16),
           child: InkWell(
             borderRadius: BorderRadius.circular(16),
@@ -372,7 +372,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
       body: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [colors.primaryContainer.withOpacity(0.75), colors.surface],
+            colors: [colors.primaryContainer.withValues(alpha: 0.75), colors.surface],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -391,8 +391,8 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
                         colors: [
-                          colors.primary.withOpacity(0.95),
-                          colors.secondary.withOpacity(0.9),
+                          colors.primary.withValues(alpha: 0.95),
+                          colors.secondary.withValues(alpha: 0.9),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -420,7 +420,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                   instruction,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.textTheme.bodyMedium?.color?.withOpacity(
+                    color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 
                       0.75,
                     ),
                   ),
@@ -463,10 +463,10 @@ class _AppLockScreenState extends State<AppLockScreen> {
                             vertical: 12,
                           ),
                           decoration: BoxDecoration(
-                            color: colors.error.withOpacity(0.08),
+                            color: colors.error.withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: colors.error.withOpacity(0.4),
+                              color: colors.error.withValues(alpha: 0.4),
                             ),
                           ),
                           child: Row(
@@ -544,7 +544,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                   'Do not share your PIN with anyone for your security.',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.textTheme.bodySmall?.color?.withOpacity(
+                    color: theme.textTheme.bodySmall?.color?.withValues(alpha: 
                       0.7,
                     ),
                   ),

@@ -95,16 +95,18 @@ class EditPartyScreen extends StatelessWidget {
                           },
                           onTapConfirm: () async {
                             Navigator.of(context).pop();
+                            final messenger = ScaffoldMessenger.of(context);
                             final success = await controller.updateParty();
+                            if (!context.mounted) return;
                             if (success) {
-                              ScaffoldMessenger.of(context).showSnackBar(
+                              messenger.showSnackBar(
                                 const SnackBar(
                                   content: Text('Party updated successfully'),
                                 ),
                               );
                               Get.back();
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
+                              messenger.showSnackBar(
                                 const SnackBar(
                                   content: Text('Failed to update party'),
                                 ),

@@ -26,19 +26,11 @@ class CaseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
     final tileBackground = theme.scaffoldBackgroundColor;
-    final dividerColor = (colorScheme.outlineVariant ?? colorScheme.outline)
-        .withOpacity(isDark ? 0.32 : 0.16);
-    final subtitleColor = colorScheme.onSurfaceVariant;
     final leadingBackground = colorScheme.secondaryContainer;
     final leadingTextColor = colorScheme.onSecondaryContainer;
+    final subtitleColor = colorScheme.onSurfaceVariant;
     final trailingColor = colorScheme.onSurfaceVariant;
-
-    final lastOrder = caseItem.courtLastOrder;
-    final String subtitle = (lastOrder != null && lastOrder.trim().isNotEmpty)
-        ? lastOrder
-        : caseItem.courtName;
 
     return Material(
       color: Colors.transparent,

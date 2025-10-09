@@ -21,7 +21,7 @@ class AddTransactionScreen extends StatelessWidget {
     final cs = theme.colorScheme;
     final bool isDark = theme.brightness == Brightness.dark;
     final Color fieldFillColor = Color.alphaBlend(
-      cs.primary.withOpacity(isDark ? 0.18 : 0.08),
+      cs.primary.withValues(alpha: isDark ? 0.18 : 0.08),
       cs.surface,
     );
     final OutlineInputBorder dropdownBorder = OutlineInputBorder(
@@ -58,7 +58,7 @@ class AddTransactionScreen extends StatelessWidget {
                               spacing: 20,
                               children: [
                                 DropdownButtonFormField<String>(
-                                  value: controller.type.value,
+                                  initialValue: controller.type.value,
                                   isExpanded: true,
                                   borderRadius: BorderRadius.circular(12),
                                   menuMaxHeight: 320,
@@ -100,7 +100,7 @@ class AddTransactionScreen extends StatelessWidget {
                                   keyboardType: TextInputType.number,
                                 ),
                                 DropdownButtonFormField<String>(
-                                  value: controller.paymentMethod.value,
+                                  initialValue: controller.paymentMethod.value,
                                   isExpanded: true,
                                   borderRadius: BorderRadius.circular(12),
                                   menuMaxHeight: 320,
@@ -172,12 +172,14 @@ class AddTransactionScreen extends StatelessWidget {
                                   },
                                   onTapConfirm: () async {
                                     Navigator.of(context).pop();
+                                    final messenger = ScaffoldMessenger.of(
+                                      context,
+                                    );
                                     final success = await controller
                                         .addTransaction();
+                                    if (!context.mounted) return;
                                     if (success) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
+                                      messenger.showSnackBar(
                                         const SnackBar(
                                           content: Text(
                                             'Transaction added successfully',
@@ -186,9 +188,7 @@ class AddTransactionScreen extends StatelessWidget {
                                       );
                                       Get.back();
                                     } else {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
+                                      messenger.showSnackBar(
                                         const SnackBar(
                                           content: Text(
                                             'Failed to add transaction',

@@ -23,7 +23,7 @@ class AllPartyScreen extends StatelessWidget {
         final parties = controller.filteredParties;
         final theme = Theme.of(context);
         final colorScheme = theme.colorScheme;
-        final surfaceColor = colorScheme.surfaceVariant;
+        final surfaceColor = colorScheme.surfaceContainerHighest;
         final mutedTextColor = colorScheme.onSurfaceVariant;
         return Column(
           children: [

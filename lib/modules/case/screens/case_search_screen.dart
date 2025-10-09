@@ -5,7 +5,7 @@ import '../controllers/case_controller.dart';
 import '../widgets/case_tile.dart';
 
 class CaseSearchScreen extends StatefulWidget {
-  CaseSearchScreen({super.key});
+  const CaseSearchScreen({super.key});
 
   @override
   State<CaseSearchScreen> createState() => _CaseSearchScreenState();

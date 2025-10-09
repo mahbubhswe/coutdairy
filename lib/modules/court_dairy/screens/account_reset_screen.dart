@@ -161,7 +161,7 @@ class AccountResetScreen extends StatelessWidget {
                         color: cs.surface,
                         boxShadow: [
                           BoxShadow(
-                            color: dangerColor.withOpacity(0.08),
+                            color: dangerColor.withValues(alpha: 0.08),
                             blurRadius: 18,
                             offset: const Offset(0, 8),
                           ),
@@ -216,7 +216,7 @@ class AccountResetScreen extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
-                            color: Colors.black.withOpacity(0.05),
+                            color: Colors.black.withValues(alpha: 0.05),
                           ),
                         ),
                       ),
@@ -243,7 +243,7 @@ class _DangerChip extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: color),
-        color: color.withOpacity(0.05),
+        color: color.withValues(alpha: 0.05),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants/app_colors.dart';
-
 class Themes {
   // Brand palette (inspired by WhatsApp)
   static const Color _brandPrimary = Color(0xFF075E54);
@@ -48,11 +46,15 @@ class Themes {
       onError: Colors.white,
       errorContainer: Color(0xFFF9DEDC),
       onErrorContainer: Color(0xFF410E0B),
-      background: _lightBackground,
-      onBackground: _lightOnSurface,
       surface: _lightSurface,
       onSurface: _lightOnSurface,
-      surfaceVariant: _lightSurfaceVariant,
+      surfaceDim: _lightBackground,
+      surfaceBright: _lightSurface,
+      surfaceContainerLowest: _lightBackground,
+      surfaceContainerLow: _lightSurface,
+      surfaceContainer: _lightSurface,
+      surfaceContainerHigh: _lightSurfaceVariant,
+      surfaceContainerHighest: _lightSurfaceVariant,
       onSurfaceVariant: _lightOnSurfaceVariant,
       outline: _lightOutline,
       outlineVariant: _lightOutlineVariant,
@@ -131,7 +133,7 @@ class Themes {
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
       elevation: 8,
-      backgroundColor: _brandPrimary.withOpacity(0.92),
+      backgroundColor: _brandPrimary.withValues(alpha: 0.92),
       contentTextStyle: const TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.w600,
@@ -173,11 +175,15 @@ class Themes {
       onError: Color(0xFF601410),
       errorContainer: Color(0xFF8C1D18),
       onErrorContainer: Color(0xFFF9DEDC),
-      background: _darkBackground,
-      onBackground: _darkOnSurface,
       surface: _darkSurface,
       onSurface: _darkOnSurface,
-      surfaceVariant: _darkSurfaceVariant,
+      surfaceDim: _darkBackground,
+      surfaceBright: _darkSurface,
+      surfaceContainerLowest: _darkBackground,
+      surfaceContainerLow: _darkSurface,
+      surfaceContainer: _darkSurface,
+      surfaceContainerHigh: _darkSurfaceVariant,
+      surfaceContainerHighest: _darkSurfaceVariant,
       onSurfaceVariant: _darkOnSurfaceVariant,
       outline: _darkOutline,
       outlineVariant: _darkOutlineVariant,
@@ -286,15 +292,15 @@ class Themes {
     required Color onSurface,
   }) {
     final Color idleFill = Color.alphaBlend(
-      accent.withOpacity(isDark ? 0.12 : 0.06),
+      accent.withValues(alpha: isDark ? 0.12 : 0.06),
       surface,
     );
     final Color hoverFill = Color.alphaBlend(
-      accent.withOpacity(isDark ? 0.16 : 0.08),
+      accent.withValues(alpha: isDark ? 0.16 : 0.08),
       surface,
     );
     final Color focusFill = Color.alphaBlend(
-      accent.withOpacity(isDark ? 0.20 : 0.12),
+      accent.withValues(alpha: isDark ? 0.20 : 0.12),
       surface,
     );
 
@@ -315,12 +321,12 @@ class Themes {
       focusedErrorBorder: outline(14),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       labelStyle: TextStyle(
-        color: onSurface.withOpacity(isDark ? 0.72 : 0.68),
+        color: onSurface.withValues(alpha: isDark ? 0.72 : 0.68),
         fontWeight: FontWeight.w500,
       ),
-      hintStyle: TextStyle(color: onSurface.withOpacity(0.5)),
-      prefixIconColor: onSurface.withOpacity(0.6),
-      suffixIconColor: onSurface.withOpacity(0.6),
+      hintStyle: TextStyle(color: onSurface.withValues(alpha: 0.5)),
+      prefixIconColor: onSurface.withValues(alpha: 0.6),
+      suffixIconColor: onSurface.withValues(alpha: 0.6),
     );
   }
 
@@ -332,49 +338,49 @@ class Themes {
     required Color onSurface,
   }) {
     final Color disabledBackground = Color.alphaBlend(
-      onSurface.withOpacity(isDark ? 0.24 : 0.12),
+      onSurface.withValues(alpha: isDark ? 0.24 : 0.12),
       surface,
     );
     final Color pressedBackground = Color.alphaBlend(
-      Colors.black.withOpacity(isDark ? 0.18 : 0.1),
+      Colors.black.withValues(alpha: isDark ? 0.18 : 0.1),
       primary,
     );
 
     return ElevatedButtonThemeData(
       style: ButtonStyle(
-        minimumSize: MaterialStateProperty.all(const Size.fromHeight(56)),
-        padding: MaterialStateProperty.all(
+        minimumSize: WidgetStateProperty.all(const Size.fromHeight(56)),
+        padding: WidgetStateProperty.all(
           const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         ),
-        shape: MaterialStateProperty.all(
+        shape: WidgetStateProperty.all(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         ),
-        elevation: MaterialStateProperty.all(0),
-        textStyle: MaterialStateProperty.all(
+        elevation: WidgetStateProperty.all(0),
+        textStyle: WidgetStateProperty.all(
           const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
         ),
-        backgroundColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.disabled)) {
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
             return disabledBackground;
           }
-          if (states.contains(MaterialState.pressed)) {
+          if (states.contains(WidgetState.pressed)) {
             return pressedBackground;
           }
           return primary;
         }),
-        foregroundColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.disabled)) {
-            return onSurface.withOpacity(0.6);
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return onSurface.withValues(alpha: 0.6);
           }
           return onPrimary;
         }),
-        overlayColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.pressed)) {
-            return Colors.black.withOpacity(isDark ? 0.14 : 0.08);
+        overlayColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.pressed)) {
+            return Colors.black.withValues(alpha: isDark ? 0.14 : 0.08);
           }
-          if (states.contains(MaterialState.hovered) ||
-              states.contains(MaterialState.focused)) {
-            return Colors.black.withOpacity(isDark ? 0.08 : 0.05);
+          if (states.contains(WidgetState.hovered) ||
+              states.contains(WidgetState.focused)) {
+            return Colors.black.withValues(alpha: isDark ? 0.08 : 0.05);
           }
           return null;
         }),

@@ -107,11 +107,10 @@ class TextFormFieldWrapperState extends State<TextFormFieldWrapper> {
 
     Color applyTint(Color background, Color? tint, double opacity) {
       if (tint == null || opacity == 0) return background;
-      return Color.alphaBlend(tint.withOpacity(opacity), background);
+      return Color.alphaBlend(tint.withValues(alpha: opacity), background);
     }
 
-    final Color? baseTint =
-        widget.borderColor == null ? null : widget.borderColor;
+    final Color? baseTint = widget.borderColor;
     final Color? focusTint =
         widget.borderFocusedColor ?? widget.borderColor;
 

@@ -68,8 +68,8 @@ class PartyProfileScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         gradient: LinearGradient(
                           colors: [
-                            theme.colorScheme.primary.withOpacity(0.15),
-                            theme.colorScheme.primary.withOpacity(0.05),
+                            theme.colorScheme.primary.withValues(alpha: 0.15),
+                            theme.colorScheme.primary.withValues(alpha: 0.05),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,

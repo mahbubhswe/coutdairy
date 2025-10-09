@@ -62,7 +62,7 @@ class _CaseScreenState extends State<CaseScreen> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final backgroundColor = theme.scaffoldBackgroundColor;
-    final surfaceColor = colorScheme.surfaceVariant;
+    final surfaceColor = colorScheme.surfaceContainerHighest;
     final chipContainerColor = colorScheme.surface;
     final accentColor = colorScheme.secondary;
     final mutedTextColor = colorScheme.onSurfaceVariant;
@@ -299,7 +299,7 @@ class _CaseScreenState extends State<CaseScreen> {
             side: BorderSide(
               color: selected
                   ? selectedColor
-                  : colorScheme.outlineVariant.withOpacity(0.6),
+                  : colorScheme.outlineVariant.withValues(alpha: 0.6),
             ),
           ),
           showCheckmark: false,

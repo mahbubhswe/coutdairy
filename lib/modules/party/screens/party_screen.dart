@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import '../../layout/controllers/layout_controller.dart';
 import '../controllers/party_controller.dart';
 import 'party_profile_screen.dart';
-import 'all_party_screen.dart';
 
 class PartyScreen extends StatelessWidget {
   const PartyScreen({super.key});
@@ -24,7 +23,7 @@ class PartyScreen extends StatelessWidget {
       final filteredParties = controller.filteredParties;
       final theme = Theme.of(context);
       final colorScheme = theme.colorScheme;
-      final surfaceColor = colorScheme.surfaceVariant;
+      final surfaceColor = colorScheme.surfaceContainerHighest;
       final mutedTextColor = colorScheme.onSurfaceVariant;
       return Column(
         children: [

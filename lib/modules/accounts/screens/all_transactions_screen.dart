@@ -64,7 +64,7 @@ class AllTransactionsScreen extends StatelessWidget {
                 const Text('Date', style: TextStyle(fontWeight: FontWeight.w600)),
                 const SizedBox(height: 8),
                 Obx(() => DropdownButtonFormField<String>(
-                      value: dateFilter.value,
+                      initialValue: dateFilter.value,
                       isExpanded: true,
                       borderRadius: BorderRadius.circular(12),
                       menuMaxHeight: 320,
@@ -76,7 +76,7 @@ class AllTransactionsScreen extends StatelessWidget {
                         fillColor: Theme.of(context)
                             .colorScheme
                             .surface
-                            .withOpacity(0.7),
+                            .withValues(alpha: 0.7),
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 12),
                         border: OutlineInputBorder(

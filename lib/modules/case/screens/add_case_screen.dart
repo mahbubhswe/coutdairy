@@ -87,7 +87,7 @@ class AddCaseScreen extends StatelessWidget {
                           color: Theme.of(context)
                               .colorScheme
                               .onSurfaceVariant
-                              .withOpacity(0.4),
+                              .withValues(alpha: 0.4),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -357,51 +357,35 @@ class AddCaseScreen extends StatelessWidget {
                 },
                 onTapConfirm: () async {
                   Navigator.of(context).pop();
+                  final messenger = ScaffoldMessenger.of(context);
                   final success = await controller.addCase();
-                  if (success) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Case added successfully')),
-                    );
-                    // Replace simple snackbar with an icon-enhanced variant
-                    ScaffoldMessenger.of(context)
-                      ..clearSnackBars()
-                      ..showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: const [
-                              Icon(
-                                Icons.check_circle_outline,
-                                color: Colors.white,
+                  if (!context.mounted) return;
+                  messenger
+                    ..clearSnackBars()
+                    ..showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: [
+                            Icon(
+                              success
+                                  ? Icons.check_circle_outline
+                                  : Icons.error_outline,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                success
+                                    ? 'Case added successfully'
+                                    : 'Failed to add case',
                               ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: Text('Success'),
-                              ), // customize message if needed
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      );
-                    Get.back();
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Failed to add case')),
+                      ),
                     );
-                    // Replace simple snackbar with an icon-enhanced variant
-                    ScaffoldMessenger.of(context)
-                      ..clearSnackBars()
-                      ..showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: const [
-                              Icon(Icons.error_outline, color: Colors.white),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: Text('Failed'),
-                              ), // customize message if needed
-                            ],
-                          ),
-                        ),
-                      );
+                  if (success) {
+                    Get.back();
                   }
                 },
                 panaraDialogType: PanaraDialogType.normal,

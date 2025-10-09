@@ -57,7 +57,7 @@ class AllCaseScreen extends StatelessWidget {
                             selected: selected,
                             onSelected: (_) => typeFilter.value = t,
                             selectedColor: colorScheme.primary,
-                            backgroundColor: colorScheme.surfaceVariant,
+                            backgroundColor: colorScheme.surfaceContainerHighest,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                               side: BorderSide(
@@ -98,7 +98,7 @@ class AllCaseScreen extends StatelessWidget {
                             selected: selected,
                             onSelected: (_) => courtFilter.value = t,
                             selectedColor: colorScheme.primary,
-                            backgroundColor: colorScheme.surfaceVariant,
+                            backgroundColor: colorScheme.surfaceContainerHighest,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                               side: BorderSide(

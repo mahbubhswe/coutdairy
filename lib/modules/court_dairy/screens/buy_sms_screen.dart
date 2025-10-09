@@ -50,7 +50,7 @@ class BuySmsView extends StatelessWidget {
                         border: Border.all(color: cs.outlineVariant),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.04),
+                            color: Colors.black.withValues(alpha: 0.04),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
@@ -125,9 +125,9 @@ class BuySmsView extends StatelessWidget {
                                       trackHeight: 6,
                                       activeTrackColor: cs.primary,
                                       inactiveTrackColor: cs.primary
-                                          .withOpacity(0.2),
+                                          .withValues(alpha: 0.2),
                                       thumbColor: cs.primary,
-                                      overlayColor: cs.primary.withOpacity(
+                                      overlayColor: cs.primary.withValues(alpha: 
                                         0.12,
                                       ),
                                       valueIndicatorColor: cs.primary,

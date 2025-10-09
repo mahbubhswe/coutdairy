@@ -1,3 +1,4 @@
+import 'package:court_dairy/constants/app_colors.dart';
 import 'package:court_dairy/constants/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -75,7 +76,7 @@ class AuthScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(14),
                           margin: const EdgeInsets.only(bottom: 16),
                           decoration: BoxDecoration(
-                            color: Colors.red.withOpacity(0.08),
+                            color: Colors.red.withValues(alpha: 0.08),
                             border: Border.all(
                               color: Colors.red.shade300,
                               width: 2,
@@ -108,7 +109,6 @@ class AuthScreen extends StatelessWidget {
                       ),
                     Obx(() {
                       return AppButton(
-                        surfaceStyle: true,
                         label: 'Log in',
                         onPressed: controller.enableBtn.value
                             ? () => controller.login()
@@ -137,10 +137,10 @@ class AuthScreen extends StatelessWidget {
             ),
             if (controller.isLoading.value)
               Container(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
                 child: Center(
                   child: LoadingAnimationWidget.fourRotatingDots(
-                    color: Colors.teal,
+                    color: AppColors.fixedPrimary,
                     size: 50,
                   ),
                 ),

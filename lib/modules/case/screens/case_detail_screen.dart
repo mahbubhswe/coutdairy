@@ -50,7 +50,7 @@ class CaseDetailScreen extends StatelessWidget {
       );
     }
 
-    Color _statusBgColor(String status) {
+    Color statusBgColor(String status) {
       switch (status.toLowerCase()) {
         case 'ongoing':
           return Colors.white;
@@ -63,7 +63,7 @@ class CaseDetailScreen extends StatelessWidget {
       }
     }
 
-    Color _statusTextColor(String status) {
+    Color statusTextColor(String status) {
       switch (status.toLowerCase()) {
         case 'ongoing':
           return Colors.black;
@@ -166,6 +166,7 @@ class CaseDetailScreen extends StatelessWidget {
                                         firstDate: DateTime(2000),
                                         lastDate: DateTime(2100),
                                       );
+                                      if (!context.mounted) return;
                                       if (picked != null) {
                                         PanaraConfirmDialog.show(
                                           context,
@@ -178,6 +179,8 @@ class CaseDetailScreen extends StatelessWidget {
                                               Navigator.of(context).pop(),
                                           onTapConfirm: () async {
                                             Navigator.of(context).pop();
+                                            final messenger =
+                                                ScaffoldMessenger.of(context);
                                             bool ok = false;
                                             try {
                                               final user =
@@ -188,13 +191,12 @@ class CaseDetailScreen extends StatelessWidget {
                                                   id,
                                                   user.uid,
                                                   Timestamp.fromDate(picked),
-                                                );
-                                                ok = true;
-                                              }
-                                            } catch (_) {}
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
+                                              );
+                                              ok = true;
+                                            }
+                                          } catch (_) {}
+                                            if (!context.mounted) return;
+                                            messenger.showSnackBar(
                                               SnackBar(
                                                 content: Text(
                                                   ok
@@ -243,7 +245,7 @@ class CaseDetailScreen extends StatelessWidget {
                           );
                           final last = current.courtLastOrder;
                           final next = current.courtNextOrder;
-                          final inputBg = _statusBgColor(current.caseStatus);
+                          final inputBg = statusBgColor(current.caseStatus);
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -296,6 +298,7 @@ class CaseDetailScreen extends StatelessWidget {
                                           );
                                         },
                                       );
+                                      if (!context.mounted) return;
                                       final text = result?.trim();
                                       if (text == null || text.isEmpty) return;
                                       PanaraConfirmDialog.show(
@@ -308,6 +311,8 @@ class CaseDetailScreen extends StatelessWidget {
                                             Navigator.of(context).pop(),
                                         onTapConfirm: () async {
                                           Navigator.of(context).pop();
+                                          final messenger =
+                                              ScaffoldMessenger.of(context);
                                           bool ok = false;
                                           try {
                                             final user =
@@ -322,9 +327,8 @@ class CaseDetailScreen extends StatelessWidget {
                                               ok = true;
                                             }
                                           } catch (_) {}
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
+                                          if (!context.mounted) return;
+                                          messenger.showSnackBar(
                                             SnackBar(
                                               content: Text(
                                                 ok
@@ -381,8 +385,8 @@ class CaseDetailScreen extends StatelessWidget {
                             orElse: () => caseItem,
                           );
                           final status = current.caseStatus;
-                          final bgColor = _statusBgColor(status);
-                          final textColor = _statusTextColor(status);
+                          final bgColor = statusBgColor(status);
+                          final textColor = statusTextColor(status);
 
                           Future<void> showStatusDialog() async {
                             if (!ActivationGuard.check()) return;
@@ -417,6 +421,7 @@ class CaseDetailScreen extends StatelessWidget {
                                 );
                               },
                             );
+                            if (!context.mounted) return;
 
                             if (selected == null || selected == status) return;
 
@@ -429,6 +434,7 @@ class CaseDetailScreen extends StatelessWidget {
                               onTapCancel: () => Navigator.of(context).pop(),
                               onTapConfirm: () async {
                                 Navigator.of(context).pop();
+                                final messenger = ScaffoldMessenger.of(context);
                                 bool ok = false;
                                 try {
                                   final user = AppFirebase().currentUser;
@@ -445,7 +451,8 @@ class CaseDetailScreen extends StatelessWidget {
                                 if (!ok) {
                                   controller.cases.refresh();
                                 }
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                if (!context.mounted) return;
+                                messenger.showSnackBar(
                                   SnackBar(
                                     content: Text(
                                       ok ? 'Status updated' : 'Status update failed',

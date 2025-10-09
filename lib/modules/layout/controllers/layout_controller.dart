@@ -171,7 +171,7 @@ class _OverdueSheetContent extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.15),
+                    color: Colors.green.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.green.shade600),
                   ),
@@ -210,7 +210,7 @@ class _OverdueSheetContent extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: colorScheme.surfaceVariant.withOpacity(0.6),
+                color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: colorScheme.outlineVariant),
               ),
@@ -234,14 +234,14 @@ class _OverdueSheetContent extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () => Get.back(),
                     style: actionButtonStyle.copyWith(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                         colorScheme.surface,
                       ),
-                      foregroundColor: MaterialStateProperty.all(
+                      foregroundColor: WidgetStateProperty.all(
                         colorScheme.primary,
                       ),
-                      elevation: MaterialStateProperty.all<double>(0),
-                      side: MaterialStateProperty.all(
+                      elevation: WidgetStateProperty.all<double>(0),
+                      side: WidgetStateProperty.all(
                         BorderSide(color: colorScheme.primary),
                       ),
                     ),
@@ -256,8 +256,8 @@ class _OverdueSheetContent extends StatelessWidget {
             label: const Text('View cases'),
             style: actionButtonStyle.copyWith(
               backgroundColor:
-                  MaterialStateProperty.all(colorScheme.secondary),
-              foregroundColor: MaterialStateProperty.all(
+                  WidgetStateProperty.all(colorScheme.secondary),
+              foregroundColor: WidgetStateProperty.all(
                 colorScheme.onSecondary,
               ),
             ),

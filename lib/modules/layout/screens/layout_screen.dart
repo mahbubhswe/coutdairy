@@ -98,19 +98,19 @@ class LayoutScreen extends GetView<LayoutController> {
             backgroundColor: theme.scaffoldBackgroundColor,
             surfaceTintColor: Colors.transparent,
             elevation: 0,
-            indicatorColor: colorScheme.primary.withOpacity(0.12),
-            labelTextStyle: MaterialStateProperty.resolveWith(
+            indicatorColor: colorScheme.primary.withValues(alpha: 0.12),
+            labelTextStyle: WidgetStateProperty.resolveWith(
               (states) => (textTheme.labelMedium ?? const TextStyle())
                   .copyWith(
                     fontWeight: FontWeight.w700,
-                    color: states.contains(MaterialState.selected)
+                    color: states.contains(WidgetState.selected)
                         ? colorScheme.primary
                         : colorScheme.onSurfaceVariant,
                   ),
             ),
-            iconTheme: MaterialStateProperty.resolveWith(
+            iconTheme: WidgetStateProperty.resolveWith(
               (states) => IconThemeData(
-                color: states.contains(MaterialState.selected)
+                color: states.contains(WidgetState.selected)
                     ? colorScheme.primary
                     : colorScheme.onSurfaceVariant,
               ),

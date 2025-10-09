@@ -20,9 +20,9 @@ class AccountsCard extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final cs = theme.colorScheme;
     final accent = isDark ? Colors.white : AppColors.fixedPrimary;
-    final Color gradientStart = accent.withOpacity(isDark ? 0.28 : 0.18);
-    final Color gradientEnd = accent.withOpacity(isDark ? 0.12 : 0.08);
-    cs.outlineVariant.withOpacity(isDark ? 0.5 : 0.22);
+    final Color gradientStart = accent.withValues(alpha: isDark ? 0.28 : 0.18);
+    final Color gradientEnd = accent.withValues(alpha: isDark ? 0.12 : 0.08);
+    cs.outlineVariant.withValues(alpha: isDark ? 0.5 : 0.22);
     final numberFormatter = NumberFormat.currency(
       locale: 'en_US',
       symbol: '',
@@ -48,7 +48,7 @@ class AccountsCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(isDark ? 0.08 : 0.22),
+                color: Colors.white.withValues(alpha: isDark ? 0.08 : 0.22),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: accent, size: 20),

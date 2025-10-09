@@ -30,7 +30,7 @@ class EditTransactionScreen extends StatelessWidget {
             spacing: 16,
             children: [
               DropdownButtonFormField<String>(
-                value: controller.type.value,
+                initialValue: controller.type.value,
                 isExpanded: true,
                 borderRadius: BorderRadius.circular(12),
                 menuMaxHeight: 320,
@@ -41,7 +41,7 @@ class EditTransactionScreen extends StatelessWidget {
                   prefixIcon: const Icon(Icons.category),
                   filled: true,
                   fillColor:
-                      Theme.of(context).colorScheme.surface.withOpacity(0.7),
+                      Theme.of(context).colorScheme.surface.withValues(alpha: 0.7),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   border: OutlineInputBorder(
@@ -64,7 +64,7 @@ class EditTransactionScreen extends StatelessWidget {
                 keyboardType: TextInputType.number,
               ),
               DropdownButtonFormField<String>(
-                value: controller.paymentMethod.value,
+                initialValue: controller.paymentMethod.value,
                 isExpanded: true,
                 borderRadius: BorderRadius.circular(12),
                 menuMaxHeight: 320,
@@ -75,7 +75,7 @@ class EditTransactionScreen extends StatelessWidget {
                   prefixIcon: const Icon(Icons.payment),
                   filled: true,
                   fillColor:
-                      Theme.of(context).colorScheme.surface.withOpacity(0.7),
+                      Theme.of(context).colorScheme.surface.withValues(alpha: 0.7),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   border: OutlineInputBorder(
@@ -122,17 +122,19 @@ class EditTransactionScreen extends StatelessWidget {
                           },
                           onTapConfirm: () async {
                             Navigator.of(context).pop();
+                            final messenger = ScaffoldMessenger.of(context);
                             final success =
                                 await controller.updateTransaction();
+                            if (!context.mounted) return;
                             if (success) {
-                              ScaffoldMessenger.of(context).showSnackBar(
+                              messenger.showSnackBar(
                                 const SnackBar(
                                   content: Text('Transaction updated successfully'),
                                 ),
                               );
                               Get.back();
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
+                              messenger.showSnackBar(
                                 const SnackBar(
                                   content: Text('Failed to update transaction'),
                                 ),
