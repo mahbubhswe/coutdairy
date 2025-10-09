@@ -249,19 +249,20 @@ class _OverdueSheetContent extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: onViewAll,
-                    icon: const Icon(HugeIcons.strokeRoundedArrowRight02),
-                    label: const Text('View cases'),
-                    style: actionButtonStyle.copyWith(
-                      backgroundColor: MaterialStateProperty.all(
-                        Colors.green.shade600,
-                      ),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                    ),
-                  ),
-                ),
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: onViewAll,
+            icon: const Icon(HugeIcons.strokeRoundedArrowRight02),
+            label: const Text('View cases'),
+            style: actionButtonStyle.copyWith(
+              backgroundColor:
+                  MaterialStateProperty.all(colorScheme.secondary),
+              foregroundColor: MaterialStateProperty.all(
+                colorScheme.onSecondary,
+              ),
+            ),
+          ),
+        ),
               ],
             ),
           ],
