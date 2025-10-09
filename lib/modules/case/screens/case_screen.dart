@@ -25,13 +25,19 @@ class _CaseScreenState extends State<CaseScreen> {
 
     final direction = _scrollController.position.userScrollDirection;
     if (direction == ScrollDirection.reverse && _showFilters) {
-      setState(() => _showFilters = false);
+      setState(() {
+        _showFilters = false;
+      });
     } else if (direction == ScrollDirection.forward && !_showFilters) {
-      setState(() => _showFilters = true);
+      setState(() {
+        _showFilters = true;
+      });
     }
 
     if (_scrollController.offset <= 0 && !_showFilters) {
-      setState(() => _showFilters = true);
+      setState(() {
+        _showFilters = true;
+      });
     }
   }
 
@@ -94,8 +100,9 @@ class _CaseScreenState extends State<CaseScreen> {
                           const SizedBox(width: 12),
                           Text(
                             'Search cases…',
-                            style: theme.textTheme.bodyMedium
-                                ?.copyWith(color: mutedTextColor),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: mutedTextColor,
+                            ),
                           ),
                         ],
                       ),
@@ -203,7 +210,10 @@ class _CaseScreenState extends State<CaseScreen> {
                             duration: const Duration(milliseconds: 300),
                             builder: (context, value, child) =>
                                 Opacity(opacity: value, child: child),
-                            child: CaseTile(caseItem: caseItem),
+                            child: CaseTile(
+                              caseItem: caseItem,
+                              showUnderSection: !_showFilters,
+                            ),
                           );
                         },
                       ),

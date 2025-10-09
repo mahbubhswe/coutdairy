@@ -5,9 +5,14 @@ import '../../../models/court_case.dart';
 import '../screens/case_detail_screen.dart';
 
 class CaseTile extends StatelessWidget {
-  const CaseTile({super.key, required this.caseItem});
+  const CaseTile({
+    super.key,
+    required this.caseItem,
+    this.showUnderSection = true,
+  });
 
   final CourtCase caseItem;
+  final bool showUnderSection;
 
   String _initials(String text) {
     final cleaned = text.trim();
@@ -41,10 +46,7 @@ class CaseTile extends StatelessWidget {
         onTap: () => Get.to(() => CaseDetailScreen(caseItem)),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: tileBackground,
-            border: Border(),
-          ),
+          decoration: BoxDecoration(color: tileBackground, border: Border()),
           child: Row(
             children: [
               CircleAvatar(
@@ -82,24 +84,34 @@ class CaseTile extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-
-                    if (caseItem.underSection?.isNotEmpty == true) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        'Section: ' + caseItem.underSection!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: subtitleColor,
-                        ),
-                      ),
-                    ],
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 180),
+                      child:
+                          (showUnderSection &&
+                              caseItem.courtName.trim().isNotEmpty)
+                          ? Padding(
+                              key: const ValueKey('court_name_visible'),
+                              padding: const EdgeInsets.only(top: 2),
+                              child: Text(
+                                'Court: ${caseItem.courtName.trim()}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: subtitleColor,
+                                ),
+                              ),
+                            )
+                          : const SizedBox(key: ValueKey('court_name_hidden')),
+                    ),
                   ],
                 ),
               ),
               const SizedBox(width: 12),
-              Icon(Icons.arrow_forward_ios_rounded,
-                  size: 16, color: trailingColor),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: trailingColor,
+              ),
             ],
           ),
         ),
