@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:panara_dialogs/panara_dialogs.dart';
 import '../../../utils/app_date_formatter.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import '../../../local_library/text_from_field_wraper.dart';
 
 import '../../../models/court_case.dart';
 import '../../../models/party.dart';
@@ -63,57 +61,109 @@ class EditCaseScreen extends StatelessWidget {
       );
     }
 
-    Widget partyDropdown({
-      required Rx<Party?> selected,
-      required String label,
-      required String hint,
-      required IconData icon,
-    }) {
-      final textController = TextEditingController();
-      return Obx(() {
-        final cs = Theme.of(context).colorScheme;
-        if (selected.value != null &&
-            textController.text != selected.value!.name) {
-          textController.text = selected.value!.name;
-        }
-        return TextFormFieldWrapper(
-          borderFocusedColor: cs.primary,
-          prefix: Icon(icon, color: cs.onSurfaceVariant, size: 20),
-          formField: TypeAheadField<Party>(
-            controller: textController,
-            builder: (context, textEditingController, focusNode) {
-              return TextField(
-                controller: textEditingController,
-                focusNode: focusNode,
-                cursorColor: cs.onSurface,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  labelText: label,
-                  hintText: hint,
-                ),
-                onChanged: (_) => selected.value = null,
-              );
-            },
-            suggestionsCallback: (pattern) {
-              final query = pattern.toLowerCase();
-              return controller.parties.where((p) {
-                return p.name.toLowerCase().contains(query) ||
-                    p.phone.contains(pattern);
-              }).toList();
-            },
-            itemBuilder: (context, Party party) {
-              return ListTile(
-                title: Text(party.name),
-                subtitle: Text(party.phone),
-              );
-            },
-            onSelected: (Party party) {
-              selected.value = party;
-              textController.text = party.name;
-            },
+    Widget partyFields() {
+      Future<void> openPartyPicker() async {
+        FocusScope.of(context).unfocus();
+        final selectedParty = await showModalBottomSheet<Party>(
+          context: context,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           ),
+          builder: (sheetCtx) {
+            return SafeArea(
+              child: Obx(() {
+                final savedParties = controller.parties;
+                return ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(sheetCtx).size.height * 0.6,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const SizedBox(height: 10),
+                      Container(
+                        width: 40,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurfaceVariant
+                              .withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      if (savedParties.isEmpty)
+                        const Padding(
+                          padding: EdgeInsets.all(24),
+                          child: Center(
+                            child: Text('No saved parties found'),
+                          ),
+                        )
+                      else
+                        Expanded(
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: savedParties.length,
+                            separatorBuilder: (_, __) => const Divider(height: 1),
+                            itemBuilder: (_, index) {
+                              final party = savedParties[index];
+                              return ListTile(
+                                leading: const Icon(Icons.person_outline),
+                                title: Text(party.name),
+                                subtitle: Text(party.phone),
+                                onTap: () => Navigator.of(sheetCtx).pop(party),
+                              );
+                            },
+                          ),
+                        ),
+                      const SizedBox(height: 12),
+                    ],
+                  ),
+                );
+              }),
+            );
+          },
         );
-      });
+
+        if (selectedParty != null) {
+          controller.applyPlaintiff(selectedParty);
+        }
+      }
+
+      return Column(
+        spacing: 10,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppTextFromField(
+            controller: controller.plaintiffName,
+            label: 'Plaintiff name',
+            hintText: 'Enter plaintiff name',
+            prefixIcon: Icons.person_outline,
+            suffixIconButton: Obx(() {
+              if (controller.isAddingParty.value) {
+                return const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                );
+              }
+              return IconButton(
+                tooltip: 'Select from saved parties',
+                icon: const Icon(Icons.people_outline),
+                onPressed: openPartyPicker,
+              );
+            }),
+          ),
+          AppTextFromField(
+            controller: controller.plaintiffPhone,
+            label: 'Phone number',
+            hintText: 'Enter phone number',
+            prefixIcon: Icons.call_outlined,
+            keyboardType: TextInputType.phone,
+          ),
+        ],
+      );
     }
 
     return Scaffold(
@@ -166,27 +216,21 @@ class EditCaseScreen extends StatelessWidget {
                       hintText: 'Enter the under section (optional)',
                       prefixIcon: Icons.rule_outlined,
                     ),
-                    AppTextFromField(
-                      controller: controller.caseSummary,
-                      label: 'Summary',
-                      hintText: 'Enter a summary',
-                      prefixIcon: Icons.description_outlined,
-                      isMaxLines: 3,
-                    ),
                     Obx(
                       () {
                         final date = controller.filedDate.value;
                         final textTheme = Theme.of(context).textTheme;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 6,
+                        return Row(
                           children: [
-                            Text(
-                              'Filed Date',
-                              style: textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
+                            Expanded(
+                              child: Text(
+                                'Filed Date',
+                                style: textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
+                            const SizedBox(width: 12),
                             InputChip(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,
@@ -201,8 +245,7 @@ class EditCaseScreen extends StatelessWidget {
                               onPressed: () async {
                                 final picked = await showDatePicker(
                                   context: context,
-                                  initialDate:
-                                      date ?? DateTime.now(),
+                                  initialDate: date ?? DateTime.now(),
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                 );
@@ -224,12 +267,7 @@ class EditCaseScreen extends StatelessWidget {
                   spacing: 10,
                   children: [
                     const SizedBox(height: 5),
-                    partyDropdown(
-                      selected: controller.selectedPlaintiff,
-                      label: 'Plaintiff',
-                      hint: 'Select plaintiff',
-                      icon: Icons.person_outline,
-                    ),
+                    partyFields(),
                   ],
                 ),
               ),
@@ -257,16 +295,17 @@ class EditCaseScreen extends StatelessWidget {
                       () {
                         final date = controller.hearingDate.value;
                         final textTheme = Theme.of(context).textTheme;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 6,
+                        return Row(
                           children: [
-                            Text(
-                              'Next Hearing Date',
-                              style: textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
+                            Expanded(
+                              child: Text(
+                                'Next Hearing Date',
+                                style: textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
+                            const SizedBox(width: 12),
                             InputChip(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,
@@ -282,8 +321,7 @@ class EditCaseScreen extends StatelessWidget {
                               onPressed: () async {
                                 final picked = await showDatePicker(
                                   context: context,
-                                  initialDate:
-                                      date ?? DateTime.now(),
+                                  initialDate: date ?? DateTime.now(),
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                 );

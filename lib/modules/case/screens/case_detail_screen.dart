@@ -375,33 +375,134 @@ class CaseDetailScreen extends StatelessWidget {
                               : '-',
                         ),
                         const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Case status',
-                              style: TextStyle(fontSize: 14),
+                        Obx(() {
+                          final current = controller.cases.firstWhere(
+                            (c) => c.docId == caseItem.docId,
+                            orElse: () => caseItem,
+                          );
+                          final status = current.caseStatus;
+                          final bgColor = _statusBgColor(status);
+                          final textColor = _statusTextColor(status);
+
+                          Future<void> showStatusDialog() async {
+                            if (!ActivationGuard.check()) return;
+                            final selected = await showDialog<String>(
+                              context: context,
+                              builder: (dialogCtx) {
+                                return AlertDialog(
+                                  title: const Text('Update case status'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: statuses
+                                        .map(
+                                          (option) => ListTile(
+                                            leading: Icon(
+                                              option == status
+                                                  ? Icons.radio_button_checked
+                                                  : Icons.radio_button_off_outlined,
+                                            ),
+                                            title: Text(option),
+                                            onTap: () =>
+                                                Navigator.of(dialogCtx).pop(option),
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.of(dialogCtx).pop(),
+                                      child: const Text('Cancel'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+
+                            if (selected == null || selected == status) return;
+
+                            PanaraConfirmDialog.show(
+                              context,
+                              title: 'Confirm',
+                              message: 'Change the case status to "$selected"?',
+                              confirmButtonText: 'Yes',
+                              cancelButtonText: 'No',
+                              onTapCancel: () => Navigator.of(context).pop(),
+                              onTapConfirm: () async {
+                                Navigator.of(context).pop();
+                                bool ok = false;
+                                try {
+                                  final user = AppFirebase().currentUser;
+                                  final id = caseItem.docId;
+                                  if (user != null && id != null) {
+                                    await CaseService.updateCaseStatus(
+                                      id,
+                                      user.uid,
+                                      selected,
+                                    );
+                                    ok = true;
+                                  }
+                                } catch (_) {}
+                                if (!ok) {
+                                  controller.cases.refresh();
+                                }
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      ok ? 'Status updated' : 'Status update failed',
+                                    ),
+                                  ),
+                                );
+                              },
+                              panaraDialogType: PanaraDialogType.normal,
+                            );
+                          }
+
+                          return InkWell(
+                            onTap: showStatusDialog,
+                            borderRadius: BorderRadius.circular(12),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'Case status',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: bgColor,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          status,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 14,
+                                            color: textColor,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Icon(
+                                          Icons.edit_outlined,
+                                          size: 16,
+                                          color: textColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: _statusBgColor(caseItem.caseStatus),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
-                              child: Text(
-                                caseItem.caseStatus,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14,
-                                  color: _statusTextColor(caseItem.caseStatus),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          );
+                        }),
                         const SizedBox(height: 8),
                         appInfoRow(
                           'Filed date',
@@ -458,93 +559,6 @@ class CaseDetailScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-
-                  // Case Status (inline update)
-                  section(
-                    'Case status',
-                    Obx(() {
-                      final current = controller.cases.firstWhere(
-                        (c) => c.docId == caseItem.docId,
-                        orElse: () => caseItem,
-                      );
-                      final fieldBg = _statusBgColor(current.caseStatus);
-                      return DropdownButtonFormField<String>(
-                        value: current.caseStatus.isEmpty
-                            ? null
-                            : current.caseStatus,
-                        isExpanded: true,
-                        borderRadius: BorderRadius.circular(12),
-                        menuMaxHeight: 320,
-                        icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                        decoration: InputDecoration(
-                          labelText: 'Case status',
-                          hintText: 'Select case status',
-                          prefixIcon: const Icon(Icons.flag_outlined),
-                          filled: true,
-                          fillColor: fieldBg,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 12,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
-                          ),
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                        ),
-                        items: statuses
-                            .map(
-                              (e) => DropdownMenuItem(value: e, child: Text(e)),
-                            )
-                            .toList(),
-                        onChanged: (v) async {
-                          if (v == null) return;
-                          PanaraConfirmDialog.show(
-                            context,
-                            title: 'Confirm',
-                            message: 'Change the case status to "$v"?',
-                            confirmButtonText: 'Yes',
-                            cancelButtonText: 'No',
-                            onTapCancel: () {
-                              Navigator.of(context).pop();
-                              // revert visual selection
-                              controller.cases.refresh();
-                            },
-                            onTapConfirm: () async {
-                              Navigator.of(context).pop();
-                              bool ok = false;
-                              try {
-                                final user = AppFirebase().currentUser;
-                                final id = caseItem.docId;
-                                if (user != null && id != null) {
-                                  await CaseService.updateCaseStatus(
-                                    id,
-                                    user.uid,
-                                    v,
-                                  );
-                                  ok = true;
-                                }
-                              } catch (_) {}
-                              if (!ok) {
-                                controller.cases.refresh();
-                              }
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    ok
-                                        ? 'Status updated'
-                                        : 'Status update failed',
-                                  ),
-                                ),
-                              );
-                            },
-                            panaraDialogType: PanaraDialogType.normal,
-                          );
-                        },
-                      );
-                    }),
                   ),
 
                 ],

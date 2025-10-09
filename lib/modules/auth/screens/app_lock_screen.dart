@@ -222,13 +222,13 @@ class _AppLockScreenState extends State<AppLockScreen> {
         ),
         const SizedBox(height: 12),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(4, (index) {
             final filled = index < value.length;
             return AnimatedContainer(
               duration: const Duration(milliseconds: 160),
-              height: 54,
-              width: 54,
+              height: 50,
+              width: 50,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
@@ -280,31 +280,38 @@ class _AppLockScreenState extends State<AppLockScreen> {
 
     final bool isDisabled = onTap == null;
 
+    if (digit == null && icon == null && isDisabled) {
+      return const Expanded(
+        child: SizedBox(height: 48),
+      );
+    }
+
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
         child: Material(
           color: isDisabled
-              ? colors.surfaceVariant.withOpacity(0.2)
-              : colors.surfaceVariant.withOpacity(0.45),
-          borderRadius: BorderRadius.circular(20),
+              ? colors.surfaceVariant.withOpacity(0.15)
+              : colors.surfaceVariant.withOpacity(0.35),
+          borderRadius: BorderRadius.circular(16),
           child: InkWell(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
             onTap: isDisabled ? null : onTap,
             child: SizedBox(
-              height: 70,
+              height: 56,
               child: Center(
                 child: digit != null
                     ? Text(
                         digit,
                         style: theme.textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24,
                         ),
                       )
                     : icon != null
                         ? Icon(
                             icon,
-                            size: 28,
+                            size: 24,
                             color: colors.primary,
                           )
                         : const SizedBox.shrink(),
@@ -320,33 +327,32 @@ class _AppLockScreenState extends State<AppLockScreen> {
     return Column(
       children: [
         for (final row in const [
-          ['1', '2', '3'],
-          ['4', '5', '6'],
-          ['7', '8', '9'],
+          ['1', '2', '3', '4'],
+          ['5', '6', '7', '8'],
+          ['9', '0', 'back', 'blank'],
         ])
           Row(
             children: row
                 .map(
-                  (digit) => _buildKeyButton(
-                    digit: digit,
-                    onTap: () => _onDigitPressed(digit),
-                  ),
+                  (value) {
+                    switch (value) {
+                      case 'back':
+                        return _buildKeyButton(
+                          icon: Icons.backspace_rounded,
+                          onTap: () => _onBackspace(),
+                        );
+                      case 'blank':
+                        return _buildKeyButton(onTap: null);
+                      default:
+                        return _buildKeyButton(
+                          digit: value,
+                          onTap: () => _onDigitPressed(value),
+                        );
+                    }
+                  },
                 )
                 .toList(),
           ),
-        Row(
-          children: [
-            _buildKeyButton(onTap: null),
-            _buildKeyButton(
-              digit: '0',
-              onTap: () => _onDigitPressed('0'),
-            ),
-            _buildKeyButton(
-              icon: Icons.backspace_rounded,
-              onTap: () => _onBackspace(),
-            ),
-          ],
-        ),
       ],
     );
   }

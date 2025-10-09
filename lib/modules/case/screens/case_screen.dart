@@ -82,7 +82,7 @@ class _CaseScreenState extends State<CaseScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 18,
-                        vertical: 14,
+                        vertical: 10,
                       ),
                       decoration: BoxDecoration(
                         color: surfaceColor,
@@ -239,7 +239,7 @@ class _CaseScreenState extends State<CaseScreen> {
           label: Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
               color: selected
                   ? colorScheme.onSecondary
                   : colorScheme.onSurfaceVariant,
@@ -283,11 +283,13 @@ class _CaseScreenState extends State<CaseScreen> {
           },
           selectedColor: selectedColor,
           backgroundColor: surfaceColor,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
             side: BorderSide(
-              color: selected ? selectedColor : Colors.transparent,
+              color: selected
+                  ? selectedColor
+                  : colorScheme.outlineVariant.withOpacity(0.6),
             ),
           ),
           showCheckmark: false,

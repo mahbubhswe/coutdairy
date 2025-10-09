@@ -8,12 +8,13 @@ class PartyService {
   static final _firestore = AppFirebase().firestore;
   static final _storage = AppFirebase().storage;
 
-  static Future<void> addParty(Party party) async {
-    await _firestore
+  static Future<String> addParty(Party party) async {
+    final docRef = await _firestore
         .collection(AppCollections.lawyers)
         .doc(party.lawyerId)
         .collection(AppCollections.parties)
         .add(party.toMap());
+    return docRef.id;
   }
 
   static Future<void> updateParty(Party party) async {
@@ -30,7 +31,8 @@ class PartyService {
   }
 
   static Future<String> uploadPartyPhoto(File file, String userId) async {
-    final path = 'party_photos/$userId/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final path =
+        'party_photos/$userId/${DateTime.now().millisecondsSinceEpoch}.jpg';
     final ref = _storage.ref().child(path);
     await ref.putFile(file);
     return await ref.getDownloadURL();
@@ -42,9 +44,11 @@ class PartyService {
         .doc(lawyerId)
         .collection(AppCollections.parties)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Party.fromMap(doc.data(), docId: doc.id))
-            .toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => Party.fromMap(doc.data(), docId: doc.id))
+              .toList(),
+        );
   }
 
   static Future<void> deleteParty(Party party) async {
@@ -60,4 +64,3 @@ class PartyService {
         .delete();
   }
 }
-
