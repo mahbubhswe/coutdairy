@@ -174,29 +174,46 @@ class EditCaseScreen extends StatelessWidget {
                       isMaxLines: 3,
                     ),
                     Obx(
-                      () => InputChip(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        label: Text(
-                          controller.filedDate.value?.formattedDate ??
-                              'Filed date',
-                        ),
-                        avatar: const Icon(HugeIcons.strokeRoundedCalendar01),
-                        onPressed: () async {
-                          final picked = await showDatePicker(
-                            context: context,
-                            initialDate:
-                                controller.filedDate.value ?? DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                          );
-                          if (picked != null) {
-                            controller.filedDate.value = picked;
-                          }
-                        },
-                      ),
+                      () {
+                        final date = controller.filedDate.value;
+                        final textTheme = Theme.of(context).textTheme;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: 6,
+                          children: [
+                            Text(
+                              'Filed Date',
+                              style: textTheme.labelMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            InputChip(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              label: Text(
+                                date?.formattedDate ?? 'Select filed date',
+                              ),
+                              avatar: const Icon(
+                                HugeIcons.strokeRoundedCalendar01,
+                              ),
+                              onPressed: () async {
+                                final picked = await showDatePicker(
+                                  context: context,
+                                  initialDate:
+                                      date ?? DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                );
+                                if (picked != null) {
+                                  controller.filedDate.value = picked;
+                                }
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -237,29 +254,47 @@ class EditCaseScreen extends StatelessWidget {
                       prefixIcon: Icons.article_outlined,
                     ),
                     Obx(
-                      () => InputChip(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        label: Text(
-                          controller.hearingDate.value?.formattedDate ??
-                              'Hearing date',
-                        ),
-                        avatar: const Icon(HugeIcons.strokeRoundedCalendar01),
-                        onPressed: () async {
-                          final picked = await showDatePicker(
-                            context: context,
-                            initialDate:
-                                controller.hearingDate.value ?? DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                          );
-                          if (picked != null) {
-                            controller.hearingDate.value = picked;
-                          }
-                        },
-                      ),
+                      () {
+                        final date = controller.hearingDate.value;
+                        final textTheme = Theme.of(context).textTheme;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: 6,
+                          children: [
+                            Text(
+                              'Next Hearing Date',
+                              style: textTheme.labelMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            InputChip(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              label: Text(
+                                date?.formattedDate ??
+                                    'Select next hearing date',
+                              ),
+                              avatar: const Icon(
+                                HugeIcons.strokeRoundedCalendar01,
+                              ),
+                              onPressed: () async {
+                                final picked = await showDatePicker(
+                                  context: context,
+                                  initialDate:
+                                      date ?? DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                );
+                                if (picked != null) {
+                                  controller.hearingDate.value = picked;
+                                }
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ],
                 ),
