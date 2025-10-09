@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: "none"
 
-version: 1.0.10+11
+version: 1.0.11+12
 
 environment:
   sdk: ^3.9.0
@@ -58,7 +58,6 @@ dev_dependencies:
   flutter_native_splash: ^2.4.6
 
 flutter:
-
   uses-material-design: true
 
   assets:
